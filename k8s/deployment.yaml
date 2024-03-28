@@ -14,7 +14,7 @@ spec:
       containers:
         - name: frontend
           # 여러분의 image 주소를 입력해주세요.
-          image: IMAGE
+          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_0796b3582d54
           env:
             - name: PROJECT_ENV
               valueFrom:
