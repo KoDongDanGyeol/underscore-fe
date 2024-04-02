@@ -1,13 +1,11 @@
 import { env } from "next-runtime-env"
-import Flag from "@/components/display/Flag"
 
 const Page = () => {
-  const PROJECT_ENV = env("PROJECT_ENV")
+  const NEXT_PUBLIC_PROJECT_ENV = env("NEXT_PUBLIC_PROJECT_ENV") ?? process.env.NEXT_PUBLIC_PROJECT_ENV ?? ""
 
   return (
     <div>
-      <p>PROJECT_ENV: {process.env.PROJECT_ENV || PROJECT_ENV}</p>
-      <Flag />
+      <p>NEXT_PUBLIC_PROJECT_ENV: {NEXT_PUBLIC_PROJECT_ENV}</p>
     </div>
   )
 }
