@@ -21,3 +21,8 @@ spec:
                 secretKeyRef:
                   name: secret-env
                   key: PROJECT_ENV
+            - name: NEXT_PUBLIC_PROJECT_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_PROJECT_ENV
