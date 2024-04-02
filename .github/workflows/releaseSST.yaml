@@ -29,10 +29,12 @@ jobs:
           echo "AWS_IAM=$AWS_IAM" >> .env
           echo "AWS_REGION=$AWS_REGION" >> .env
           echo "AWS_PUBLIC_DOMAIN=$AWS_PUBLIC_DOMAIN" >> .env
+          echo "NEXT_PUBLIC_PROJECT_ENV=$NEXT_PUBLIC_PROJECT_ENV" >> .env
         env:
           AWS_IAM: ${{ secrets.AWS_IAM }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_PUBLIC_DOMAIN: ${{ secrets.AWS_PUBLIC_DOMAIN }}
+          NEXT_PUBLIC_PROJECT_ENV: ${{ secrets.NEXT_PUBLIC_PROJECT_ENV }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
