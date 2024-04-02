@@ -1,3 +1,4 @@
+import RecoilProvider from "@/components/config/RecoilProvider"
 import "@/styles/reset.css"
 
 interface RootLayoutProps extends React.PropsWithChildren {
@@ -9,7 +10,9 @@ const RootLayout = (props: RootLayoutProps) => {
 
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <RecoilProvider flag={false}>{children}</RecoilProvider>
+      </body>
     </html>
   )
 }
