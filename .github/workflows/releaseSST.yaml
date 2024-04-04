@@ -29,12 +29,22 @@ jobs:
           echo "AWS_IAM=$AWS_IAM" >> .env
           echo "AWS_REGION=$AWS_REGION" >> .env
           echo "AWS_PUBLIC_DOMAIN=$AWS_PUBLIC_DOMAIN" >> .env
+          echo "PROJECT_ENV=$PROJECT_ENV" >> .env
           echo "NEXT_PUBLIC_PROJECT_ENV=$NEXT_PUBLIC_PROJECT_ENV" >> .env
+          echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
+          echo "NEXT_PUBLIC_API_MOCKING_STATUS=$NEXT_PUBLIC_API_MOCKING_STATUS" >> .env
+          echo "NEXT_PUBLIC_API_MOCKING_PORT=$NEXT_PUBLIC_API_MOCKING_PORT" >> .env
+          echo "NEXT_PUBLIC_API_MOCKING_URL=$NEXT_PUBLIC_API_MOCKING_URL" >> .env
         env:
           AWS_IAM: ${{ secrets.AWS_IAM }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_PUBLIC_DOMAIN: ${{ secrets.AWS_PUBLIC_DOMAIN }}
+          PROJECT_ENV: ${{ secrets.PROJECT_ENV }}
           NEXT_PUBLIC_PROJECT_ENV: ${{ secrets.NEXT_PUBLIC_PROJECT_ENV }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_API_MOCKING_STATUS: ${{ secrets.NEXT_PUBLIC_API_MOCKING_STATUS }}
+          NEXT_PUBLIC_API_MOCKING_PORT: ${{ secrets.NEXT_PUBLIC_API_MOCKING_PORT }}
+          NEXT_PUBLIC_API_MOCKING_URL: ${{ secrets.NEXT_PUBLIC_API_MOCKING_URL }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4

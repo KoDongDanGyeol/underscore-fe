@@ -14,7 +14,7 @@ spec:
       containers:
         - name: frontend
           # 여러분의 image 주소를 입력해주세요.
-          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_9834cb5f20bd
+          image: krmp-d2hub-idock.9rum.cc/dev-test/repo_13d4efd6d916
           env:
             - name: PROJECT_ENV
               valueFrom:
@@ -26,3 +26,23 @@ spec:
                 secretKeyRef:
                   name: secret-env
                   key: NEXT_PUBLIC_PROJECT_ENV
+            - name: NEXT_PUBLIC_API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_URL
+            - name: NEXT_PUBLIC_API_MOCKING_STATUS
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_MOCKING_STATUS
+            - name: NEXT_PUBLIC_API_MOCKING_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_MOCKING_PORT
+            - name: NEXT_PUBLIC_API_MOCKING_URL
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_MOCKING_URL
