@@ -11,19 +11,19 @@ export interface FlagMainProps extends React.HTMLAttributes<HTMLDivElement> {
 const FlagMain = (props: FlagMainProps) => {
   const { className = "", ...restProps } = props
   const [flag, setFlag] = useRecoilState(atomFlag)
-  const { mountStructure } = useMount()
+  const {
+    mountStructure: { isMounted },
+  } = useMount()
+
+  if (!isMounted) return null
 
   return (
-    <div>
-      {mountStructure.isMounted && (
-        <section className={`${className}`} {...restProps}>
-          <span>Recoil atomFlag: {flag.toString()}</span>
-          <button type="button" onClick={() => setFlag((value) => !value)}>
-            Toggle
-          </button>
-        </section>
-      )}
-    </div>
+    <section className={`${className}`} {...restProps}>
+      <span>Recoil atomFlag: {flag.toString()}</span>
+      <button type="button" onClick={() => setFlag((value) => !value)}>
+        Toggle
+      </button>
+    </section>
   )
 }
 

@@ -10,22 +10,22 @@ export interface JamMainProps extends React.HTMLAttributes<HTMLDivElement> {
 const JamMain = (props: JamMainProps) => {
   const { delay = 500, className = "", ...restProps } = props
 
-  const [isVisible, setIsVisible] = useState(false)
+  const [jamStructure, setJamStructure] = useState({
+    isReady: false,
+  })
 
-  const { mountStructure } = useMount(() => {
-    ;(async () => {
-      setTimeout(() => {
-        setIsVisible(() => true)
-      }, delay)
-    })()
+  const {
+    mountStructure: { isMounted },
+  } = useMount(() => {
+    setTimeout(() => setJamStructure((prev) => ({ ...prev, isReady: true })), delay)
   }, [])
 
   const jamError = () => {
     throw new Error("Error!")
   }
 
-  if (!mountStructure.isMounted) return null
-  if (!isVisible) return null
+  if (!isMounted) return null
+  if (!jamStructure.isReady) return null
 
   return <div className={`${className} ${jamError()}`} {...restProps} />
 }
