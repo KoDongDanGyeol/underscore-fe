@@ -61,13 +61,22 @@ const StyledGlobal = styled.createGlobalStyle`
     --color-primary800: ${(props) => props.theme.color.light.primary800};
     --color-primary900: ${(props) => props.theme.color.light.primary900};
     --color-primary1000: ${(props) => props.theme.color.light.primary1000};
+
+    --motion-ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+    --motion-ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+    --motion-ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --motion-ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+    --motion-ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+    --motion-ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+    --motion-ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    --motion-ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   html,
   body {
     min-width: 360px;
-    font-size: ${(props) => props.theme.typo.size.base};
-    line-height: ${(props) => props.theme.typo.leading.base};
+    font-size: ${(props) => props.theme.typo.size.sm};
+    line-height: ${(props) => props.theme.typo.leading.sm};
     font-weight: 400;
     font-family:
       var(--font-notoSansKr),
@@ -99,8 +108,9 @@ const StyledGlobal = styled.createGlobalStyle`
   h4,
   h5,
   h6 {
-    font-weight: 700;
+    font-weight: 600;
   }
+
   img,
   picture,
   video,
@@ -109,9 +119,11 @@ const StyledGlobal = styled.createGlobalStyle`
     display: block;
     max-width: 100%;
   }
-  label {
-    cursor: pointer;
+  svg {
+    width: 1em;
+    height: 1em;
   }
+
   *,
   *:before,
   *:after {
@@ -126,8 +138,8 @@ const StyledGlobal = styled.createGlobalStyle`
   button {
     display: inline-block;
     padding: 0;
-    font-size: ${(props) => props.theme.typo.size.base};
-    line-height: ${(props) => props.theme.typo.leading.base};
+    font-size: ${(props) => props.theme.typo.size.sm};
+    line-height: ${(props) => props.theme.typo.leading.sm};
     font-family: var(--font-notoSansKr), sans-serif;
     color: rgb(var(--color-neutral1100));
     border: 0;
@@ -135,18 +147,21 @@ const StyledGlobal = styled.createGlobalStyle`
     background: none;
     vertical-align: top;
     cursor: pointer;
-    &[disabled] {
+    &:disabled {
       cursor: default;
     }
   }
 
+  label {
+    cursor: pointer;
+  }
   input,
   select,
   textarea {
     width: 100%;
     padding: 0;
-    font-size: ${(props) => props.theme.typo.size.base};
-    line-height: ${(props) => props.theme.typo.leading.base};
+    font-size: ${(props) => props.theme.typo.size.sm};
+    line-height: ${(props) => props.theme.typo.leading.sm};
     font-family: var(--font-notoSansKr), sans-serif;
     color: rgb(var(--color-neutral1100));
     border: 0;
@@ -176,7 +191,7 @@ const StyledGlobal = styled.createGlobalStyle`
     &:-ms-input-placeholder,
     &::-moz-placeholder,
     &::-webkit-input-placeholder {
-      color: rgb(var(--color-neutral700));
+      color: rgb(var(--color-neutral800));
     }
   }
   select {
@@ -187,7 +202,7 @@ const StyledGlobal = styled.createGlobalStyle`
     &:-ms-input-placeholder,
     &::-moz-placeholder,
     &::-webkit-input-placeholder {
-      color: rgb(var(--color-neutral700));
+      color: rgb(var(--color-neutral800));
     }
   }
 
