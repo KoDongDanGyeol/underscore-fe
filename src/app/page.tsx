@@ -1,13 +1,8 @@
-import { env } from "next-runtime-env"
-
 const Page = () => {
-  const NEXT_PUBLIC_PROJECT_ENV = env("NEXT_PUBLIC_PROJECT_ENV") ?? process.env.NEXT_PUBLIC_PROJECT_ENV ?? ""
-
-  return (
-    <div>
-      <p>NEXT_PUBLIC_PROJECT_ENV: {NEXT_PUBLIC_PROJECT_ENV}</p>
-    </div>
-  )
+  return <div>
+    <h1>Underscore</h1>
+    <h2>Index Page</h2>
+  </div>
 }
 
 export default Page
