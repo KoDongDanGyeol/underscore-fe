@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { PublicEnvScript } from "next-runtime-env"
 import RecoilProvider from "@/components/config/RecoilProvider"
 import StyledProvider from "@/components/config/StyledProvider"
+import QueryProvider from "@/components/config/QueryProvider"
 import MocksProvider from "@/components/config/MocksProvider"
 import notoSansKr from "@/styles/font/notoSansKr"
 import "@/styles/reset.css"
@@ -35,7 +36,9 @@ const RootLayout = (props: RootLayoutProps) => {
       <body>
         <RecoilProvider flag={false}>
           <StyledProvider>
-            <MocksProvider>{children}</MocksProvider>
+            <QueryProvider>
+              <MocksProvider>{children}</MocksProvider>
+            </QueryProvider>
           </StyledProvider>
         </RecoilProvider>
       </body>
