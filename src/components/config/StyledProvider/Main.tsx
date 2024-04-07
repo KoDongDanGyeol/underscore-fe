@@ -12,13 +12,14 @@ export interface StyledProviderMainProps extends React.PropsWithChildren {
 }
 
 const StyledProviderMain = (props: StyledProviderMainProps) => {
-  const { children, ...restProps } = props
+  const { children } = props
+
+  const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet())
 
   const {
     mountStructure: { isMounted },
   } = useMount()
-  const [styledComponentsStyleSheet] = useState(() => new ServerStyleSheet())
-
+  
   useServerInsertedHTML(() => {
     const styles = styledComponentsStyleSheet.getStyleElement()
     styledComponentsStyleSheet.instance.clearTag()
@@ -27,14 +28,14 @@ const StyledProviderMain = (props: StyledProviderMainProps) => {
 
   if (isMounted)
     return (
-      <ThemeProvider theme={theme} {...restProps}>
+      <ThemeProvider theme={theme}>
         {children}
       </ThemeProvider>
     )
 
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-      <ThemeProvider theme={theme} {...restProps}>
+      <ThemeProvider theme={theme}>
         <Global />
         {children}
       </ThemeProvider>
