@@ -2,7 +2,7 @@
 
 import { AtomEffect, atom } from "recoil"
 
-export type Flag = boolean
+export type TypeFlag = boolean
 
 const localStorageEffect: <T>(key: string) => AtomEffect<T> =
   (key: string) =>
@@ -16,8 +16,8 @@ const localStorageEffect: <T>(key: string) => AtomEffect<T> =
     })
   }
 
-export const atomFlag = atom<Flag>({
+export const atomFlag = atom<TypeFlag>({
   key: "atomFlag",
   default: false,
-  effects: [localStorageEffect<Flag>("Underscore_atomFlag")],
+  effects: [localStorageEffect<TypeFlag>("Underscore_atomFlag")],
 })

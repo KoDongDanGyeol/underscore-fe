@@ -9,7 +9,7 @@ export interface QueryProviderMainProps extends React.PropsWithChildren {
 }
 
 const QueryProviderMain = (props: QueryProviderMainProps) => {
-  const { children, ...restProps } = props
+  const { children } = props
 
   const [client] = useState(
     new QueryClient({

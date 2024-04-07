@@ -2,14 +2,14 @@
 
 import { useCallback } from "react"
 import { RecoilRoot, SetRecoilState } from "recoil"
-import { Flag, atomFlag } from "@/stores/flag"
+import { TypeFlag, atomFlag } from "@/stores/flag"
 
 export interface RecoilProviderMainProps extends React.PropsWithChildren {
-  flag?: Flag
+  flag?: TypeFlag
 }
 
 const RecoilProviderMain = (props: RecoilProviderMainProps) => {
-  const { flag, children, ...restProps } = props
+  const { flag, children } = props
 
   const initializeState = useCallback(
     ({ set }: { set: SetRecoilState }) => {
@@ -18,11 +18,7 @@ const RecoilProviderMain = (props: RecoilProviderMainProps) => {
     [flag],
   )
 
-  return (
-    <RecoilRoot initializeState={initializeState} {...restProps}>
-      {children}
-    </RecoilRoot>
-  )
+  return <RecoilRoot initializeState={initializeState}>{children}</RecoilRoot>
 }
 
 export default RecoilProviderMain

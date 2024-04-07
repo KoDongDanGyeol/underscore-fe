@@ -9,6 +9,7 @@ export interface IconProps extends React.SVGAttributes<SVGElement> {
 
 const IconMain = (props: IconProps) => {
   const { name, ...restProps } = props
+
   return <IconMainContainer as={Icon[name]} {...restProps} />
 }
 
