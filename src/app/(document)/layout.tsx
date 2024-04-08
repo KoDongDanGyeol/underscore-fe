@@ -4,11 +4,11 @@ import styled from "styled-components"
 import Layout from "@/components/display/Layout"
 import Copyright from "@/components/navigation/Copyright"
 
-interface GuideLayoutProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>> {
+interface PageLayoutProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>> {
   //
 }
 
-const GuideLayout = (props: GuideLayoutProps) => {
+const PageLayout = (props: PageLayoutProps) => {
   const { className = "", children } = props
 
   return (
@@ -17,16 +17,16 @@ const GuideLayout = (props: GuideLayoutProps) => {
       <Layout.Navigation />
       <Layout.Content>
         {children}
-        <Footer>
+        <PageLayoutFooter>
           <Copyright />
-        </Footer>
+        </PageLayoutFooter>
       </Layout.Content>
     </Layout>
   )
 }
 
-const Footer = styled.footer`
+const PageLayoutFooter = styled.footer`
   /*  */
 `
 
-export default GuideLayout
+export default PageLayout
