@@ -10,7 +10,9 @@ export interface FlagMainProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const FlagMain = (props: FlagMainProps) => {
   const { className = "", ...restProps } = props
+
   const [flag, setFlag] = useRecoilState(atomFlag)
+  
   const {
     mountStructure: { isMounted },
   } = useMount()

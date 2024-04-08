@@ -102,6 +102,10 @@ const StyledGlobal = styled.createGlobalStyle`
     -webkit-overflow-scrolling: touch;
   }
 
+  html.open-navigation {
+    overflow: hidden;
+  }
+
   h1,
   h2,
   h3,
