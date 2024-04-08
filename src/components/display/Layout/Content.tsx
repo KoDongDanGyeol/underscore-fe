@@ -16,11 +16,8 @@ const LayoutContent = (props: LayoutContentProps) => {
   )
 }
 
-const LayoutContentContainer = styled.div`
-  flex: 1 1 0px;
-  display: flex;
-  flex-direction: column;
-  padding-top: 48px;
+const LayoutContentContainer = styled.main`
+  /*  */
 `
 
 export default LayoutContent
