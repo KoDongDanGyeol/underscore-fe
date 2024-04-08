@@ -6,7 +6,7 @@ import MapView from "@/components/display/MapView"
 import MapPanel from "@/components/display/MapPanel"
 import Copyright from "@/components/navigation/Copyright"
 
-interface PageLayoutProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>> {
+interface PageLayoutProps extends React.PropsWithChildren {
   tab: React.ReactNode
 }
 
@@ -16,7 +16,7 @@ const PageLayout = (props: PageLayoutProps) => {
   return (
     <>
       <MapPanel>
-        <nav>
+        <PageLayoutTab>
           <ol>
             <li>
               <Link href="/map">주변정보</Link>
@@ -31,7 +31,7 @@ const PageLayout = (props: PageLayoutProps) => {
               <Link href="/map/compare-analysis">비교하기</Link>
             </li>
           </ol>
-        </nav>
+        </PageLayoutTab>
         {tab}
         {children}
         <PageLayoutFooter>
@@ -43,7 +43,13 @@ const PageLayout = (props: PageLayoutProps) => {
   )
 }
 
-const PageLayoutFooter = styled.footer`
+const PageLayoutTab = styled.nav`
+  ol {
+    display: flex;
+  }
+`
+
+const PageLayoutFooter = styled.div`
   /*  */
 `
 
