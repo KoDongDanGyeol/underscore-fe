@@ -17,10 +17,7 @@ const LayoutContent = (props: LayoutContentProps) => {
 }
 
 const LayoutContentContainer = styled.main`
-  flex: 1 1 0px;
-  header + & {
-    padding-top: 48px;
-  }
+  /*  */
 `
 
 export default LayoutContent
