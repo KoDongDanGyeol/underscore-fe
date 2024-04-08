@@ -42,9 +42,9 @@ const menuItems = [
     ],
   },
   {
-    key: "login",
+    key: "join",
     label: "로그인",
-    onClick: () => console.log("login"),
+    href: "/auth/join",
   },
   {
     key: "logout",
