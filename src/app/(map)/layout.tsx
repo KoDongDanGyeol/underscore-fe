@@ -20,11 +20,9 @@ const PageLayout = (props: PageLayoutProps) => {
 }
 
 const PageLayoutContent = styled(Layout.Content)`
+  flex: 1 1 0px;
   display: flex;
-`
-
-const PageLayoutFooter = styled.footer`
-  /*  */
+  padding-top: 48px;
 `
 
 export default PageLayout
