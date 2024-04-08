@@ -6,15 +6,15 @@ import Layout from "@/components/display/Layout"
 import Picture from "@/components/display/Picture"
 import Copyright from "@/components/navigation/Copyright"
 
-interface PageLayoutProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>> {
+interface PageLayoutProps extends React.PropsWithChildren {
   //
 }
 
 const PageLayout = (props: PageLayoutProps) => {
-  const { className = "", children } = props
+  const { children } = props
 
   return (
-    <PageLayoutContainer className={`${className}`}>
+    <PageLayoutContainer>
       <PageLayoutHeader>
         <PageLayoutHeaderLogo>
           <Link href="/map">

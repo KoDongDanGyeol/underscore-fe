@@ -4,23 +4,21 @@ import styled from "styled-components"
 import Layout from "@/components/display/Layout"
 import Copyright from "@/components/navigation/Copyright"
 
-interface PageLayoutProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>> {
+interface PageLayoutProps extends React.PropsWithChildren {
   //
 }
 
 const PageLayout = (props: PageLayoutProps) => {
-  const { className = "", children } = props
+  const { children } = props
 
   return (
-    <Layout className={`${className}`}>
+    <Layout>
       <Layout.Header />
       <Layout.Navigation />
-      <Layout.Content>
-        {children}
-        <PageLayoutFooter>
-          <Copyright />
-        </PageLayoutFooter>
-      </Layout.Content>
+      <Layout.Content>{children}</Layout.Content>
+      <PageLayoutFooter>
+        <Copyright />
+      </PageLayoutFooter>
     </Layout>
   )
 }
