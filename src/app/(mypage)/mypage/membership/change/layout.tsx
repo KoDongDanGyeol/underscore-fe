@@ -1,6 +1,6 @@
 "use client"
 
-interface PageLayoutProps extends React.PropsWithChildren<React.HtmlHTMLAttributes<HTMLDivElement>> {
+interface PageLayoutProps extends React.PropsWithChildren {
   join: React.ReactNode
   leave: React.ReactNode
 }

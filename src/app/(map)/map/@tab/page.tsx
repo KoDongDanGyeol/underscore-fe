@@ -1,4 +1,4 @@
-interface PageProps extends React.PropsWithChildren {
+interface PageProps {
   //
 }
 
