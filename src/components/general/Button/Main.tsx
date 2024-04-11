@@ -13,6 +13,7 @@ export type ButtonMainProps<C extends React.ElementType = "button"> = Polymorphi
     size?: ButtonSize
     variants?: ButtonVariants
     isDanger?: boolean
+    isActive?: boolean
   }
 >
 
@@ -28,6 +29,7 @@ const ButtonMain: ButtonMainComponent = forwardRef(function ButtonMain<C extends
     size = ButtonSize.BASE,
     variants = ButtonVariants.Primary,
     isDanger = false,
+    isActive = false,
     className = "",
     children,
     ...restProps
@@ -41,6 +43,7 @@ const ButtonMain: ButtonMainComponent = forwardRef(function ButtonMain<C extends
       $size={size}
       $variants={variants}
       $isDanger={isDanger}
+      $isActive={isActive}
       className={`${className}`}
       {...restProps}
     >
@@ -54,6 +57,7 @@ interface ButtonMainStyled<C extends React.ElementType = "button"> {
   $size: NonUndefined<ButtonMainProps<C>["size"]>
   $variants: NonUndefined<ButtonMainProps<C>["variants"]>
   $isDanger: NonUndefined<ButtonMainProps<C>["isDanger"]>
+  $isActive: NonUndefined<ButtonMainProps<C>["isActive"]>
 }
 
 const ButtonSquare = css<ButtonMainStyled>`
@@ -106,11 +110,6 @@ const ButtonSquarePrimary = css<ButtonMainStyled>`
           color: rgb(var(--color-neutral100));
           background: rgb(var(--color-red500));
           border-color: rgb(var(--color-red500));
-          &:not(:disabled):active {
-            color: rgb(var(--color-neutral100));
-            background: rgb(var(--color-red600));
-            border-color: rgb(var(--color-red600));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-neutral100));
             background: rgb(var(--color-red400));
@@ -120,6 +119,19 @@ const ButtonSquarePrimary = css<ButtonMainStyled>`
             outline: 4px solid rgb(var(--color-red300));
             outline-offset: 1px;
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-neutral100));
+            background: rgb(var(--color-red600));
+            border-color: rgb(var(--color-red600));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-neutral100));
+              background: rgb(var(--color-red600));
+              border-color: rgb(var(--color-red600));
+            }
+          `}
         `
       case false:
       default:
@@ -127,11 +139,6 @@ const ButtonSquarePrimary = css<ButtonMainStyled>`
           color: rgb(var(--color-neutral100));
           background: rgb(var(--color-primary600));
           border-color: rgb(var(--color-primary600));
-          &:not(:disabled):active {
-            color: rgb(var(--color-neutral100));
-            background: rgb(var(--color-primary700));
-            border-color: rgb(var(--color-primary700));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-neutral100));
             background: rgb(var(--color-primary500));
@@ -141,6 +148,27 @@ const ButtonSquarePrimary = css<ButtonMainStyled>`
             outline: 4px solid rgb(var(--color-primary300));
             outline-offset: 1px;
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-neutral100));
+            background: rgb(var(--color-primary700));
+            border-color: rgb(var(--color-primary700));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-neutral100));
+              background: rgb(var(--color-primary700));
+              border-color: rgb(var(--color-primary700));
+            }
+          `}
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-neutral100));
+              background: rgb(var(--color-primary700));
+              border-color: rgb(var(--color-primary700));
+            }
+          `}
         `
     }
   }}
@@ -159,11 +187,6 @@ const ButtonSquareSecondary = css<ButtonMainStyled>`
           color: rgb(var(--color-red500));
           background: rgb(var(--color-neutral100));
           border-color: rgb(var(--color-red500));
-          &:not(:disabled):active {
-            color: rgb(var(--color-red600));
-            background: rgb(var(--color-neutral100));
-            border-color: rgb(var(--color-red600));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-red400));
             background: rgb(var(--color-neutral100));
@@ -173,6 +196,19 @@ const ButtonSquareSecondary = css<ButtonMainStyled>`
             outline: 4px solid rgb(var(--color-red300));
             outline-offset: 1px;
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-red600));
+            background: rgb(var(--color-neutral100));
+            border-color: rgb(var(--color-red600));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-red600));
+              background: rgb(var(--color-neutral100));
+              border-color: rgb(var(--color-red600));
+            }
+          `}
         `
       case false:
       default:
@@ -180,11 +216,6 @@ const ButtonSquareSecondary = css<ButtonMainStyled>`
           color: rgb(var(--color-neutral1100));
           background: rgb(var(--color-neutral100));
           border-color: rgb(var(--color-neutral500));
-          &:not(:disabled):active {
-            color: rgb(var(--color-primary700));
-            background: rgb(var(--color-neutral100));
-            border-color: rgb(var(--color-primary700));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-primary500));
             background: rgb(var(--color-neutral100));
@@ -194,6 +225,19 @@ const ButtonSquareSecondary = css<ButtonMainStyled>`
             outline: 4px solid rgb(var(--color-primary300));
             outline-offset: 1px;
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-primary700));
+            background: rgb(var(--color-neutral100));
+            border-color: rgb(var(--color-primary700));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-primary700));
+              background: rgb(var(--color-neutral100));
+              border-color: rgb(var(--color-primary700));
+            }
+          `}
         `
     }
   }}
@@ -236,23 +280,35 @@ const ButtonPlainPrimary = css<ButtonMainStyled>`
       case true:
         return css`
           color: rgb(var(--color-red500));
-          &:not(:disabled):active {
-            color: rgb(var(--color-red600));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-red400));
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-red600));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-red600));
+            }
+          `}
         `
       case false:
       default:
         return css`
           color: rgb(var(--color-primary600));
-          &:not(:disabled):active {
-            color: rgb(var(--color-primary700));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-primary500));
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-primary700));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-primary700));
+            }
+          `}
         `
     }
   }}
@@ -267,23 +323,35 @@ const ButtonPlainSecondary = css<ButtonMainStyled>`
       case true:
         return css`
           color: rgb(var(--color-red500));
-          &:not(:disabled):active {
-            color: rgb(var(--color-red600));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-red400));
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-red600));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-red600));
+            }
+          `}
         `
       case false:
       default:
         return css`
           color: rgb(var(--color-neutral1100));
-          &:not(:disabled):active {
-            color: rgb(var(--color-neutral1200));
-          }
           &:not(:disabled):hover {
             color: rgb(var(--color-neutral1000));
           }
+          &:not(:disabled):active {
+            color: rgb(var(--color-neutral1200));
+          }
+          ${props.$isActive &&
+          css`
+            &:not(:disabled) {
+              color: rgb(var(--color-neutral1200));
+            }
+          `}
         `
     }
   }}

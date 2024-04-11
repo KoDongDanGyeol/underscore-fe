@@ -61,13 +61,14 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
 
   const {
     navigationStructure: { isPending, isOpened },
-    closeNavigation,
+    onClose,
   } = useNavigation()
+
   const {
     focusTrapRefs: { containerRef },
     onActivate,
     onDeactivate,
-  } = useFocusTrap(false)
+  } = useFocusTrap()
 
   useEffect(() => {
     if (isOpened && !isPending) onActivate()
@@ -82,7 +83,7 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
       className={`${className}`}
       $isOpened={isOpened}
       $isPending={isPending}
-      onClick={(event) => event.target === containerRef.current && closeNavigation()}
+      onClick={(event) => event.target === containerRef.current && onClose()}
       {...restProps}
     >
       <LayoutNavigationPanel tabIndex={0}>
@@ -95,9 +96,9 @@ const LayoutNavigation = (props: LayoutNavigationProps) => {
           items={menuItems}
           defaultOpenKeys={currentPath.slice(0, currentPath.length - 1)}
           defaultSelectedKeys={currentPath}
-          onNavigated={closeNavigation}
+          onNavigated={onClose}
         />
-        <LayoutNavigationClose type="button" onClick={closeNavigation}>
+        <LayoutNavigationClose type="button" onClick={onClose}>
           <Icon name="Close" aria-hidden={true} />
           <span className="sr-only">메뉴 닫기</span>
         </LayoutNavigationClose>

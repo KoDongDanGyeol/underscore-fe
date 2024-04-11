@@ -7,7 +7,7 @@ const useNavigation = () => {
   const timers = useRef<Timer>({ delay: null })
   const [global, setGlobal] = useRecoilState(atomGlobal)
 
-  const openNavigation = async () => {
+  const onOpen = async () => {
     clearTimer(timers, { key: "delay" })
     setGlobal((prev) => ({ ...prev, navigationState: { isPending: true, isOpened: false } }))
     clearTimer(timers, { key: "delay" })
@@ -16,7 +16,7 @@ const useNavigation = () => {
     setGlobal((prev) => ({ ...prev, navigationState: { isPending: false, isOpened: true } }))
   }
 
-  const closeNavigation = async () => {
+  const onClose = async () => {
     clearTimer(timers, { key: "delay" })
     setGlobal((prev) => ({ ...prev, navigationState: { isPending: true, isOpened: true } }))
     clearTimer(timers, { key: "delay" })
@@ -27,8 +27,8 @@ const useNavigation = () => {
 
   return {
     navigationStructure: global.navigationState,
-    openNavigation,
-    closeNavigation,
+    onOpen,
+    onClose,
   }
 }
 
