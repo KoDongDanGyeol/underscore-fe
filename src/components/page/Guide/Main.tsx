@@ -8,7 +8,7 @@ export interface GuideMainProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const fetchUser = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/api/user`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/user`)
   return response.json()
 }
 

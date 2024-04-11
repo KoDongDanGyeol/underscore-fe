@@ -1,3 +1,5 @@
+import AuthJoinComplete from "@/components/page/AuthJoinComplete"
+
 interface PageProps {
   //
 }
@@ -5,11 +7,7 @@ interface PageProps {
 const Page = (props: PageProps) => {
   // const { } = props
 
-  return (
-    <div>
-      <h2>회원가입 완료(/auth/join/complete)</h2>
-    </div>
-  )
+  return <AuthJoinComplete />
 }
 
 export default Page
