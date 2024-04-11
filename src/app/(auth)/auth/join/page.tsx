@@ -1,3 +1,5 @@
+import AuthJoin from "@/components/page/AuthJoin"
+
 interface PageProps {
   //
 }
@@ -5,11 +7,7 @@ interface PageProps {
 const Page = (props: PageProps) => {
   // const { } = props
 
-  return (
-    <div>
-      <h2>회원가입 및 로그인(/auth/join)</h2>
-    </div>
-  )
+  return <AuthJoin />
 }
 
 export default Page
