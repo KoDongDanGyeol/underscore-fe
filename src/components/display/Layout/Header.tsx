@@ -18,7 +18,7 @@ const LayoutHeader = (props: LayoutHeaderProps) => {
 
   const {
     navigationStructure: { isOpened },
-    openNavigation,
+    onOpen,
   } = useNavigation()
 
   return (
@@ -28,7 +28,7 @@ const LayoutHeader = (props: LayoutHeaderProps) => {
           <Picture src="/logo.svg" alt="logo" ratio={[429, 85]} />
         </Link>
       </LayoutHeaderLogo>
-      <LayoutHeaderHamburger type="button" aria-haspopup="menu" aria-expanded={isOpened} onClick={openNavigation}>
+      <LayoutHeaderHamburger type="button" aria-haspopup="menu" aria-expanded={isOpened} onClick={onOpen}>
         <Icon name="Menu" aria-hidden={true} />
         <span className="sr-only">메뉴 열기</span>
       </LayoutHeaderHamburger>

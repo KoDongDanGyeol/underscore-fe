@@ -55,6 +55,9 @@ const PageLayoutContainer = styled(Layout)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 auto;
+  max-width: 360px;
+  padding: 20px;
 `
 
 export default PageLayout
