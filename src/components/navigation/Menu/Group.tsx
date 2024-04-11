@@ -17,7 +17,7 @@ const MenuGroup = (props: MenuGroupProps) => {
     isOpened: false,
   })
 
-  const openGroup = async () => {
+  const opOpen = async () => {
     clearTimer(timers, { key: "delay" })
     setStructure((prev) => ({ ...prev, isPending: true, isOpened: false }))
     clearTimer(timers, { key: "delay" })
@@ -25,7 +25,7 @@ const MenuGroup = (props: MenuGroupProps) => {
     setStructure((prev) => ({ ...prev, isPending: false, isOpened: true }))
   }
 
-  const closeGroup = async () => {
+  const onClose = async () => {
     clearTimer(timers, { key: "delay" })
     setStructure((prev) => ({ ...prev, isPending: true, isOpened: true }))
     clearTimer(timers, { key: "delay" })
@@ -34,7 +34,7 @@ const MenuGroup = (props: MenuGroupProps) => {
   }
 
   useEffect(() => {
-    isReady ? openGroup() : closeGroup()
+    isReady ? opOpen() : onClose()
   }, [isReady])
 
   if (!children) return null

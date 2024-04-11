@@ -23,7 +23,7 @@ const MenuMain = (props: MenuMainProps) => {
     ...restProps
   } = props
 
-  const [menuStructure, setMenuStructure] = useState<{
+  const [structure, setStructure] = useState<{
     openKeys: MenuItemProps["origin"]["key"][]
     selectedKeys: MenuItemProps["origin"]["key"][]
   }>({
@@ -62,7 +62,7 @@ const MenuMain = (props: MenuMainProps) => {
   }
 
   const onOpenChange = (origin: MenuItemProps["origin"]) => {
-    setMenuStructure((prev) => {
+    setStructure((prev) => {
       const currentOpened = prev.openKeys.includes(origin.key)
       const otherKeys = prev.openKeys.filter((openKey) => openKey !== origin.key)
       return {
@@ -74,7 +74,7 @@ const MenuMain = (props: MenuMainProps) => {
 
   const onSelectChange = (origin: MenuItemProps["origin"]) => {
     onNavigated?.()
-    setMenuStructure((prev) => {
+    setStructure((prev) => {
       const foundPath = findPath(items, origin) ?? []
       const foundPathKey = foundPath.map((item) => item.key)
       return {
@@ -87,16 +87,14 @@ const MenuMain = (props: MenuMainProps) => {
 
   const render = (renderItems: MenuItemProps["origin"][], depth: number) => {
     return (
-      <MenuGroup
-        isReady={depth === 0 ? true : menuStructure.openKeys.includes(findParent(items, renderItems)?.key ?? "")}
-      >
+      <MenuGroup isReady={depth === 0 ? true : structure.openKeys.includes(findParent(items, renderItems)?.key ?? "")}>
         {renderItems.map((renderItem) => (
           <MenuItem
             key={renderItem.key}
             origin={renderItem}
             depth={depth}
-            isOpened={menuStructure.openKeys.includes(renderItem.key)}
-            isSelected={menuStructure.selectedKeys.includes(renderItem.key)}
+            isOpened={structure.openKeys.includes(renderItem.key)}
+            isSelected={structure.selectedKeys.includes(renderItem.key)}
             onOpenChange={onOpenChange}
             onSelectChange={onSelectChange}
           >

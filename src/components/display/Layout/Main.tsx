@@ -3,6 +3,7 @@
 import { useEffect, useMemo } from "react"
 import { useRecoilState } from "recoil"
 import styled from "styled-components"
+import useMount from "@/libs/hook/useMount"
 import useResize from "@/libs/hook/useResize"
 import { ObjectEntries } from "@/libs/utils"
 import { atomGlobal } from "@/stores/global"
@@ -19,7 +20,18 @@ const LayoutMain = (props: LayoutMainProps) => {
 
   const {
     resizeStructure: { windowInnerWidth },
+    onUpdate,
+    onRemove,
   } = useResize()
+
+  const {
+    mountStructure: { isMounted },
+  } = useMount(() => {
+    onUpdate()
+    return () => {
+      onRemove()
+    }
+  }, [])
 
   const currentScreen = useMemo<(keyof ScreenSize)[]>(() => {
     const result = [] as (keyof ScreenSize)[]

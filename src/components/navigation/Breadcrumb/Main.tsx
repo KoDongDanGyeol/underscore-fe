@@ -13,7 +13,7 @@ const BreadcrumbMain = (props: BreadcrumbMainProps) => {
   if (!children) return null
 
   return (
-    <BreadcrumbMainContainer className={`${className}`} {...restProps} style={{}}>
+    <BreadcrumbMainContainer className={`${className}`} {...restProps}>
       <ul>
         {Children.map(children, (child, index) => {
           const isLast = index === Children.count(children)
