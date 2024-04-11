@@ -24,8 +24,6 @@ interface RootLayoutProps extends React.PropsWithChildren {
   //
 }
 
-const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KAKAO_MAP_KEY}&autoload=false&libraries=services&clusterer`
-
 const RootLayout = (props: RootLayoutProps) => {
   const { children } = props
 
@@ -36,7 +34,6 @@ const RootLayout = (props: RootLayoutProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <PublicEnvScript />
         <Script src="https://developers.kakao.com/sdk/js/kakao.js" async />
-        <Script src={KAKAO_SDK_URL} strategy="beforeInteractive" async />
       </head>
       <body>
         <RecoilProvider flag={false}>
