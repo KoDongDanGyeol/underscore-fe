@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useRef } from "react"
 import { Timer, clearTimer, setTimer } from "@/libs/timer"
 
 const focusableSelector = [
@@ -15,12 +15,11 @@ const focusableSelector = [
   "[tabindex]",
 ]
 
-type IsInit = boolean
 type Listeners = [string, (evnet: KeyboardEvent) => void][]
 
-const useFocusTrap = (isInit: IsInit, listeners?: Listeners) => {
+const useFocusTrap = (listeners?: Listeners) => {
   const timers = useRef<Timer>({ delay: null })
-  const isInitialized = useRef<boolean>(isInit)
+  const isInitialized = useRef<boolean>(false)
 
   const containerRef = useRef<HTMLDivElement | null>(null)
   const focusableRef = useRef<HTMLElement[] | null>(null)
@@ -70,13 +69,6 @@ const useFocusTrap = (isInit: IsInit, listeners?: Listeners) => {
     isInitialized.current = false
     activeRef.current = null
     focusableRef.current = []
-  }, [])
-
-  useEffect(() => {
-    isInitialized.current && onActivate()
-    return () => {
-      onDeactivate()
-    }
   }, [])
 
   return {

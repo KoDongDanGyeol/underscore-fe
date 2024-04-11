@@ -46,3 +46,8 @@ spec:
                 secretKeyRef:
                   name: secret-env
                   key: NEXT_PUBLIC_API_MOCKING_URL
+            - name: NEXT_PUBLIC_API_KAKAO_MAP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_KAKAO_MAP_KEY

@@ -1,32 +1,38 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
-type Callback = () => undefined | void | (() => void)
+type Cleanup = undefined | null | void | (() => void)
+type Callback = () => Cleanup
 type Dependencies = readonly unknown[]
 
+type TypeStructure = {
+  isMounted: boolean
+}
+
 const useMount = (callback?: Callback, deps?: Dependencies) => {
-  const [structure, setStructure] = useState<{
-    isMounted: boolean
-  }>({
+  const cleanup = useRef<Cleanup>(null)
+  const [structure, setStructure] = useState<TypeStructure>({
     isMounted: false,
   })
 
   const dependencies = useMemo(() => deps ?? [], [deps])
 
   useEffect(() => {
-    setStructure((prev) => ({
-      ...prev,
-      isMounted: true,
-    }))
+    setStructure((prev) => ({ ...prev, isMounted: true }))
   }, [])
 
   useEffect(() => {
     if (!structure.isMounted) return
-    if (!callback) return
-    const cleanup = callback?.()
+    cleanup.current = callback?.()
     return () => {
-      cleanup?.()
+      cleanup.current?.()
     }
-  }, [structure.isMounted, callback, dependencies])
+  }, [structure.isMounted])
+
+  useEffect(() => {
+    if (!callback) return
+    cleanup.current?.()
+    callback?.()
+  }, [...dependencies])
 
   return {
     mountStructure: structure,

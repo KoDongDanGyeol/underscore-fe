@@ -33,7 +33,7 @@ const PictureMain = (props: PictureMainProps) => {
     ...restProps
   } = props
 
-  const [pictureStructure, setPictureStructure] = useState<{
+  const [structure, setStructure] = useState<{
     src: string | null
     isLoaded: boolean
     isErrored: boolean
@@ -44,7 +44,7 @@ const PictureMain = (props: PictureMainProps) => {
   })
 
   useEffect(() => {
-    setPictureStructure((prev) => ({
+    setStructure((prev) => ({
       ...prev,
       isLoaded: false,
       isErrored: false,
@@ -52,7 +52,7 @@ const PictureMain = (props: PictureMainProps) => {
     }))
   }, [src])
 
-  if (!pictureStructure.src || pictureStructure.isErrored) {
+  if (!structure.src || structure.isErrored) {
     return (
       <PictureMainContainer className={`${className}`} $ratio={ratio ?? [1, 1]} $rounded={rounded} $isFallback={true}>
         {fallbackText ? <span>{fallbackText}</span> : <Icon name={fallbackIcon} aria-hidden={true} />}
@@ -66,13 +66,13 @@ const PictureMain = (props: PictureMainProps) => {
         fill={true}
         alt={alt}
         sizes="100%"
-        src={pictureStructure.src}
+        src={structure.src}
         onLoad={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-          setPictureStructure((prev) => ({ ...prev, isLoaded: true }))
+          setStructure((prev) => ({ ...prev, isLoaded: true }))
           onLoad?.(event)
         }}
         onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
-          setPictureStructure((prev) => ({ ...prev, isErrored: true, src: null }))
+          setStructure((prev) => ({ ...prev, isErrored: true, src: null }))
           onError?.(event)
         }}
         {...restProps}

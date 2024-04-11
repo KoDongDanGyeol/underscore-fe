@@ -10,7 +10,7 @@ export interface MocksProviderMainProps extends React.PropsWithChildren {
 const MocksProviderMain = (props: MocksProviderMainProps) => {
   const { children } = props
 
-  const [mocksStructure, setMocksStructure] = useState({
+  const [structure, setStructure] = useState({
     isEnabled: process.env.NEXT_PUBLIC_API_MOCKING_STATUS === "enabled",
     isReady: false,
   })
@@ -18,17 +18,17 @@ const MocksProviderMain = (props: MocksProviderMainProps) => {
   const {
     mountStructure: { isMounted },
   } = useMount(() => {
-    if (!mocksStructure.isEnabled) return
-    if (mocksStructure.isReady) return
+    if (!structure.isEnabled) return
+    if (structure.isReady) return
     ;(async () => {
       const initMocks = (await import("@/mocks/index")).default
       await initMocks()
-      setMocksStructure((prev) => ({ ...prev, isReady: true }))
+      setStructure((prev) => ({ ...prev, isReady: true }))
     })()
-  })
+  }, [])
 
-  if (mocksStructure.isEnabled && !isMounted) return <div>setup mocks...</div>
-  if (mocksStructure.isEnabled && !mocksStructure.isReady) return <div>setup mocks...</div>
+  if (structure.isEnabled && !isMounted) return <div>setup mocks...</div>
+  if (structure.isEnabled && !structure.isReady) return <div>setup mocks...</div>
 
   return <>{children}</>
 }

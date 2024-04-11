@@ -1,24 +1,26 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import { NonUndefined } from "react-hook-form"
 import { Nullable } from "@/libs/utils"
 import { Timer, clearTimer, setTimer } from "@/libs/timer"
 
 type Debounce = number
 
+type TypeStructure = {
+  isDebounce: boolean
+  width: number
+  height: number
+  windowInnerWidth: number
+  windowOuterWidth: number
+  windowInnerHeight: number
+  windowOuterHeight: number
+}
+
 const useResize = (debounce?: Debounce) => {
   const timers = useRef<Timer>({ delay: null })
   const observer = useRef<ResizeObserver | null>(null)
   const containerRef = useRef<NonUndefined<Nullable<HTMLDivElement>>>(null)
 
-  const [structure, setStructure] = useState<{
-    isDebounce: boolean
-    width: number
-    height: number
-    windowInnerWidth: number
-    windowOuterWidth: number
-    windowInnerHeight: number
-    windowOuterHeight: number
-  }>(() => ({
+  const [structure, setStructure] = useState<TypeStructure>(() => ({
     isDebounce: false,
     width: 0,
     height: 0,
@@ -28,7 +30,7 @@ const useResize = (debounce?: Debounce) => {
     windowOuterHeight: 0,
   }))
 
-  const resetStructure = () => {
+  const onReset = () => {
     setStructure(() => ({
       isDebounce: false,
       width: 0,
@@ -40,7 +42,7 @@ const useResize = (debounce?: Debounce) => {
     }))
   }
 
-  const updateObserver = () => {
+  const onUpdate = () => {
     if (!containerRef.current && !document?.body) return
     const io = new ResizeObserver(async ([entry]) => {
       setStructure((prev) => ({
@@ -64,18 +66,11 @@ const useResize = (debounce?: Debounce) => {
     observer.current = io
   }
 
-  const removeObserver = () => {
+  const onRemove = () => {
     if (!observer?.current) return
     observer?.current?.disconnect()
-    resetStructure()
+    onReset()
   }
-
-  useEffect(() => {
-    updateObserver()
-    return () => {
-      removeObserver()
-    }
-  }, [])
 
   return {
     resizeRef: {
@@ -83,6 +78,8 @@ const useResize = (debounce?: Debounce) => {
     },
     resizeObserver: observer,
     resizeStructure: structure,
+    onUpdate,
+    onRemove,
   }
 }
 

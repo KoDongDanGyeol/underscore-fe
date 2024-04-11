@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Script from "next/script"
 import { PublicEnvScript } from "next-runtime-env"
 import RecoilProvider from "@/components/config/RecoilProvider"
 import StyledProvider from "@/components/config/StyledProvider"
@@ -32,6 +33,7 @@ const RootLayout = (props: RootLayoutProps) => {
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <PublicEnvScript />
+        <Script src="https://developers.kakao.com/sdk/js/kakao.js" async />
       </head>
       <body>
         <RecoilProvider flag={false}>
