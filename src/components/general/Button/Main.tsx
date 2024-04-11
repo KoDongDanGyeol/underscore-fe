@@ -161,14 +161,6 @@ const ButtonSquarePrimary = css<ButtonMainStyled>`
               border-color: rgb(var(--color-primary700));
             }
           `}
-          ${props.$isActive &&
-          css`
-            &:not(:disabled) {
-              color: rgb(var(--color-neutral100));
-              background: rgb(var(--color-primary700));
-              border-color: rgb(var(--color-primary700));
-            }
-          `}
         `
     }
   }}
