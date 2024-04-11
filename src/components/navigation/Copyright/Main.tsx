@@ -41,7 +41,7 @@ const CopyrightMainContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 `
 
 export default CopyrightMain

@@ -32,6 +32,7 @@ const PageLayout = (props: PageLayoutProps) => {
 
 const PageLayoutHeaderLogo = styled.h1`
   a {
+    margin: 0 auto;
     display: block;
     width: 112px;
     padding: 8px;
@@ -54,7 +55,6 @@ const PageLayoutContainer = styled(Layout)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
   margin: 0 auto;
   max-width: 360px;
   padding: 20px;
