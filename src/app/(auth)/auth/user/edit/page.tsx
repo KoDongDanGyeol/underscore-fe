@@ -1,3 +1,5 @@
+import AuthEditUser from "@/components/page/AuthEditUser"
+
 interface PageProps {
   //
 }
@@ -5,11 +7,7 @@ interface PageProps {
 const Page = (props: PageProps) => {
   // const { } = props
 
-  return (
-    <div>
-      <h2>회원정보 수정(/auth/user/edit)</h2>
-    </div>
-  )
+  return <AuthEditUser />
 }
 
 export default Page
