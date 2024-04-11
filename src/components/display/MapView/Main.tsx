@@ -30,22 +30,18 @@ const MapViewMain = (props: MapViewMainProps) => {
 
   const {
     mapRefs: { containerRef },
-    mapStructure: { isInitialized },
+    mapStructure: { isInitialized, bounds },
     onInit,
     onDragend,
     onRemove,
-  } = useMap()
+  } = useMap(coordinates ?? fallbackCoordinates, () => {
+    onDragend()
+  })
 
   const {
     mountStructure: { isMounted },
   } = useMount(() => {
-    if (isLoaded && isMounted)
-      onInit({
-        coordinates: coordinates ?? fallbackCoordinates,
-        callback: () => {
-          onDragend()
-        },
-      })
+    if (isLoaded && isMounted) onInit()
     return () => {
       onRemove()
     }
