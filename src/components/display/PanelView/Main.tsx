@@ -1,25 +1,22 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRecoilValue } from "recoil"
+import { useEffect } from "react"
+import { useRecoilState, useRecoilValue } from "recoil"
 import styled, { css } from "styled-components"
 import useMount from "@/libs/hook/useMount"
 import useTouch from "@/libs/hook/useTouch"
 import { atomGlobal } from "@/stores/global"
-import MapPanelHeader from "@/components/display/MapPanel/Header"
-import Copyright from "@/components/navigation/Copyright"
+import { atomMap } from "@/stores/map"
 
-export interface MapPanelMainProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
+export interface PanelViewMainProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
   //
 }
 
-const MapPanelMain = (props: MapPanelMainProps) => {
+const PanelViewMain = (props: PanelViewMainProps) => {
   const { className = "", children, ...restProps } = props
 
   const global = useRecoilValue(atomGlobal)
-  const [structure, setStructure] = useState({
-    isOpened: false,
-  })
+  const [map, setMap] = useRecoilState(atomMap)
 
   const {
     touchRefs: { containerRef, contentRef },
@@ -32,16 +29,16 @@ const MapPanelMain = (props: MapPanelMainProps) => {
         containerRef.current.style.removeProperty("transition")
         containerRef.current.style.removeProperty("transform")
       } else {
-        const translateY = `calc(${structure.isOpened ? "-100vh + 48px + 20px" : "0px - 120px"} + ${(currentState.moved.movedY || 0) / 3}px)`
+        const translateY = `calc(${map.mode === "Advanced" ? "-100vh + 48px + 20px" : "0px - 120px"} + ${(currentState.moved.movedY || 0) / 3}px)`
         containerRef.current.style.setProperty("transition", "none")
         containerRef.current.style.setProperty("transform", `translateY(${translateY})`)
       }
     },
     afterTouch: ({ currentState }) => {
       if (currentState.moved.directionY === -1 && currentState.moved.movedY > 100) {
-        setStructure((prev) => ({ ...prev, isOpened: false }))
+        setMap((prev) => ({ ...prev, mode: "Simplified" }))
       } else if (currentState.moved.directionY === 1 && currentState.moved.movedY < 100) {
-        setStructure((prev) => ({ ...prev, isOpened: true }))
+        setMap((prev) => ({ ...prev, mode: "Advanced" }))
       }
     },
   })
@@ -55,41 +52,42 @@ const MapPanelMain = (props: MapPanelMainProps) => {
     }
   }, [])
 
+  const onFocus = (event: React.FocusEvent<HTMLDivElement, Element>) => {
+    if (!contentRef.current?.querySelector("form")?.contains(event?.target)) return
+    setMap((prev) => ({ ...prev, mode: "Advanced" }))
+  }
+
   useEffect(() => {
-    setStructure((prev) => ({ ...prev, isOpened: false }))
+    setMap((prev) => ({ ...prev, mode: global.screen.includes("lg") ? "Advanced" : "Simplified" }))
   }, [global.screen])
 
   return (
-    <MapPanelMainContainer
+    <PanelViewMainContainer
       ref={containerRef}
       tabIndex={0}
       className={`${className}`}
-      $isOpened={structure.isOpened}
+      $isOpened={map.mode === "Advanced"}
       {...restProps}
     >
-      <MapPanelMainHandle />
-      <MapPanelMainContent ref={contentRef}>
-        <MapPanelMainHeader />
-        <MapPanelMainTab>
-          {children}
-          <MapPanelMainFooter>
-            <Copyright />
-          </MapPanelMainFooter>
-        </MapPanelMainTab>
-      </MapPanelMainContent>
-    </MapPanelMainContainer>
+      <PanelViewMainHandle />
+      <PanelViewMainContent ref={contentRef} onFocus={onFocus}>
+        {children}
+      </PanelViewMainContent>
+    </PanelViewMainContainer>
   )
 }
 
-interface MapPanelMainStyled {
+interface PanelViewMainStyled {
   $isOpened: boolean
 }
 
-const MapPanelMainHandle = styled.span`
+const PanelViewMainHandle = styled.span`
   display: none;
   @media ${(props) => props.theme.screen.device.md} {
     display: block;
     padding: 10px 0 16px;
+    background: rgb(var(--color-primary600));
+    cursor: grab;
     &:after {
       content: "";
       display: block;
@@ -102,35 +100,17 @@ const MapPanelMainHandle = styled.span`
   }
 `
 
-const MapPanelMainContent = styled.div`
+const PanelViewMainContent = styled.div`
   flex: 1 1 0px;
   display: flex;
   flex-direction: column;
 `
 
-const MapPanelMainHeader = styled(MapPanelHeader)`
-  padding: 18px 20px 14px 20px;
-  @media ${(props) => props.theme.screen.device.md} {
-    padding: 0 20px 14px;
-  }
-`
-
-const MapPanelMainTab = styled.div`
-  flex: 1 1 0px;
-  background: rgb(var(--color-neutral300));
-  overflow: auto;
-`
-
-const MapPanelMainFooter = styled.div`
-  padding: 24px 20px;
-`
-
-const MapPanelMainContainer = styled.div<MapPanelMainStyled>`
+const PanelViewMainContainer = styled.div<PanelViewMainStyled>`
   flex: none;
   display: flex;
   flex-direction: column;
   width: 385px;
-  background: rgb(var(--color-primary600));
   z-index: 9;
   @media ${(props) => props.theme.screen.device.md} {
     position: fixed;
@@ -151,4 +131,4 @@ const MapPanelMainContainer = styled.div<MapPanelMainStyled>`
   }
 `
 
-export default MapPanelMain
+export default PanelViewMain

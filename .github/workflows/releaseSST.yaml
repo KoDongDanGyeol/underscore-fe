@@ -32,10 +32,14 @@ jobs:
           echo "PROJECT_ENV=$PROJECT_ENV" >> .env
           echo "NEXT_PUBLIC_PROJECT_ENV=$NEXT_PUBLIC_PROJECT_ENV" >> .env
           echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
+          echo "NEXT_PUBLIC_API_KAKAO_URL=$NEXT_PUBLIC_API_KAKAO_URL" >> .env
+          echo "NEXT_PUBLIC_API_KAKAO_JS_KEY=$NEXT_PUBLIC_API_KAKAO_JS_KEY" >> .env
+          echo "NEXT_PUBLIC_API_KAKAO_REST_KEY=$NEXT_PUBLIC_API_KAKAO_REST_KEY" >> .env
           echo "NEXT_PUBLIC_API_MOCKING_STATUS=$NEXT_PUBLIC_API_MOCKING_STATUS" >> .env
           echo "NEXT_PUBLIC_API_MOCKING_PORT=$NEXT_PUBLIC_API_MOCKING_PORT" >> .env
           echo "NEXT_PUBLIC_API_MOCKING_URL=$NEXT_PUBLIC_API_MOCKING_URL" >> .env
-          echo "NEXT_PUBLIC_API_KAKAO_MAP_KEY=$NEXT_PUBLIC_API_KAKAO_MAP_KEY" >> .env
+          echo "NEXT_PUBLIC_API_WORLD_URL=$NEXT_PUBLIC_API_WORLD_URL" >> .env
+          echo "NEXT_PUBLIC_API_WORLD_KEY=$NEXT_PUBLIC_API_WORLD_KEY" >> .env
         env:
           AWS_IAM: ${{ secrets.AWS_IAM }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -43,10 +47,14 @@ jobs:
           PROJECT_ENV: ${{ secrets.PROJECT_ENV }}
           NEXT_PUBLIC_PROJECT_ENV: ${{ secrets.NEXT_PUBLIC_PROJECT_ENV }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_API_KAKAO_URL: ${{ secrets.NEXT_PUBLIC_API_KAKAO_URL }}
+          NEXT_PUBLIC_API_KAKAO_JS_KEY: ${{ secrets.NEXT_PUBLIC_API_KAKAO_JS_KEY }}
+          NEXT_PUBLIC_API_KAKAO_REST_KEY: ${{ secrets.NEXT_PUBLIC_API_KAKAO_REST_KEY }}
           NEXT_PUBLIC_API_MOCKING_STATUS: ${{ secrets.NEXT_PUBLIC_API_MOCKING_STATUS }}
           NEXT_PUBLIC_API_MOCKING_PORT: ${{ secrets.NEXT_PUBLIC_API_MOCKING_PORT }}
           NEXT_PUBLIC_API_MOCKING_URL: ${{ secrets.NEXT_PUBLIC_API_MOCKING_URL }}
-          NEXT_PUBLIC_API_KAKAO_MAP_KEY: ${{ secrets.NEXT_PUBLIC_API_KAKAO_MAP_KEY }}
+          NEXT_PUBLIC_API_WORLD_URL: ${{ secrets.NEXT_PUBLIC_API_WORLD_URL }}
+          NEXT_PUBLIC_API_WORLD_KEY: ${{ secrets.NEXT_PUBLIC_API_WORLD_KEY }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
