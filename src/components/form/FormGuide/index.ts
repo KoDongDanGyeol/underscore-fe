@@ -1,7 +1,7 @@
 import { FieldValues } from "react-hook-form"
 import FormGuideMain, { FormGuideMainProps } from "@/components/form/FormGuide/Main"
 
-export interface FormGuideTypes extends FieldValues {
+export interface TypeFormGuide extends FieldValues {
   name: string
   email: string
   description?: string

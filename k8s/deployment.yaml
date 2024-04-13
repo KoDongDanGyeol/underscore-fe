@@ -31,6 +31,21 @@ spec:
                 secretKeyRef:
                   name: secret-env
                   key: NEXT_PUBLIC_API_URL
+            - name: NEXT_PUBLIC_API_KAKAO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_KAKAO_URL
+            - name: NEXT_PUBLIC_API_KAKAO_JS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_KAKAO_JS_KEY
+            - name: NEXT_PUBLIC_API_KAKAO_REST_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_KAKAO_REST_KEY
             - name: NEXT_PUBLIC_API_MOCKING_STATUS
               valueFrom:
                 secretKeyRef:
@@ -46,8 +61,13 @@ spec:
                 secretKeyRef:
                   name: secret-env
                   key: NEXT_PUBLIC_API_MOCKING_URL
-            - name: NEXT_PUBLIC_API_KAKAO_MAP_KEY
+            - name: NEXT_PUBLIC_API_WORLD_URL
               valueFrom:
                 secretKeyRef:
                   name: secret-env
-                  key: NEXT_PUBLIC_API_KAKAO_MAP_KEY
+                  key: NEXT_PUBLIC_API_WORLD_URL
+            - name: NEXT_PUBLIC_API_WORLD_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-env
+                  key: NEXT_PUBLIC_API_WORLD_KEY

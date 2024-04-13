@@ -1,7 +1,7 @@
 import { FieldValues } from "react-hook-form"
 import EditUserMain, { EditUserMainProps } from "@/components/form/EditUser/Main"
 
-export interface EditUserTypes extends FieldValues {
+export interface TypeEditUser extends FieldValues {
   name: string
   email: string
 }
