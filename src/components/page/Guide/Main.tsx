@@ -1,7 +1,7 @@
 "use client"
 
 import { useForm } from "react-hook-form"
-import FormGuide, { FormGuideTypes } from "@/components/form/FormGuide"
+import FormGuide, { TypeFormGuide } from "@/components/form/FormGuide"
 
 export interface GuideMainProps extends React.HTMLAttributes<HTMLDivElement> {
   //
@@ -15,7 +15,7 @@ const fetchUser = async () => {
 const GuideMain = (props: GuideMainProps) => {
   const { className = "", ...restProps } = props
 
-  const example = useForm<FormGuideTypes>({
+  const example = useForm<TypeFormGuide>({
     defaultValues: {
       email: "",
       name: "",

@@ -3,18 +3,18 @@
 import { FieldValues } from "react-hook-form"
 import styled from "styled-components"
 import FormHoc, { FormHocMainProps } from "@/components/entry/FormHoc"
-import { FormGuideTypes } from "@/components/form/FormGuide"
+import { TypeFormGuide } from "@/components/form/FormGuide"
 import Icon from "@/components/general/Icon"
 import Button from "@/components/general/Button"
 import Label from "@/components/entry/Label"
 import Input from "@/components/entry/Input"
 import Helper from "@/components/entry/Helper"
 
-export interface FormGuideMainProps<T extends FieldValues = FormGuideTypes> extends FormHocMainProps<T> {
+export interface FormGuideMainProps<T extends FieldValues = TypeFormGuide> extends FormHocMainProps<T> {
   //
 }
 
-const FormGuideMain = FormHoc<FormGuideTypes>((props: FormGuideMainProps) => {
+const FormGuideMain = FormHoc<TypeFormGuide>((props: FormGuideMainProps) => {
   const { formAction, formData, formPlaceholder, isLoading, handleValid, ...restProps } = props
 
   const { control, handleSubmit, formState } = formData
@@ -26,7 +26,7 @@ const FormGuideMain = FormHoc<FormGuideTypes>((props: FormGuideMainProps) => {
           <Label asTag="label" htmlFor="email" isRequired={true}>
             이메일
           </Label>
-          <Input<FormGuideTypes>
+          <Input<TypeFormGuide>
             control={control}
             name="email"
             rules={{
@@ -49,7 +49,7 @@ const FormGuideMain = FormHoc<FormGuideTypes>((props: FormGuideMainProps) => {
           <Label asTag="label" htmlFor="name" isRequired={true}>
             이름
           </Label>
-          <Input<FormGuideTypes>
+          <Input<TypeFormGuide>
             control={control}
             name="name"
             rules={{
@@ -69,7 +69,7 @@ const FormGuideMain = FormHoc<FormGuideTypes>((props: FormGuideMainProps) => {
       <FormHoc.Row>
         <FormHoc.Group>
           <Label asTag="span">ReadOnly</Label>
-          <Input<FormGuideTypes>
+          <Input<TypeFormGuide>
             control={control}
             name="description"
             rules={{}}
@@ -81,7 +81,7 @@ const FormGuideMain = FormHoc<FormGuideTypes>((props: FormGuideMainProps) => {
         </FormHoc.Group>
         <FormHoc.Group>
           <Label asTag="span">Disabled</Label>
-          <Input<FormGuideTypes>
+          <Input<TypeFormGuide>
             control={control}
             name="description"
             rules={{}}

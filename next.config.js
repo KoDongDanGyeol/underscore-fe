@@ -32,6 +32,14 @@ const nextConfig = {
         source: "/backend/:path*",
         destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`,
       },
+      {
+        source: "/map/search-location",
+        has: [
+          { type: "query", key: "location", value: "(?<location>.*)" },
+          { type: "query", key: "page", value: "(?<page>.*)" },
+        ],
+        destination: `${process.env.NEXT_PUBLIC_API_KAKAO_URL}/v2/local/search/address.json?query=:location&page=:page&analyze_type=exact`,
+      },
     ]
   },
 }

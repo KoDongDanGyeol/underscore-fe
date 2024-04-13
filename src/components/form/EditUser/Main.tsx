@@ -3,17 +3,17 @@
 import { FieldValues } from "react-hook-form"
 import styled from "styled-components"
 import FormHoc, { FormHocMainProps } from "@/components/entry/FormHoc"
-import { EditUserTypes } from "@/components/form/EditUser"
+import { TypeEditUser } from "@/components/form/EditUser"
 import Icon from "@/components/general/Icon"
 import Label from "@/components/entry/Label"
 import Input from "@/components/entry/Input"
 import Helper from "@/components/entry/Helper"
 
-export interface EditUserMainProps<T extends FieldValues = EditUserTypes> extends FormHocMainProps<T> {
+export interface EditUserMainProps<T extends FieldValues = TypeEditUser> extends FormHocMainProps<T> {
   //
 }
 
-const EditUserMain = FormHoc<EditUserTypes>((props: EditUserMainProps) => {
+const EditUserMain = FormHoc<TypeEditUser>((props: EditUserMainProps) => {
   const { formAction, formData, formPlaceholder, isLoading, handleValid, ...restProps } = props
 
   const { control, handleSubmit, formState } = formData
@@ -25,7 +25,7 @@ const EditUserMain = FormHoc<EditUserTypes>((props: EditUserMainProps) => {
           <Label asTag="label" htmlFor="email" isRequired={true}>
             이메일
           </Label>
-          <Input<EditUserTypes>
+          <Input<TypeEditUser>
             control={control}
             name="email"
             rules={{
@@ -51,7 +51,7 @@ const EditUserMain = FormHoc<EditUserTypes>((props: EditUserMainProps) => {
           <Label asTag="label" htmlFor="name" isRequired={true}>
             이름
           </Label>
-          <Input<EditUserTypes>
+          <Input<TypeEditUser>
             control={control}
             name="name"
             rules={{
