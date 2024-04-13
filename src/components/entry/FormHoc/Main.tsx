@@ -10,6 +10,7 @@ export interface FormHocMainProps<T extends FieldValues = object>
   formPlaceholder?: { [key in keyof T]?: string }
   isLoading?: boolean
   isSuccess?: boolean
+  isUpdated?: boolean
   handleValid: SubmitHandler<T>
   handleCanceled?: () => void
 }

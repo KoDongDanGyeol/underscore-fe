@@ -33,7 +33,7 @@ const useTouch = (callback: Callback) => {
     })
     document.addEventListener("mousemove", handleTouchMove)
     document.addEventListener("mouseup", handleTouchEnd, { once: true })
-    document.addEventListener("touchmove", handleTouchMove, { passive: true })
+    document.addEventListener("touchmove", handleTouchMove, { passive: false })
     document.addEventListener("touchend", handleTouchEnd, { once: true })
   }
 
@@ -73,7 +73,7 @@ const useTouch = (callback: Callback) => {
 
   const onInit = () => {
     if (!containerRef.current) return
-    containerRef.current.addEventListener("touchstart", handleTouchStart, { passive: true })
+    containerRef.current.addEventListener("touchstart", handleTouchStart, { passive: false })
     containerRef.current.addEventListener("mousedown", handleTouchStart)
   }
 
