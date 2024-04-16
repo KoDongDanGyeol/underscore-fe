@@ -20,11 +20,22 @@ const SearchLocationMain = FormHoc<TypeSearchLocation>((props: SearchLocationMai
   const { control, handleSubmit, formState } = formData
 
   const containerRef = useRef<HTMLFormElement | null>(null)
-  const containerState = useMemo(() => {
-    return {
-      isOpen: Children.toArray(children).filter((child) => !!child).length > 1,
-    }
-  }, [children])
+  const hasChildren = useMemo(() => Children.toArray(children).filter(Boolean).length >= 2, [children])
+
+  const {
+    focusTrapRefs: { containerRef: trapRef },
+    onActivate,
+    onDeactivate,
+  } = useFocusTrap([
+    [
+      "Escape",
+      () => {
+        if (!containerRef.current) return
+        const comboboxEl = containerRef.current.querySelector("[role='combobox']") as HTMLElement
+        comboboxEl?.focus?.()
+      },
+    ],
+  ])
 
   const onOpen = () => {
     if (!containerRef.current) return
@@ -35,37 +46,25 @@ const SearchLocationMain = FormHoc<TypeSearchLocation>((props: SearchLocationMai
 
   const onClose = () => {
     if (!containerRef.current) return
-    onDeactivate()
+    onDeactivate({ isReturnFocus: false })
   }
-
-  const onEscape = () => {
-    if (!containerRef.current) return
-    const comboboxEl = containerRef.current.querySelector("[role='combobox']") as HTMLElement
-    comboboxEl?.focus?.()
-  }
-
-  const {
-    focusTrapRefs: { containerRef: trapRef },
-    onActivate,
-    onDeactivate,
-  } = useFocusTrap([["Escape", onEscape]])
 
   useEffect(() => {
     if (isUpdated) trapRef.current?.firstElementChild?.scrollTo(0, 0)
   }, [isUpdated])
 
   useEffect(() => {
-    if (containerState.isOpen) onOpen()
+    if (hasChildren) onOpen()
     else onClose()
-  }, [containerState.isOpen])
+  }, [hasChildren])
 
   return (
     <SearchLocationMainContainer
       ref={containerRef}
-      id="search-map"
+      id="search-location"
       onSubmit={handleSubmit(handleValid)}
       noValidate
-      $isOpen={containerState.isOpen}
+      $isOpened={hasChildren}
       {...restProps}
     >
       <Label asTag="label" htmlFor="location" isRequired={true} className="sr-only">
@@ -85,44 +84,25 @@ const SearchLocationMain = FormHoc<TypeSearchLocation>((props: SearchLocationMai
             <span className="sr-only">{formAction?.submit}</span>
           </button>
         }
-        aria-autocomplete={containerState.isOpen ? "list" : "none"}
-        aria-expanded={containerState.isOpen}
-        aria-owns="location-listbox"
+        aria-autocomplete={hasChildren ? "list" : "none"}
+        aria-expanded={hasChildren}
       />
-      <SearchLocationMainListbox ref={trapRef}>
-        <SearchLocationMainList>{children}</SearchLocationMainList>
-      </SearchLocationMainListbox>
+      <SearchLocationMainLayer ref={trapRef}>
+        <div>{children}</div>
+      </SearchLocationMainLayer>
     </SearchLocationMainContainer>
   )
 })
 
 interface SearchLocationMainStyled {
-  $isOpen: boolean
+  $isOpened: boolean
 }
 
 const SearchLocationMainInput = styled(Input<TypeSearchLocation>)`
   border: none;
-  .extra-suffix button {
-    margin: -4px;
-    padding: 4px;
-  }
 `
 
-const SearchLocationMainList = styled.div`
-  width: 100%;
-  max-height: 0;
-  transition: max-height 200ms var(--motion-ease-out);
-  overflow: auto;
-  ul {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 4px;
-    box-shadow: 0px 2px 8px 0px rgba(var(--color-neutral1300), 0.15);
-  }
-`
-
-const SearchLocationMainListbox = styled.div`
+const SearchLocationMainLayer = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
@@ -137,6 +117,12 @@ const SearchLocationMainListbox = styled.div`
     0px 3px 6px -4px rgba(var(--color-neutral1300), 0.12),
     0px 6px 16px 0 rgba(var(--color-neutral1300), 0.08),
     0px 9px 28px 8px rgba(var(--color-neutral1300), 0.05);
+  > div {
+    width: 100%;
+    max-height: 0;
+    transition: max-height 200ms var(--motion-ease-out);
+    overflow: auto;
+  }
   #infiniteRef {
     margin-top: -4px;
     width: 100%;
@@ -147,9 +133,9 @@ const SearchLocationMainListbox = styled.div`
 const SearchLocationMainContainer = styled.form<SearchLocationMainStyled>`
   position: relative;
   ${(props) =>
-    props.$isOpen &&
+    props.$isOpened &&
     css`
-      ${SearchLocationMainList} {
+      ${SearchLocationMainLayer} >div {
         max-height: 142px;
       }
     `}

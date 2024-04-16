@@ -4,7 +4,7 @@ const notoSansKr = Noto_Sans_KR({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-notoSansKr",
-  weight: ["400", "600", "700"],
+  weight: ["400", "600", "700", "800"], // Regular Medium Strong Extra
 })
 
 export default notoSansKr

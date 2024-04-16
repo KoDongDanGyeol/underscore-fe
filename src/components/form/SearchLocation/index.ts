@@ -1,13 +1,15 @@
 import { FieldValues } from "react-hook-form"
 import SearchLocationMain, { SearchLocationMainProps } from "@/components/form/SearchLocation/Main"
-import SearchLocationOption, { SearchLocationOptionProps } from "@/components/form/SearchLocation/Option"
+import SearchLocationGroup, { SearchLocationGroupProps } from "@/components/form/SearchLocation/Group"
+import SearchLocationItem, { SearchLocationItemProps } from "@/components/form/SearchLocation/Item"
 
 export interface TypeSearchLocation extends FieldValues {
   location?: string
 }
 
-export type { SearchLocationMainProps, SearchLocationOptionProps }
+export type { SearchLocationMainProps, SearchLocationGroupProps, SearchLocationItemProps }
 
 export default Object.assign(SearchLocationMain, {
-  Option: SearchLocationOption,
+  Group: SearchLocationGroup,
+  Item: SearchLocationItem,
 })

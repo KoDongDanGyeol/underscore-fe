@@ -17,11 +17,7 @@ const BreadcrumbMain = (props: BreadcrumbMainProps) => {
       <ul>
         {Children.map(children, (child, index) => {
           const isLast = index === Children.count(children)
-          return (
-            <li key={index} aria-current={isLast ? "page" : undefined}>
-              {child}
-            </li>
-          )
+          return <li aria-current={isLast ? "page" : undefined}>{child}</li>
         })}
       </ul>
     </BreadcrumbMainContainer>
