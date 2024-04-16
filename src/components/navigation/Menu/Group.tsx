@@ -8,11 +8,16 @@ export interface MenuGroupProps extends React.PropsWithChildren<React.HTMLAttrib
   isReady: boolean
 }
 
+interface TypeStructure {
+  isPending: boolean
+  isOpened: boolean
+}
+
 const MenuGroup = (props: MenuGroupProps) => {
   const { isReady, className = "", children, ...restProps } = props
 
   const timers = useRef<Timer>({ delay: null })
-  const [structure, setStructure] = useState({
+  const [structure, setStructure] = useState<TypeStructure>({
     isPending: false,
     isOpened: false,
   })

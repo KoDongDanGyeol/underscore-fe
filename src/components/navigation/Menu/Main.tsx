@@ -13,6 +13,11 @@ export interface MenuMainProps extends React.HTMLAttributes<HTMLDivElement> {
   onNavigated?: () => void
 }
 
+interface TypeStructure {
+  openKeys: MenuItemProps["origin"]["key"][]
+  selectedKeys: MenuItemProps["origin"]["key"][]
+}
+
 const MenuMain = (props: MenuMainProps) => {
   const {
     items = [],
@@ -23,10 +28,7 @@ const MenuMain = (props: MenuMainProps) => {
     ...restProps
   } = props
 
-  const [structure, setStructure] = useState<{
-    openKeys: MenuItemProps["origin"]["key"][]
-    selectedKeys: MenuItemProps["origin"]["key"][]
-  }>({
+  const [structure, setStructure] = useState<TypeStructure>({
     openKeys: defaultOpenKeys,
     selectedKeys: defaultSelectedKeys,
   })

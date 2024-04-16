@@ -7,10 +7,15 @@ export interface MocksProviderMainProps extends React.PropsWithChildren {
   //
 }
 
+interface TypeStructure {
+  isEnabled: boolean
+  isReady: boolean
+}
+
 const MocksProviderMain = (props: MocksProviderMainProps) => {
   const { children } = props
 
-  const [structure, setStructure] = useState({
+  const [structure, setStructure] = useState<TypeStructure>({
     isEnabled: process.env.NEXT_PUBLIC_API_MOCKING_STATUS === "enabled",
     isReady: false,
   })

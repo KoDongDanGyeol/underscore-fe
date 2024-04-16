@@ -3,16 +3,16 @@
 import styled from "styled-components"
 import { TypeSearchLocationResult } from "@/queries/api/map/useSearchLocation"
 
-export interface SearchLocationOptionProps extends React.HTMLAttributes<HTMLButtonElement> {
+export interface SearchLocationItemProps extends React.HTMLAttributes<HTMLButtonElement> {
   data: TypeSearchLocationResult["documents"][number]
   onClick: () => void
 }
 
-const SearchLocationOption = (props: SearchLocationOptionProps) => {
+const SearchLocationItem = (props: SearchLocationItemProps) => {
   const { data, className = "", onClick, ...restProps } = props
 
   return (
-    <SearchLocationOptionContainer
+    <SearchLocationItemContainer
       role="option"
       type="button"
       className={`${className}`}
@@ -20,19 +20,20 @@ const SearchLocationOption = (props: SearchLocationOptionProps) => {
       {...restProps}
     >
       {data.address_name}
-    </SearchLocationOptionContainer>
+    </SearchLocationItemContainer>
   )
 }
 
-const SearchLocationOptionContainer = styled.button`
+const SearchLocationItemContainer = styled.button`
   display: block;
   width: 100%;
   padding: 5px 8px;
   text-align: left;
+  border-radius: 4px;
   &:hover,
   &:focus {
     background: rgb(var(--color-neutral300));
   }
 `
 
-export default SearchLocationOption
+export default SearchLocationItem
