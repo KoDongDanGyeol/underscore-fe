@@ -141,7 +141,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
           />
         )}
       </MapCategoryMainResult>
-      {data && data.meta.total_count === 0 && (
+      {data?.meta && data?.meta?.total_count === 0 && (
         <PanelView.Message>
           <strong>
             검색된 <em>{structure.category.text}</em> 정보가 없어요
@@ -149,7 +149,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
           <span>지도 위치를 변경하여 주변정보를 확인해보세요</span>
         </PanelView.Message>
       )}
-      {data && data.meta.total_count > data.meta.pageable_count && (
+      {data?.meta && (data?.meta?.total_count ?? 0) > (data?.meta?.pageable_count ?? 0) && (
         <PanelView.Message>
           <strong>
             장소는 최대 <em>{data.meta.pageable_count}개</em>까지 조회 가능해요
