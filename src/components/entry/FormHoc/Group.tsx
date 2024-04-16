@@ -22,6 +22,7 @@ const FormHocGroupContainer = styled.div`
   flex: 1 1 0px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: 4px;
 `
 

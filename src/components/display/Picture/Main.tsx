@@ -19,6 +19,12 @@ export interface PictureMainProps extends ImageProps {
   onError?: React.ReactEventHandler<HTMLImageElement>
 }
 
+interface TypeStructure {
+  src: string | null
+  isLoaded: boolean
+  isErrored: boolean
+}
+
 const PictureMain = (props: PictureMainProps) => {
   const {
     alt,
@@ -33,11 +39,7 @@ const PictureMain = (props: PictureMainProps) => {
     ...restProps
   } = props
 
-  const [structure, setStructure] = useState<{
-    src: string | null
-    isLoaded: boolean
-    isErrored: boolean
-  }>({
+  const [structure, setStructure] = useState<TypeStructure>({
     src: src ?? null,
     isLoaded: false,
     isErrored: false,
@@ -67,11 +69,11 @@ const PictureMain = (props: PictureMainProps) => {
         alt={alt}
         sizes="100%"
         src={structure.src}
-        onLoad={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        onLoad={(event: React.SyntheticEvent<HTMLImageElement>) => {
           setStructure((prev) => ({ ...prev, isLoaded: true }))
           onLoad?.(event)
         }}
-        onError={(event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        onError={(event: React.SyntheticEvent<HTMLImageElement>) => {
           setStructure((prev) => ({ ...prev, isErrored: true, src: null }))
           onError?.(event)
         }}

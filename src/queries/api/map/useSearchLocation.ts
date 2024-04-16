@@ -2,10 +2,8 @@ import { useMemo } from "react"
 import axios from "axios"
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query"
 import { getCacheKey } from "@/libs/cache"
-import { mapKey } from "@/queries/api/map/type"
-
-type Page = number
-type Filter = { location: string }
+import { mapKey, TypeLocationListAllId, TypeLocationListAllFilter } from "@/queries/api/map/type"
+import { TypeFetchList } from "@/types/cache"
 
 export type TypeSearchLocationResult = {
   meta: {
@@ -45,12 +43,15 @@ export type TypeSearchLocationResult = {
       zone_no: string
       y: string
       x: string
-    }
+    } | null
   }[]
 }
 
-const fetchSearchLocation = async <T = TypeSearchLocationResult>(page: Page, filter: Filter): Promise<T> => {
-  const { data } = await axios<T>({
+const fetchSearchLocation: TypeFetchList<TypeSearchLocationResult, TypeLocationListAllFilter> = async (
+  page,
+  filter,
+) => {
+  const { data } = await axios<TypeSearchLocationResult>({
     method: "GET",
     url: `/map/search-location?location=${encodeURIComponent(filter.location)}&page=${page}`,
     headers: {
@@ -60,10 +61,10 @@ const fetchSearchLocation = async <T = TypeSearchLocationResult>(page: Page, fil
   return data
 }
 
-const useSearchLocation = (filter: Filter) => {
+const useSearchLocation = (filter: TypeLocationListAllFilter) => {
   const context = useInfiniteQuery({
     queryKey: getCacheKey(mapKey).location.list.all.toKeyWithArgs(Infinity, { location: filter.location }),
-    queryFn: async ({ pageParam = 1 }: { pageParam: Page }) => {
+    queryFn: async ({ pageParam = 1 }: { pageParam: TypeLocationListAllId }) => {
       const data = await fetchSearchLocation(pageParam, { location: filter.location })
       return data
     },
@@ -85,6 +86,7 @@ const useSearchLocation = (filter: Filter) => {
   return {
     ...context,
     flatData,
+    isSelected: flatData.length === 1 && filter.location === flatData[0].address_name,
   }
 }
 

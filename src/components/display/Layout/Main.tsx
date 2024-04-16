@@ -63,6 +63,9 @@ const LayoutMainContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  @supports (-webkit-touch-callout: none) {
+    min-height: -webkit-fill-available;
+  }
 `
 
 export default LayoutMain

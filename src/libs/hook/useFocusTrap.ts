@@ -58,9 +58,9 @@ const useFocusTrap = (listeners?: Listeners) => {
     focusableRef.current?.[0]?.focus()
   }, [])
 
-  const onDeactivate = useCallback(async () => {
+  const onDeactivate = useCallback(async (options?: { isReturnFocus?: boolean }) => {
     containerRef.current?.removeEventListener("keydown", keydownListener)
-    if (isInitialized.current) {
+    if (isInitialized.current && (options?.isReturnFocus ?? true)) {
       clearTimer(timers, { key: "delay" })
       await setTimer(timers, { key: "delay", delay: 50 })
       if (returnRef.current) returnRef.current?.focus()
