@@ -1,5 +1,5 @@
 import axios from "axios"
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { isEquals } from "@/libs/utils"
 import { getCacheKey } from "@/libs/cache"
 import { TypeCategoryListAllId, TypeCategoryListAllFilter, mapKey } from "@/queries/api/map"
@@ -57,7 +57,6 @@ const useSearchCategory = (
       return data
     },
     enabled: !!page && !!categoryCode && !isEquals([0, 0, 0, 0], searchBounds) && [1, 2, 3].includes(level),
-    placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 60 * 23,
     gcTime: 1000 * 60 * 60 * 24,
   })
