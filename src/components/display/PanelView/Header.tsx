@@ -1,26 +1,33 @@
 "use client"
 
-import { Fragment, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import useMap from "@/libs/hook/useMap"
 import useOnScreen from "@/libs/hook/useOnScreen"
-import useSearchLocation, { TypeSearchLocationResult } from "@/queries/api/map/useSearchLocation"
 import { Timer, clearTimer, setTimer } from "@/libs/timer"
+import useSearchLocation, { TypeSearchLocationResult } from "@/queries/api/map/useSearchLocation"
 import SearchLocation, { TypeSearchLocation } from "@/components/form/SearchLocation"
 
 export interface PanelViewHeaderProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
-  kakaoRef: React.MutableRefObject<any | null>
+  //
+}
+
+interface TypeStructure {
+  location: string
+  isUpdated: boolean
+  isExpanded: boolean
 }
 
 const PanelViewHeader = (props: PanelViewHeaderProps) => {
-  const { kakaoRef, className = "", children, ...restProps } = props
+  const { className = "", children, ...restProps } = props
 
   const timers = useRef<Timer>({ delay: null })
-  const [structure, setStructure] = useState({
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const [structure, setStructure] = useState<TypeStructure>({
     location: "",
     isUpdated: false,
-    isExpand: false,
+    isExpanded: false,
   })
 
   const {
@@ -28,7 +35,7 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
     onMove,
   } = useMap()
 
-  const { flatData, hasNextPage, fetchNextPage } = useSearchLocation({
+  const { flatData, isSelected, hasNextPage, fetchNextPage } = useSearchLocation({
     location: structure.location,
   })
 
@@ -43,15 +50,21 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
     },
   })
 
+  const onBlur = (event: React.FocusEvent<HTMLFormElement>) => {
+    if (!containerRef.current) return
+    if (containerRef.current.querySelector("form")?.contains(event.relatedTarget)) return
+    setStructure((prev) => ({ ...prev, isExpanded: false }))
+  }
+
   const onSelect = async (data: TypeSearchLocationResult["documents"][number]) => {
     searchLocation.setValue("location", data.address_name)
-    onMove(kakaoRef, { coordinates: { latitude: +data.y, longitude: +data.x } })
-    setStructure((prev) => ({ ...prev, location: data.address_name, isUpdated: false, isExpand: false }))
+    onMove({ coordinates: { latitude: +data.y, longitude: +data.x } })
+    setStructure((prev) => ({ ...prev, location: data.address_name, isUpdated: false, isExpanded: false }))
   }
 
   const onSubmit = async (data: TypeSearchLocation) => {
-    if (!data?.location) setStructure((prev) => ({ ...prev, location: "", isUpdated: false, isExpand: false }))
-    else setStructure((prev) => ({ ...prev, location: data?.location ?? "", isUpdated: true, isExpand: true }))
+    if (!data?.location) setStructure((prev) => ({ ...prev, location: "", isUpdated: false, isExpanded: false }))
+    else setStructure((prev) => ({ ...prev, location: data?.location ?? "", isUpdated: true, isExpanded: true }))
   }
 
   useEffect(() => {
@@ -68,7 +81,7 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
   }, [structure.isUpdated])
 
   return (
-    <PanelViewHeaderContainer className={`${className}`} {...restProps}>
+    <PanelViewHeaderContainer ref={containerRef} className={`${className}`} {...restProps}>
       <SearchLocation
         formData={searchLocation}
         formAction={{
@@ -79,19 +92,16 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
         }}
         isUpdated={structure.isUpdated}
         handleValid={onSubmit}
+        onBlur={onBlur}
       >
-        {mode === "Advanced" && structure.isExpand && Boolean(flatData.length) && (
-          <Fragment>
-            <ul role="listbox" id="location-listbox" tabIndex={0}>
-              {flatData.map((data) => (
-                <li role="none" key={`[${data.x}, ${data.y}]`}>
-                  <SearchLocation.Option data={data} onClick={() => onSelect(data)} />
-                </li>
-              ))}
-            </ul>
-          </Fragment>
+        {mode === "Advanced" && !isSelected && structure.isExpanded && Boolean(flatData.length) && (
+          <SearchLocation.Group key={structure.location}>
+            {flatData.map((data) => (
+              <SearchLocation.Item key={data.address_name} data={data} onClick={() => onSelect(data)} />
+            ))}
+          </SearchLocation.Group>
         )}
-        <div key="infiniteRef" id="infiniteRef" ref={infiniteRef} />
+        <div id="infiniteRef" ref={infiniteRef} />
       </SearchLocation>
       {children}
     </PanelViewHeaderContainer>

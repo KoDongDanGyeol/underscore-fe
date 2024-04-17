@@ -212,6 +212,10 @@ const InputMainContainer = styled.div<InputMainStyled>`
     align-items: center;
     font-size: ${(props) => props.theme.typo.size.sm};
     line-height: ${(props) => props.theme.typo.leading.sm};
+    > button {
+      margin: -4px;
+      padding: 4px;
+    }
   }
 `
 

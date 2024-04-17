@@ -52,7 +52,7 @@ const PanelViewMain = (props: PanelViewMainProps) => {
     }
   }, [])
 
-  const onFocus = (event: React.FocusEvent<HTMLDivElement, Element>) => {
+  const onFocus = (event: React.FocusEvent<HTMLDivElement>) => {
     if (!contentRef.current?.querySelector("form")?.contains(event?.target)) return
     setMap((prev) => ({ ...prev, mode: "Advanced" }))
   }

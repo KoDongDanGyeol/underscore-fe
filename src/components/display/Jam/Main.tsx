@@ -7,10 +7,14 @@ export interface JamMainProps extends React.HTMLAttributes<HTMLDivElement> {
   delay: number
 }
 
+interface TypeStructure {
+  isReady: boolean
+}
+
 const JamMain = (props: JamMainProps) => {
   const { delay = 500, className = "", ...restProps } = props
 
-  const [structure, setStructure] = useState({
+  const [structure, setStructure] = useState<TypeStructure>({
     isReady: false,
   })
 

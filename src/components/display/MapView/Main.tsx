@@ -1,17 +1,105 @@
 "use client"
 
+import { useEffect } from "react"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import styled, { css } from "styled-components"
+import useMount from "@/libs/hook/useMount"
+import useMap from "@/libs/hook/useMap"
+import useGeolocation from "@/libs/hook/useGeolocation"
+import Icon from "@/components/general/Icon"
+import Button from "@/components/general/Button"
 
-export interface MapViewMainProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
-  isPending: boolean
+export interface MapViewMainProps extends React.HTMLAttributes<HTMLDivElement> {
+  //
+}
+
+const fallbackCoordinates = {
+  latitude: 37.566585446882,
+  longitude: 126.978203640984,
 }
 
 const MapViewMain = (props: MapViewMainProps) => {
-  const { isPending, className = "", children, ...restProps } = props
+  const { className = "", ...restProps } = props
+
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const {
+    geolocationStructure: { isLoaded, coordinates },
+    onOverwrite,
+  } = useGeolocation({
+    enableHighAccuracy: true,
+    timeout: 1000 * 60 * 1,
+    maximumAge: 1000 * 3600 * 24,
+  })
+
+  const {
+    mapRefs: { containerRef },
+    mapStructure: { isInitialized, level, center },
+    onInit,
+    addDragend,
+    addZoomChanged,
+    onRemove,
+  } = useMap()
+
+  const {
+    mountStructure: { isMounted },
+  } = useMount(() => {
+    const { level, latitude, longitude } = getSearchParams()
+    const center = latitude && longitude ? { latitude, longitude } : null
+    if (isLoaded && isMounted)
+      onInit({
+        level: level ?? 3,
+        coordinates: center ?? coordinates ?? fallbackCoordinates,
+      })
+    return () => {
+      onRemove()
+    }
+  }, [isLoaded, coordinates])
+
+  const getSearchParams = () => {
+    const params = Object.fromEntries(Array.from(searchParams.entries()))
+    const level = /^\d+$/.test(params.level ?? "") ? parseFloat(params.level ?? "") : null
+    const latitude = /^(\d+(.)?\d+)$/.test(params.latitude ?? "") ? parseFloat(params.latitude ?? "") : null
+    const longitude = /^(\d+(.)?\d+)$/.test(params.longitude ?? "") ? parseFloat(params.longitude ?? "") : null
+    return { level, latitude, longitude }
+  }
+
+  useEffect(() => {
+    if (!isInitialized) return
+    addDragend()
+    addZoomChanged()
+  }, [isInitialized])
+
+  useEffect(() => {
+    router.replace(`${pathname}?level=${level}&latitude=${center[0]}&longitude=${center[1]}`)
+  }, [level, center])
+
+  if (!isMounted) {
+    return (
+      <MapViewMainContainer $isPending={true}>
+        <Icon name="Loading" aria-hidden={true} />
+        <strong>로딩중이에요</strong>
+      </MapViewMainContainer>
+    )
+  }
+
+  if (!isLoaded) {
+    return (
+      <MapViewMainContainer $isPending={true}>
+        <Icon name="Loading" aria-hidden={true} />
+        <strong>위치정보 권한을 확인해주세요</strong>
+        <Button type="button" shape="plain" variants="primary" onClick={() => onOverwrite(fallbackCoordinates)}>
+          권한없이 시작하기
+        </Button>
+      </MapViewMainContainer>
+    )
+  }
 
   return (
-    <MapViewMainContainer className={`${className}`} $isPending={isPending} {...restProps}>
-      {children}
+    <MapViewMainContainer className={`${className}`} $isPending={isInitialized} {...restProps}>
+      <div ref={containerRef} id="map" />
     </MapViewMainContainer>
   )
 }
@@ -45,6 +133,55 @@ const MapViewMainContainer = styled.div<MapViewMainStyled>`
         margin-top: 8px;
       }
     `}
+  *:has(> .overlay:hover),
+  *:has(> .overlay:focus),
+  *:has(> .overlay.active) {
+    z-index: 10 !important;
+  }
+  .overlay-pin {
+    position: relative;
+    width: 26px;
+    height: 26px;
+    > span {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      display: block;
+      max-width: 100px;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 800;
+      text-align: center;
+      white-space: initial;
+      text-shadow:
+        -1px -1px 0 rgb(var(--color-neutral100)),
+        1px -1px 0 rgb(var(--color-neutral100)),
+        -1px 1px 0 rgb(var(--color-neutral100)),
+        1px 1px 0 rgb(var(--color-neutral100));
+      transform: translateX(-50%) translateY(5px);
+    }
+    &:before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: url(/pin.svg) 0 0 no-repeat;
+      background-size: 100% auto;
+    }
+    &:hover,
+    &:focus,
+    &.active {
+      > span {
+        color: rgb(var(--color-primary600));
+      }
+      &:before {
+        transform: scale(1.4);
+        transform-origin: center bottom;
+      }
+    }
+  }
+  .overlay-box {
+  }
 `
 
 export default MapViewMain

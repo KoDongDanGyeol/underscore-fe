@@ -52,7 +52,6 @@ const PanelViewNavigation = (props: PanelViewNavigationProps) => {
 }
 
 const PanelViewNavigationContainer = styled.nav`
-  margin-top: 12px;
   ol {
     display: flex;
     gap: 8px;

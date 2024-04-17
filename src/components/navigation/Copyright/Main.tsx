@@ -33,7 +33,7 @@ const CopyrightMainRow = styled.div`
     padding: 0 8px;
     font-size: ${(props) => props.theme.typo.size.sm};
     line-height: ${(props) => props.theme.typo.leading.sm};
-    color: rgb(var(--color-neutral700));
+    color: rgb(var(--color-neutral800));
   }
 `
 

@@ -1,3 +1,5 @@
+import MapCategory from "@/components/page/MapCategory"
+
 interface PageProps {
   //
 }
@@ -5,11 +7,7 @@ interface PageProps {
 const Page = (props: PageProps) => {
   // const { } = props
 
-  return (
-    <div>
-      <h2>주변정보(/map/@tab)</h2>
-    </div>
-  )
+  return <MapCategory />
 }
 
 export default Page

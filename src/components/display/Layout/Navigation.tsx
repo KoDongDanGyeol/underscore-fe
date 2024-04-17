@@ -167,6 +167,9 @@ const LayoutNavigationContainer = styled.div<LayoutNavigationStyled>`
       `
     }
   }}
+  @supports (-webkit-touch-callout: none) {
+    height: -webkit-fill-available;
+  }
 `
 
 export default LayoutNavigation
