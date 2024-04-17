@@ -14,6 +14,8 @@ export type ButtonMainProps<C extends React.ElementType = "button"> = Polymorphi
     variants?: ButtonVariants
     isDanger?: boolean
     isActive?: boolean
+    prefixEl?: React.ReactNode
+    suffixEl?: React.ReactNode
   }
 >
 
@@ -30,6 +32,8 @@ const ButtonMain: ButtonMainComponent = forwardRef(function ButtonMain<C extends
     variants = ButtonVariants.Primary,
     isDanger = false,
     isActive = false,
+    prefixEl = null,
+    suffixEl = null,
     className = "",
     children,
     ...restProps
@@ -47,7 +51,9 @@ const ButtonMain: ButtonMainComponent = forwardRef(function ButtonMain<C extends
       className={`${className}`}
       {...restProps}
     >
+      {prefixEl && <span className="extra-prefix">{prefixEl}</span>}
       {children}
+      {suffixEl && <span className="extra-suffix">{suffixEl}</span>}
     </ButtonMainContainer>
   )
 })
@@ -62,7 +68,6 @@ interface ButtonMainStyled<C extends React.ElementType = "button"> {
 
 const ButtonSquare = css<ButtonMainStyled>`
   position: relative;
-  display: inline-block;
   font-weight: 400;
   text-align: center;
   color: rgb(var(--color-neutral1100));
@@ -237,7 +242,6 @@ const ButtonSquareSecondary = css<ButtonMainStyled>`
 
 const ButtonPlain = css<ButtonMainStyled>`
   position: relative;
-  display: inline-block;
   font-weight: 400;
   color: rgb(var(--color-neutral1100));
   /* size */
@@ -350,6 +354,9 @@ const ButtonPlainSecondary = css<ButtonMainStyled>`
 `
 
 const ButtonMainContainer = styled.button<ButtonMainStyled>`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   transition-property: border-color, background-color;
   transition-duration: 0.2s;
   transition-timing-function: var(--motion-ease-in-out);
@@ -377,6 +384,30 @@ const ButtonMainContainer = styled.button<ButtonMainStyled>`
   }}
   &:disabled {
     opacity: 0.8;
+  }
+  .extra-prefix,
+  .extra-suffix {
+    display: flex;
+    flex: none;
+    align-items: center;
+    > button {
+      margin: -4px;
+      padding: 4px;
+    }
+    ${(props) => {
+      switch (props.$size) {
+        case ButtonSize.SM:
+          return css`
+            font-size: ${(props) => props.theme.typo.size.xs};
+          `
+        case ButtonSize.LG:
+        case ButtonSize.BASE:
+        default:
+          return css`
+            font-size: ${(props) => props.theme.typo.size.sm};
+          `
+      }
+    }}
   }
 `
 

@@ -91,21 +91,21 @@ const useMap = () => {
       return overlay
     })
 
+    window.kakaoOverlays = overlays
     document.querySelectorAll(`.overlay-${shape}`).forEach((overlay) => {
       const event = shape === "pin" ? handlePinOverlayClick : shape === "box" ? handleBoxOverlayClick : () => {}
       overlay.addEventListener("click", event)
     })
-    window.kakaoOverlays = overlays
   }
 
   const onOverlayFocus = ({ shape, location }: { shape: "pin" | "box"; location: Location }) => {
     const target = document.querySelector(`.overlay-${shape}[data-overlay-id="${location.id}"]`) as HTMLButtonElement
-    target.classList.add("active")
+    if (target) target.classList.add("active")
   }
 
   const onOverlayBlur = ({ shape, location }: { shape: "pin" | "box"; location: Location }) => {
     const target = document.querySelector(`.overlay-${shape}[data-overlay-id="${location.id}"]`) as HTMLButtonElement
-    target.classList.remove("active")
+    if (target) target.classList.remove("active")
   }
 
   const onMove = ({ coordinates }: { coordinates: Coordinates }) => {
