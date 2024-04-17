@@ -45,7 +45,12 @@ const PanelViewNavigation = (props: PanelViewNavigationProps) => {
           </Link>
         </li>
         <li>
-          <Link href={`/map/compare-analysis?${searchParams.toString()}`} passHref={true} legacyBehavior={true}>
+          <Link
+            href={`/map/compare-analysis?${searchParams.toString()}`}
+            prefetch={false}
+            passHref={true}
+            legacyBehavior={true}
+          >
             <Button asTag="a" isActive={/\/map\/compare-analysis(?!\/).*/.test(pathname)}>
               비교하기
             </Button>
