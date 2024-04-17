@@ -23,7 +23,7 @@ const PanelViewSubject = (props: PanelViewSubjectProps) => {
         </PanelViewSubjectStatus>
       )}
       {!Number.isNaN(count) && <PanelViewSubjectCount>{count}</PanelViewSubjectCount>}
-      {suffixEl}
+      {suffixEl && <span className="extra-suffix">{suffixEl}</span>}
     </PanelViewSubjectContainer>
   )
 }
@@ -59,6 +59,11 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   border-bottom: 1px solid rgb(var(--color-neutral400));
   &:not(:first-child) {
     margin-top: 10px;
+  }
+  .extra-suffix {
+    flex: 1 1 0px;
+    display: inline-flex;
+    justify-content: flex-end;
   }
   ${(props) => {
     switch (props.$statusCode) {

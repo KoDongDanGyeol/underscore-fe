@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import styled from "styled-components"
 import { useForm } from "react-hook-form"
 import useMap from "@/libs/hook/useMap"
@@ -16,11 +16,6 @@ import Icon from "@/components/general/Icon"
 
 export interface MapCategoryMainProps extends React.HTMLAttributes<HTMLDivElement> {
   //
-}
-
-interface TypeStructure {
-  page: number
-  size: number
 }
 
 const MapCategoryMain = (props: MapCategoryMainProps) => {
@@ -40,25 +35,32 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
 
   const searchCategory = useForm<TypeSearchCategory>({
     defaultValues: {
+      page: 1,
+      size: 10,
       category: "음식점",
       categoryCode: TypeCategoryCode["FD6"],
       searchBounds: [0, 0, 0, 0],
     },
   })
 
-  const { data, isLoading, isPending } = useSearchCategory(structure.page, {
+  const { data, isLoading, isFetching, isPending } = useSearchCategory(searchCategory.watch("page"), {
     level,
     categoryCode: searchCategory.watch("categoryCode"),
     searchBounds: searchCategory.watch("searchBounds"),
-    size: structure.size,
+    size: searchCategory.watch("size"),
   })
 
+  const onPaging = (page: number) => {
+    searchCategory.setValue("page", page)
+  }
+
   const onReload = () => {
+    searchCategory.setValue("page", 1)
     searchCategory.setValue("searchBounds", bounds)
   }
 
-  const onPaging = (page: number) => {
-    setStructure((prev) => ({ ...prev, page }))
+  const onSubmit = (data: TypeSearchCategory) => {
+    searchCategory.setValue("page", 1)
   }
 
   const onSubmit = (data: TypeSearchCategory) => {
@@ -98,7 +100,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
       />
       <PanelView.Subject
         status={
-          !isInitialized || isLoading
+          !isInitialized || isLoading || isFetching
             ? { code: PanelViewSubjectStatusCode.Loading, message: "로딩중" }
             : isPending && !isLoading
               ? { code: PanelViewSubjectStatusCode.Warning, message: "검색범위초과" }
@@ -106,6 +108,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
         }
         count={data?.meta?.total_count}
         suffixEl={
+          !(isPending && !isLoading) &&
           !isEquals([0, 0, 0, 0], searchCategory.watch("searchBounds")) &&
           !isEquals(bounds, searchCategory.watch("searchBounds")) ? (
             <Button type="button" size="sm" variants="secondary" prefixEl={<Icon name="Reload" />} onClick={onReload}>
@@ -145,8 +148,8 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
         )}
         {data && Boolean(data?.meta?.pageable_count) && (
           <Pagination
-            page={structure.page}
-            totalPages={Math.ceil(data.meta.pageable_count / structure.size)}
+            page={searchCategory.watch("page")}
+            totalPages={Math.ceil(data.meta.pageable_count / searchCategory.watch("size"))}
             onPaging={onPaging}
           />
         )}

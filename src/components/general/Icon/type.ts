@@ -8,6 +8,7 @@ export const IconName = {
   ["Menu"]: "Menu",
   ["Picture"]: "Picture",
   ["Pin"]: "Pin",
+  ["Reload"]: "Reload",
   ["Right"]: "Right",
   ["Search"]: "Search",
   ["User"]: "User",
