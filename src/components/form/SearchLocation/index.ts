@@ -4,7 +4,8 @@ import SearchLocationGroup, { SearchLocationGroupProps } from "@/components/form
 import SearchLocationItem, { SearchLocationItemProps } from "@/components/form/SearchLocation/Item"
 
 export interface TypeSearchLocation extends FieldValues {
-  location?: string
+  location: string
+  searchKeyword: string
 }
 
 export type { SearchLocationMainProps, SearchLocationGroupProps, SearchLocationItemProps }

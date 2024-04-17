@@ -1,7 +1,8 @@
 import axios from "axios"
-import { useQuery } from "@tanstack/react-query"
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
+import { isEquals } from "@/libs/utils"
 import { getCacheKey } from "@/libs/cache"
-import { TypeCategoryListAllId, TypeCategoryListAllFilter, mapKey } from "@/queries/api/map/type"
+import { TypeCategoryListAllId, TypeCategoryListAllFilter, mapKey } from "@/queries/api/map"
 import { TypeFetchList } from "@/types/cache"
 
 export type TypeSearchCategoryResult = {
@@ -33,11 +34,11 @@ export type TypeSearchCategoryResult = {
 
 const fetchSearchCategory: TypeFetchList<TypeSearchCategoryResult, TypeCategoryListAllFilter> = async (
   page,
-  { level, categoryCode, rect, size },
+  { level, categoryCode, searchBounds, size },
 ) => {
   const { data } = await axios<TypeSearchCategoryResult>({
     method: "GET",
-    url: `/map/search-category?categoryCode=${categoryCode}&rect=${rect}&size=${size}&page=${page}`,
+    url: `/map/search-category?categoryCode=${categoryCode}&rect=${`${searchBounds[1]},${searchBounds[0]},${searchBounds[3]},${searchBounds[2]}`}&size=${size}&page=${page}`,
     headers: {
       Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_API_KAKAO_REST_KEY}`,
     },
@@ -47,15 +48,16 @@ const fetchSearchCategory: TypeFetchList<TypeSearchCategoryResult, TypeCategoryL
 
 const useSearchCategory = (
   page: TypeCategoryListAllId,
-  { level, categoryCode, rect, size }: TypeCategoryListAllFilter,
+  { level, categoryCode, searchBounds, size }: TypeCategoryListAllFilter,
 ) => {
   const context = useQuery({
-    queryKey: getCacheKey(mapKey).category.list.all.toKeyWithArgs(page, { level, categoryCode, rect, size }),
+    queryKey: getCacheKey(mapKey).category.list.all.toKeyWithArgs(page, { level, categoryCode, searchBounds, size }),
     queryFn: async () => {
-      const data = await fetchSearchCategory(page, { level, categoryCode, rect, size })
+      const data = await fetchSearchCategory(page, { level, categoryCode, searchBounds, size })
       return data
     },
-    enabled: !!page && !!categoryCode && !!rect && [1, 2, 3].includes(level),
+    enabled: !!page && !!categoryCode && !isEquals([0, 0, 0, 0], searchBounds) && [1, 2, 3].includes(level),
+    placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 60 * 23,
     gcTime: 1000 * 60 * 60 * 24,
   })

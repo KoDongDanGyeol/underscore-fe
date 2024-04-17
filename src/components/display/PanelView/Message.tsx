@@ -27,7 +27,7 @@ const PanelViewMessageContainer = styled.div`
     display: block;
     font-size: ${(props) => props.theme.typo.size.base};
     line-height: ${(props) => props.theme.typo.leading.base};
-    font-weight: 600;
+    font-weight: 500;
     em {
       color: rgb(var(--color-primary600));
     }

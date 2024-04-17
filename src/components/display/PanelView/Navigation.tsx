@@ -19,21 +19,26 @@ const PanelViewNavigation = (props: PanelViewNavigationProps) => {
     <PanelViewNavigationContainer className={`${className}`} {...restProps}>
       <ol>
         <li>
-          <Link href={`/map?${searchParams.toString()}`} passHref={true} legacyBehavior={true}>
+          <Link href={`/map?${searchParams.toString()}`} prefetch={false} passHref={true} legacyBehavior={true}>
             <Button asTag="a" isActive={/\/map(?!\/).*/.test(pathname)}>
               주변정보
             </Button>
           </Link>
         </li>
         <li>
-          <Link href={`/map/report-analysis?${searchParams.toString()}`} passHref={true} legacyBehavior={true}>
+          <Link
+            href={`/map/report-analysis?${searchParams.toString()}`}
+            prefetch={false}
+            passHref={true}
+            legacyBehavior={true}
+          >
             <Button asTag="a" isActive={/\/map\/report-analysis(?!\/).*/.test(pathname)}>
               상권분석
             </Button>
           </Link>
         </li>
         <li>
-          <Link href={`/map/myplace?${searchParams.toString()}`} passHref={true} legacyBehavior={true}>
+          <Link href={`/map/myplace?${searchParams.toString()}`} prefetch={false} passHref={true} legacyBehavior={true}>
             <Button asTag="a" isActive={/\/map\/myplace(?!\/).*/.test(pathname)}>
               내장소
             </Button>
