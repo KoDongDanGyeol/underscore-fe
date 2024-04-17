@@ -28,6 +28,11 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
     onOverlayBlur,
   } = useMap()
 
+  const [structure, setStructure] = useState<TypeStructure>({
+    page: 1,
+    size: 10,
+  })
+
   const searchCategory = useForm<TypeSearchCategory>({
     defaultValues: {
       page: 1,
@@ -56,6 +61,10 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
 
   const onSubmit = (data: TypeSearchCategory) => {
     searchCategory.setValue("page", 1)
+  }
+
+  const onSubmit = (data: TypeSearchCategory) => {
+    //
   }
 
   useEffect(() => {

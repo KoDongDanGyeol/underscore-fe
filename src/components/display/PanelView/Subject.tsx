@@ -37,10 +37,12 @@ const PanelViewSubjectContent = styled.strong`
 `
 
 const PanelViewSubjectStatus = styled.div`
+  flex: 1 1 0px;
   font-size: 12px;
 `
 
 const PanelViewSubjectCount = styled.div`
+  flex: 1 1 0px;
   color: rgb(var(--color-neutral700));
 `
 
