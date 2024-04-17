@@ -153,7 +153,7 @@ const LayoutNavigationContainer = styled.div<LayoutNavigationStyled>`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: calc(var(--var, 1vh) * 100);
   background-color: rgba(var(--color-neutral1300), 0);
   transition: background-color 200ms;
   z-index: 999;

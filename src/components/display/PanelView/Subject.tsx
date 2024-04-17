@@ -7,14 +7,15 @@ import { PanelViewSubjectStatusCode } from "@/components/display/PanelView/type"
 export interface PanelViewSubjectProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
   status: { code: PanelViewSubjectStatusCode; message: string }
   count?: number
+  suffixEl?: React.ReactNode
 }
 
 const PanelViewSubject = (props: PanelViewSubjectProps) => {
-  const { status, count, className = "", children, ...restProps } = props
+  const { status, count, suffixEl = null, className = "", children, ...restProps } = props
 
   return (
     <PanelViewSubjectContainer $statusCode={status.code} className={`${className}`} {...restProps}>
-      <strong>{children}</strong>
+      <PanelViewSubjectContent>{children}</PanelViewSubjectContent>
       {status.code in IconName && (
         <PanelViewSubjectStatus>
           <Icon name={status.code as IconName} aria-hidden={true} />
@@ -22,6 +23,7 @@ const PanelViewSubject = (props: PanelViewSubjectProps) => {
         </PanelViewSubjectStatus>
       )}
       {!Number.isNaN(count) && <PanelViewSubjectCount>{count}</PanelViewSubjectCount>}
+      {suffixEl && <span className="extra-suffix">{suffixEl}</span>}
     </PanelViewSubjectContainer>
   )
 }
@@ -29,6 +31,10 @@ const PanelViewSubject = (props: PanelViewSubjectProps) => {
 interface PanelViewSubjectStyled {
   $statusCode: PanelViewSubjectProps["status"]["code"]
 }
+
+const PanelViewSubjectContent = styled.strong`
+  font-weight: 500;
+`
 
 const PanelViewSubjectStatus = styled.div`
   font-size: 12px;
@@ -45,11 +51,17 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 10px 20px;
+  height: 38px;
+  padding: 0 20px;
   background: rgb(var(--color-neutral100));
   border-bottom: 1px solid rgb(var(--color-neutral400));
   &:not(:first-child) {
     margin-top: 10px;
+  }
+  .extra-suffix {
+    flex: 1 1 0px;
+    display: inline-flex;
+    justify-content: flex-end;
   }
   ${(props) => {
     switch (props.$statusCode) {

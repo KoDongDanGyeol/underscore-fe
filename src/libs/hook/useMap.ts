@@ -24,14 +24,9 @@ const useMap = () => {
       const options = { center: new window.kakao.maps.LatLng(coordinates.latitude, coordinates.longitude), level }
       const kakaoMap = new window.kakao.maps.Map(containerRef.current, options)
       window.kakaoMap = kakaoMap
-      const center = window.kakaoMap.getCenter().toString()
-      const bounds = window.kakaoMap.getBounds().toString()
-      setMap((prev) => ({
-        ...prev,
-        center: center.match(/(\d+(.)?\d+)/g).map(parseFloat) as TypeMap["center"],
-        bounds: bounds.match(/(\d+(.)?\d+)/g).map(parseFloat) as TypeMap["bounds"],
-        isInitialized: true,
-      }))
+      window.kakao.maps.event.addListener(window.kakaoMap, "idle", handleChanged)
+      setMap((prev) => ({ ...prev, isInitialized: true }))
+      handleChanged()
     })
   }
 
@@ -96,21 +91,21 @@ const useMap = () => {
       return overlay
     })
 
+    window.kakaoOverlays = overlays
     document.querySelectorAll(`.overlay-${shape}`).forEach((overlay) => {
       const event = shape === "pin" ? handlePinOverlayClick : shape === "box" ? handleBoxOverlayClick : () => {}
       overlay.addEventListener("click", event)
     })
-    window.kakaoOverlays = overlays
   }
 
   const onOverlayFocus = ({ shape, location }: { shape: "pin" | "box"; location: Location }) => {
     const target = document.querySelector(`.overlay-${shape}[data-overlay-id="${location.id}"]`) as HTMLButtonElement
-    target.classList.add("active")
+    if (target) target.classList.add("active")
   }
 
   const onOverlayBlur = ({ shape, location }: { shape: "pin" | "box"; location: Location }) => {
     const target = document.querySelector(`.overlay-${shape}[data-overlay-id="${location.id}"]`) as HTMLButtonElement
-    target.classList.remove("active")
+    if (target) target.classList.remove("active")
   }
 
   const onMove = ({ coordinates }: { coordinates: Coordinates }) => {
@@ -124,16 +119,7 @@ const useMap = () => {
   const onRemove = () => {
     setMap((prev) => ({ ...prev, isInitialized: false, bounds: [0, 0, 0, 0] }))
     if (scriptRef.current) scriptRef.current.removeEventListener("load", handleLoad)
-    if (window.kakaoMap) window.kakao.maps.event.removeListener(window.kakaoMap, "dragend", handleChanged)
-    if (window.kakaoMap) window.kakao.maps.event.removeListener(window.kakaoMap, "zoom_changed", handleChanged)
-  }
-
-  const addDragend = () => {
-    window.kakao.maps.event.addListener(window.kakaoMap, "dragend", handleChanged)
-  }
-
-  const addZoomChanged = () => {
-    window.kakao.maps.event.addListener(window.kakaoMap, "zoom_changed", handleChanged)
+    if (window.kakaoMap) window.kakao.maps.event.addListener(window.kakaoMap, "idle", handleChanged)
   }
 
   return {
@@ -142,9 +128,7 @@ const useMap = () => {
       containerRef,
     },
     onInit,
-    addDragend,
     onMove,
-    addZoomChanged,
     onOverlayChanged,
     onOverlayFocus,
     onOverlayBlur,
