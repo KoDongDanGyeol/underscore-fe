@@ -4,12 +4,15 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { useForm } from "react-hook-form"
 import useMap from "@/libs/hook/useMap"
+import { isEquals } from "@/libs/utils"
 import useSearchCategory from "@/queries/api/map/useSearchCategory"
 import { CategoryOptionGroups, TypeCategoryCode } from "@/components/form/SearchCategory/type"
 import SearchCategory, { TypeSearchCategory } from "@/components/form/SearchCategory"
 import PanelView, { PanelViewSubjectStatusCode } from "@/components/display/PanelView"
 import CategoryView from "@/components/display/CategoryView"
 import Pagination from "@/components/navigation/Pagination"
+import Button from "@/components/general/Button"
+import Icon from "@/components/general/Icon"
 
 export interface MapCategoryMainProps extends React.HTMLAttributes<HTMLDivElement> {
   //
@@ -18,22 +21,10 @@ export interface MapCategoryMainProps extends React.HTMLAttributes<HTMLDivElemen
 interface TypeStructure {
   page: number
   size: number
-  category: {
-    value: TypeCategoryCode
-    text: string
-  }
 }
 
 const MapCategoryMain = (props: MapCategoryMainProps) => {
   const { className = "", ...restProps } = props
-
-  const [structure, setStructure] = useState<TypeStructure>({
-    page: 1,
-    size: 10,
-    category: CategoryOptionGroups.flatMap(({ options }) => options).find(
-      ({ value }) => value === TypeCategoryCode["FD6"],
-    )!,
-  })
 
   const {
     mapStructure: { isInitialized, level, bounds },
@@ -42,30 +33,36 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
     onOverlayBlur,
   } = useMap()
 
+  const [structure, setStructure] = useState<TypeStructure>({
+    page: 1,
+    size: 10,
+  })
+
   const searchCategory = useForm<TypeSearchCategory>({
     defaultValues: {
-      categoryCode: structure.category.value,
+      category: "음식점",
+      categoryCode: TypeCategoryCode["FD6"],
+      searchBounds: [0, 0, 0, 0],
     },
   })
 
   const { data, isLoading, isPending } = useSearchCategory(structure.page, {
     level,
-    categoryCode: structure.category.value,
-    rect: isInitialized && bounds ? `${bounds[1]},${bounds[0]},${bounds[3]},${bounds[2]}` : "",
+    categoryCode: searchCategory.watch("categoryCode"),
+    searchBounds: searchCategory.watch("searchBounds"),
     size: structure.size,
   })
 
-  const onChange = (data: TypeSearchCategory) => {
-    setStructure((prev) => ({
-      ...prev,
-      category: CategoryOptionGroups.flatMap(({ options }) => options).find(
-        ({ value }) => value === data.categoryCode,
-      )!,
-    }))
+  const onReload = () => {
+    searchCategory.setValue("searchBounds", bounds)
   }
 
   const onPaging = (page: number) => {
     setStructure((prev) => ({ ...prev, page }))
+  }
+
+  const onSubmit = (data: TypeSearchCategory) => {
+    //
   }
 
   useEffect(() => {
@@ -78,6 +75,11 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
       })),
     })
   }, [data?.documents])
+
+  useEffect(() => {
+    if (!isInitialized) return
+    searchCategory.setValue("searchBounds", bounds)
+  }, [isInitialized])
 
   return (
     <MapCategoryMainContainer className={`${className}`} {...restProps}>
@@ -92,7 +94,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
         formOptionGroups={{
           categoryCode: CategoryOptionGroups,
         }}
-        handleValid={onChange}
+        handleValid={onSubmit}
       />
       <PanelView.Subject
         status={
@@ -103,6 +105,14 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
               : { code: PanelViewSubjectStatusCode.Success, message: "" }
         }
         count={data?.meta?.total_count}
+        suffixEl={
+          !isEquals([0, 0, 0, 0], searchCategory.watch("searchBounds")) &&
+          !isEquals(bounds, searchCategory.watch("searchBounds")) ? (
+            <Button type="button" size="sm" variants="secondary" prefixEl={<Icon name="Reload" />} onClick={onReload}>
+              현재 지도에서 재검색
+            </Button>
+          ) : null
+        }
       >
         장소
       </PanelView.Subject>
@@ -144,7 +154,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
       {data?.meta && data?.meta?.total_count === 0 && (
         <PanelView.Message>
           <strong>
-            검색된 <em>{structure.category.text}</em> 정보가 없어요
+            검색된 <em>{searchCategory.watch("category")}</em> 정보가 없어요
           </strong>
           <span>지도 위치를 변경하여 주변정보를 확인해보세요</span>
         </PanelView.Message>

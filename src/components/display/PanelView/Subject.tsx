@@ -7,14 +7,15 @@ import { PanelViewSubjectStatusCode } from "@/components/display/PanelView/type"
 export interface PanelViewSubjectProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
   status: { code: PanelViewSubjectStatusCode; message: string }
   count?: number
+  suffixEl?: React.ReactNode
 }
 
 const PanelViewSubject = (props: PanelViewSubjectProps) => {
-  const { status, count, className = "", children, ...restProps } = props
+  const { status, count, suffixEl = null, className = "", children, ...restProps } = props
 
   return (
     <PanelViewSubjectContainer $statusCode={status.code} className={`${className}`} {...restProps}>
-      <strong>{children}</strong>
+      <PanelViewSubjectContent>{children}</PanelViewSubjectContent>
       {status.code in IconName && (
         <PanelViewSubjectStatus>
           <Icon name={status.code as IconName} aria-hidden={true} />
@@ -22,6 +23,7 @@ const PanelViewSubject = (props: PanelViewSubjectProps) => {
         </PanelViewSubjectStatus>
       )}
       {!Number.isNaN(count) && <PanelViewSubjectCount>{count}</PanelViewSubjectCount>}
+      {suffixEl}
     </PanelViewSubjectContainer>
   )
 }
@@ -30,11 +32,17 @@ interface PanelViewSubjectStyled {
   $statusCode: PanelViewSubjectProps["status"]["code"]
 }
 
+const PanelViewSubjectContent = styled.strong`
+  font-weight: 500;
+`
+
 const PanelViewSubjectStatus = styled.div`
+  flex: 1 1 0px;
   font-size: 12px;
 `
 
 const PanelViewSubjectCount = styled.div`
+  flex: 1 1 0px;
   color: rgb(var(--color-neutral700));
 `
 
@@ -45,7 +53,8 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 10px 20px;
+  height: 38px;
+  padding: 0 20px;
   background: rgb(var(--color-neutral100));
   border-bottom: 1px solid rgb(var(--color-neutral400));
   &:not(:first-child) {

@@ -32,7 +32,7 @@ const SelectItemContainer = styled.button`
   svg {
   }
   &[aria-selected="true"] {
-    font-weight: 600;
+    font-weight: 500;
     background: rgb(var(--color-primary100));
     svg {
       /*  */

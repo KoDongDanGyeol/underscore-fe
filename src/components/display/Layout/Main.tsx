@@ -19,7 +19,7 @@ const LayoutMain = (props: LayoutMainProps) => {
   const [global, setGlobal] = useRecoilState(atomGlobal)
 
   const {
-    resizeStructure: { windowInnerWidth },
+    resizeStructure: { windowInnerWidth, windowInnerHeight },
     onUpdate,
     onRemove,
   } = useResize()
@@ -52,6 +52,11 @@ const LayoutMain = (props: LayoutMainProps) => {
     setGlobal((prev) => ({ ...prev, screen: currentScreen }))
   }, [currentScreen, global.screen, setGlobal])
 
+  useEffect(() => {
+    const screenHeight = windowInnerHeight * 0.01
+    document.documentElement.style.setProperty("--vh", `${screenHeight}px`)
+  }, [windowInnerHeight])
+
   return (
     <LayoutMainContainer className={`${className}`} {...restProps}>
       {children}
@@ -62,10 +67,7 @@ const LayoutMain = (props: LayoutMainProps) => {
 const LayoutMainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  @supports (-webkit-touch-callout: none) {
-    min-height: -webkit-fill-available;
-  }
+  min-height: calc(var(--var, 1vh) * 100);
 `
 
 export default LayoutMain

@@ -3,7 +3,9 @@ import SearchCategoryMain, { SearchCategoryMainProps } from "@/components/form/S
 import { TypeCategoryCode } from "@/components/form/SearchCategory/type"
 
 export interface TypeSearchCategory extends FieldValues {
+  category: string
   categoryCode: TypeCategoryCode
+  searchBounds: [number, number, number, number]
 }
 
 export type { SearchCategoryMainProps }

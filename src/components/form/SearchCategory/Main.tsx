@@ -14,7 +14,7 @@ export interface SearchCategoryMainProps<T extends FieldValues = TypeSearchCateg
 const SearchCategoryMain = FormHoc<TypeSearchCategory>((props: SearchCategoryMainProps) => {
   const { formAction, formData, formPlaceholder, formOptionGroups, isUpdated, handleValid, ...restProps } = props
 
-  const { control, handleSubmit, formState } = formData
+  const { control, handleSubmit, formState, setValue } = formData
 
   return (
     <SearchCategoryMainContainer
@@ -36,7 +36,10 @@ const SearchCategoryMain = FormHoc<TypeSearchCategory>((props: SearchCategoryMai
         title={`${formPlaceholder?.categoryCode} 선택`}
         placeholder={formPlaceholder?.categoryCode ?? ""}
         optionGroups={formOptionGroups?.categoryCode ?? []}
-        onChange={() => handleSubmit(handleValid)()}
+        onSelected={(options) => {
+          setValue("category", options[0].text)
+          handleSubmit(handleValid)()
+        }}
       />
     </SearchCategoryMainContainer>
   )

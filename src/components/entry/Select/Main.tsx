@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useMemo } from "react"
 import styled, { css } from "styled-components"
 import { useController, Control, FieldValues, FieldPath, RegisterOptions } from "react-hook-form"
 import useFocusTrap from "@/libs/hook/useFocusTrap"
@@ -10,6 +10,11 @@ import SelectLabel from "@/components/entry/Select/Label"
 import SelectItem from "@/components/entry/Select/Item"
 import Icon from "@/components/general/Icon"
 
+interface OptionGroups<T extends FieldValues = object> {
+  label: string
+  options: { value: T[FieldPath<T>]; text: string }[]
+}
+
 export interface SelectMainProps<T extends FieldValues = object> extends React.HTMLAttributes<HTMLSelectElement> {
   control: Control<T>
   rules?: RegisterOptions<T>
@@ -18,11 +23,8 @@ export interface SelectMainProps<T extends FieldValues = object> extends React.H
   disabled?: boolean
   multiple?: boolean
   shape?: SelectShape
-  optionGroups: {
-    label: string
-    options: { value: T[FieldPath<T>]; text: string }[]
-  }[]
-  onChange?: () => void
+  optionGroups: OptionGroups<T>[]
+  onSelected: (options: OptionGroups<T>["options"]) => void
 }
 
 interface TypeStructure<T extends FieldValues = object> {
@@ -41,7 +43,7 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
     shape = SelectShape.Square,
     optionGroups,
     className = "",
-    onChange,
+    onSelected,
     ...restProps
   } = props
 
@@ -52,6 +54,11 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
     isExpanded: false,
     currentValue: field.value,
   })
+
+  const currentOption = useMemo<OptionGroups<T>["options"]>(() => {
+    const values = Array.isArray(structure.currentValue) ? structure.currentValue : [structure.currentValue]
+    return optionGroups?.flatMap(({ options }) => options)?.filter(({ value }) => values.includes(value))
+  }, [optionGroups, structure.currentValue])
 
   const {
     focusTrapRefs: { containerRef: trapRef },
@@ -89,13 +96,16 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
   useEffect(() => {
     if (JSON.stringify(field.value) === JSON.stringify(structure.currentValue)) return
     setStructure((prev) => ({ ...prev, currentValue: field.value }))
-    onChange?.()
   }, [field.value])
 
   useEffect(() => {
     if (structure.isExpanded) onOpen()
     else onClose()
   }, [structure.isExpanded])
+
+  useEffect(() => {
+    onSelected?.(currentOption)
+  }, [currentOption])
 
   if (!optionGroups?.flatMap(({ options }) => options)?.length) {
     return null
@@ -125,10 +135,7 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
         aria-labelledby={`${name}-label`}
         aria-haspopup="listbox"
       >
-        <span>
-          {optionGroups?.flatMap(({ options }) => options)?.find(({ value }) => value === structure.currentValue)
-            ?.text ?? placeholder}
-        </span>
+        <span>{currentOption.length === 1 ? currentOption[0].text : placeholder}</span>
         <Icon name="CaretDown" aria-hidden={true} />
       </SelectMainCombobox>
       <SelectMainLayer ref={trapRef}>
@@ -155,14 +162,11 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
                           ? [...structure.currentValue].filter((v: string) => v !== value)
                           : [...structure.currentValue, value]
                         field.onChange(newValue)
-                        onChange?.()
                         setStructure((prev) => ({ ...prev, currentValue: newValue as T[FieldPath<T>][] }))
                         return
                       }
                       field.onChange(value)
-                      setStructure((prev) => ({ ...prev, currentValue: value }))
-                      onChange?.()
-                      setStructure((prev) => ({ ...prev, isExpanded: false }))
+                      setStructure((prev) => ({ ...prev, currentValue: value, isExpanded: false }))
                     }}
                     aria-selected={
                       multiple && Array.isArray(structure.currentValue)

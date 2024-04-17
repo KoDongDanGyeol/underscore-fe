@@ -41,7 +41,7 @@ const CategoryViewItemName = styled.div`
   .place {
     font-size: ${(props) => props.theme.typo.size.base};
     line-height: ${(props) => props.theme.typo.leading.base};
-    font-weight: 600;
+    font-weight: 500;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

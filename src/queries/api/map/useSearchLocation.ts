@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import axios from "axios"
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query"
 import { getCacheKey } from "@/libs/cache"
-import { mapKey, TypeLocationListAllId, TypeLocationListAllFilter } from "@/queries/api/map/type"
+import { mapKey, TypeLocationListAllId, TypeLocationListAllFilter } from "@/queries/api/map"
 import { TypeFetchList } from "@/types/cache"
 
 export type TypeSearchLocationResult = {
@@ -49,11 +49,11 @@ export type TypeSearchLocationResult = {
 
 const fetchSearchLocation: TypeFetchList<TypeSearchLocationResult, TypeLocationListAllFilter> = async (
   page,
-  filter,
+  { searchKeyword },
 ) => {
   const { data } = await axios<TypeSearchLocationResult>({
     method: "GET",
-    url: `/map/search-location?location=${encodeURIComponent(filter.location)}&page=${page}`,
+    url: `/map/search-location?searchKeyword=${encodeURIComponent(searchKeyword)}&page=${page}`,
     headers: {
       Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_API_KAKAO_REST_KEY}`,
     },
@@ -61,18 +61,18 @@ const fetchSearchLocation: TypeFetchList<TypeSearchLocationResult, TypeLocationL
   return data
 }
 
-const useSearchLocation = (filter: TypeLocationListAllFilter) => {
+const useSearchLocation = ({ searchKeyword }: TypeLocationListAllFilter) => {
   const context = useInfiniteQuery({
-    queryKey: getCacheKey(mapKey).location.list.all.toKeyWithArgs(Infinity, { location: filter.location }),
+    queryKey: getCacheKey(mapKey).location.list.all.toKeyWithArgs(Infinity, { searchKeyword }),
     queryFn: async ({ pageParam = 1 }: { pageParam: TypeLocationListAllId }) => {
-      const data = await fetchSearchLocation(pageParam, { location: filter.location })
+      const data = await fetchSearchLocation(pageParam, { searchKeyword })
       return data
     },
     getNextPageParam: (lastPage, allPages) => {
       return !lastPage.meta.is_end ? allPages.length + 1 : undefined
     },
     initialPageParam: 1,
-    enabled: !!filter.location,
+    enabled: !!searchKeyword,
     placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 60 * 23,
     gcTime: 1000 * 60 * 60 * 24,
@@ -86,7 +86,7 @@ const useSearchLocation = (filter: TypeLocationListAllFilter) => {
   return {
     ...context,
     flatData,
-    isSelected: flatData.length === 1 && filter.location === flatData[0].address_name,
+    isSelected: flatData.length === 1 && searchKeyword === flatData[0].address_name,
   }
 }
 

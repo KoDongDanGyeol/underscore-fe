@@ -1,5 +1,7 @@
 export type TypeLocationListAllId = number
-export type TypeLocationListAllFilter = { location: string }
+export type TypeLocationListAllFilter = {
+  searchKeyword: string
+}
 
 export const locationMapKey = {
   list: {
