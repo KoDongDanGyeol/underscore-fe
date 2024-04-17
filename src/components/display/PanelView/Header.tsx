@@ -14,7 +14,6 @@ export interface PanelViewHeaderProps extends React.PropsWithChildren<React.HTML
 }
 
 interface TypeStructure {
-  location: string
   isUpdated: boolean
   isExpanded: boolean
 }
@@ -25,7 +24,6 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
   const timers = useRef<Timer>({ delay: null })
   const containerRef = useRef<HTMLDivElement | null>(null)
   const [structure, setStructure] = useState<TypeStructure>({
-    location: "",
     isUpdated: false,
     isExpanded: false,
   })
@@ -35,10 +33,6 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
     onMove,
   } = useMap()
 
-  const { flatData, isSelected, hasNextPage, fetchNextPage } = useSearchLocation({
-    location: structure.location,
-  })
-
   const {
     onScreenRefs: { infiniteRef },
     onScreenStructure: { isVisible },
@@ -46,8 +40,13 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
 
   const searchLocation = useForm<TypeSearchLocation>({
     defaultValues: {
-      location: structure.location,
+      location: "",
+      searchKeyword: "",
     },
+  })
+
+  const { flatData, isSelected, hasNextPage, fetchNextPage } = useSearchLocation({
+    searchKeyword: searchLocation.watch("searchKeyword") ?? "",
   })
 
   const onBlur = (event: React.FocusEvent<HTMLFormElement>) => {
@@ -58,13 +57,20 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
 
   const onSelect = async (data: TypeSearchLocationResult["documents"][number]) => {
     searchLocation.setValue("location", data.address_name)
+    searchLocation.setValue("searchKeyword", data.address_name)
     onMove({ coordinates: { latitude: +data.y, longitude: +data.x } })
-    setStructure((prev) => ({ ...prev, location: data.address_name, isUpdated: false, isExpanded: false }))
+    setStructure((prev) => ({ ...prev, isUpdated: false, isExpanded: false }))
   }
 
   const onSubmit = async (data: TypeSearchLocation) => {
-    if (!data?.location) setStructure((prev) => ({ ...prev, location: "", isUpdated: false, isExpanded: false }))
-    else setStructure((prev) => ({ ...prev, location: data?.location ?? "", isUpdated: true, isExpanded: true }))
+    if (!data?.location) {
+      setStructure((prev) => ({ ...prev, isUpdated: false, isExpanded: false }))
+      searchLocation.setValue("location", "")
+      searchLocation.setValue("searchKeyword", "")
+      return
+    }
+    searchLocation.setValue("searchKeyword", data?.location ?? "")
+    setStructure((prev) => ({ ...prev, isUpdated: true, isExpanded: true }))
   }
 
   useEffect(() => {
@@ -95,13 +101,13 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
         onBlur={onBlur}
       >
         {mode === "Advanced" && !isSelected && structure.isExpanded && Boolean(flatData.length) && (
-          <SearchLocation.Group key={structure.location}>
+          <SearchLocation.Group key="search">
             {flatData.map((data) => (
               <SearchLocation.Item key={data.address_name} data={data} onClick={() => onSelect(data)} />
             ))}
           </SearchLocation.Group>
         )}
-        <div id="infiniteRef" ref={infiniteRef} />
+        <div id="infinite" ref={infiniteRef} />
       </SearchLocation>
       {children}
     </PanelViewHeaderContainer>

@@ -17,4 +17,4 @@ export type TypeCacheKeyHelper<T extends TypeCacheKey, P extends string[] = []> 
       : { toKey: () => [...P, k] }
 }
 
-export type TypeFetchList<T, K extends TypeCacheKey> = (page: number, filter: K) => Promise<T>
+export type TypeFetchList<T, K extends TypeCacheKey = Record<string, never>> = (page: number, filter: K) => Promise<T>

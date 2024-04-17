@@ -29,16 +29,16 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/backend/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/:path*`,
+        source: "/api/:path*",
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
       },
       {
         source: "/map/search-location",
         has: [
-          { type: "query", key: "location", value: "(?<location>.*)" },
+          { type: "query", key: "searchKeyword", value: "(?<searchKeyword>.*)" },
           { type: "query", key: "page", value: "(?<page>.*)" },
         ],
-        destination: `${process.env.NEXT_PUBLIC_API_KAKAO_URL}/v2/local/search/address.json?analyze_type=exact&query=:location&page=:page`,
+        destination: `${process.env.NEXT_PUBLIC_API_KAKAO_URL}/v2/local/search/address.json?analyze_type=exact&query=:searchKeyword&page=:page`,
       },
       {
         source: "/map/search-category",

@@ -29,7 +29,7 @@ const PanelViewMain = (props: PanelViewMainProps) => {
         containerRef.current.style.removeProperty("transition")
         containerRef.current.style.removeProperty("transform")
       } else {
-        const translateY = `calc(${map.mode === "Advanced" ? "-100vh + 48px + 20px" : "0px - 120px"} + ${(currentState.moved.movedY || 0) / 3}px)`
+        const translateY = `calc(${map.mode === "Advanced" ? "var(--var, 1vh) * -100 + 48px + 20px" : "0px - 120px"} + ${(currentState.moved.movedY || 0) / 3}px)`
         containerRef.current.style.setProperty("transition", "none")
         containerRef.current.style.setProperty("transform", `translateY(${translateY})`)
       }
@@ -114,10 +114,10 @@ const PanelViewMainContainer = styled.div<PanelViewMainStyled>`
   z-index: 9;
   @media ${(props) => props.theme.screen.device.md} {
     position: fixed;
-    top: 100vh;
+    top: calc(var(--var, 1vh) * 100);
     left: 0;
     right: 0;
-    bottom: calc(-100vh + 48px + 20px);
+    bottom: calc(var(--var, 1vh) * -100 + 48px + 20px);
     width: auto;
     overflow: hidden;
     transform: translateY(calc(0px - 120px));
@@ -126,7 +126,7 @@ const PanelViewMainContainer = styled.div<PanelViewMainStyled>`
     ${(props) =>
       props.$isOpened &&
       css`
-        transform: translateY(calc(-100vh + 48px + 20px));
+        transform: translateY(calc(var(--var, 1vh) * -100 + 48px + 20px));
       `}
   }
 `

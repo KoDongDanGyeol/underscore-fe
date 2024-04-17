@@ -38,8 +38,6 @@ const MapViewMain = (props: MapViewMainProps) => {
     mapRefs: { containerRef },
     mapStructure: { isInitialized, level, center },
     onInit,
-    addDragend,
-    addZoomChanged,
     onRemove,
   } = useMap()
 
@@ -65,12 +63,6 @@ const MapViewMain = (props: MapViewMainProps) => {
     const longitude = /^(\d+(.)?\d+)$/.test(params.longitude ?? "") ? parseFloat(params.longitude ?? "") : null
     return { level, latitude, longitude }
   }
-
-  useEffect(() => {
-    if (!isInitialized) return
-    addDragend()
-    addZoomChanged()
-  }, [isInitialized])
 
   useEffect(() => {
     router.replace(`${pathname}?level=${level}&latitude=${center[0]}&longitude=${center[1]}`)
