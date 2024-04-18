@@ -53,7 +53,7 @@ const fetchSearchLocation: TypeFetchList<TypeSearchLocationResult, TypeLocationL
 ) => {
   const { data } = await axios<TypeSearchLocationResult>({
     method: "GET",
-    url: `/map/search-location/?analyze_type=exact&query=${encodeURIComponent(searchKeyword)}&page=${page}`,
+    url: `/map/search-location?searchKeyword=${encodeURIComponent(searchKeyword)}&page=${page}`,
     headers: {
       Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_API_KAKAO_REST_KEY}`,
     },
