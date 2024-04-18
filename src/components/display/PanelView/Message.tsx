@@ -20,9 +20,9 @@ const PanelViewMessageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
   margin: 24px 0;
   padding: 0 20px;
+  text-align: center;
   strong {
     display: block;
     font-size: ${(props) => props.theme.typo.size.base};
@@ -33,7 +33,12 @@ const PanelViewMessageContainer = styled.div`
     }
   }
   span {
+    margin-top: 4px;
     color: rgb(var(--color-neutral800));
+  }
+  a,
+  button {
+    margin-top: 12px;
   }
 `
 

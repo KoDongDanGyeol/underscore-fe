@@ -38,21 +38,21 @@ const AuthJoinMain = (props: AuthJoinMainProps) => {
 
 const ButtonKakao = styled(Button)`
   color: rgb(var(--color-neutral1100));
-  background: rgb(var(--color-yellow600));
-  border-color: rgb(var(--color-yellow600));
+  background: rgb(var(--color-gold500));
+  border-color: rgb(var(--color-gold500));
   &:not(:disabled):hover {
     color: rgb(var(--color-neutral1100));
-    background: rgb(var(--color-yellow500));
-    border-color: rgb(var(--color-yellow500));
+    background: rgb(var(--color-gold400));
+    border-color: rgb(var(--color-gold400));
   }
   &:not(:disabled):focus-visible {
-    outline: 4px solid rgb(var(--color-yellow300));
+    outline: 4px solid rgb(var(--color-gold200));
     outline-offset: 1px;
   }
   &:not(:disabled):active {
     color: rgb(var(--color-neutral1100));
-    background: rgb(var(--color-yellow700));
-    border-color: rgb(var(--color-yellow700));
+    background: rgb(var(--color-gold600));
+    border-color: rgb(var(--color-gold600));
   }
 `
 
