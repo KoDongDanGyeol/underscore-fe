@@ -38,7 +38,7 @@ const fetchSearchCategory: TypeFetchList<TypeSearchCategoryResult, TypeCategoryL
 ) => {
   const { data } = await axios<TypeSearchCategoryResult>({
     method: "GET",
-    url: `/map/search-category?categoryCode=${categoryCode}&rect=${`${searchBounds[1]},${searchBounds[0]},${searchBounds[3]},${searchBounds[2]}`}&size=${size}&page=${page}`,
+    url: `/map/search-category/?category_group_code=${categoryCode}&rect=${`${searchBounds[1]},${searchBounds[0]},${searchBounds[3]},${searchBounds[2]}`}&page=${page}&size=${size}`,
     headers: {
       Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_API_KAKAO_REST_KEY}`,
     },
