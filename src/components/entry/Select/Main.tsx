@@ -55,10 +55,14 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
     currentValue: field.value,
   })
 
+  const currentGroups = useMemo(() => {
+    return optionGroups
+  }, [optionGroups])
+
   const currentOption = useMemo<OptionGroups<T>["options"]>(() => {
     const values = Array.isArray(structure.currentValue) ? structure.currentValue : [structure.currentValue]
-    return optionGroups?.flatMap(({ options }) => options)?.filter(({ value }) => values.includes(value))
-  }, [optionGroups, structure.currentValue])
+    return currentGroups?.flatMap(({ options }) => options)?.filter(({ value }) => values.includes(value))
+  }, [currentGroups, structure.currentValue])
 
   const {
     focusTrapRefs: { containerRef: trapRef },
@@ -107,10 +111,6 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
     onSelected?.(currentOption)
   }, [currentOption])
 
-  if (!optionGroups?.flatMap(({ options }) => options)?.length) {
-    return null
-  }
-
   return (
     <SelectMainContainer
       ref={containerRef}
@@ -146,39 +146,48 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
           aria-labelledby={`${name}-label`}
         >
           <div role="presentation">
-            {optionGroups.map(({ label, options }, index) => (
-              <SelectGroup role="group" key={`${name}-${index}-label`} aria-labelledby={`${name}-${index}-lebel`}>
-                <SelectLabel id={`${name}-${index}-label`} className={`${optionGroups.length <= 1 ? "sr-only" : ""}`}>
-                  {label}
-                </SelectLabel>
-                {options.map(({ value, text }) => (
-                  <SelectItem
-                    key={value}
-                    role="option"
-                    tabIndex={structure.isExpanded ? undefined : -1}
-                    onClick={() => {
-                      if (multiple && Array.isArray(structure.currentValue)) {
-                        const newValue = [...structure.currentValue].includes(value)
-                          ? [...structure.currentValue].filter((v: string) => v !== value)
-                          : [...structure.currentValue, value]
-                        field.onChange(newValue)
-                        setStructure((prev) => ({ ...prev, currentValue: newValue as T[FieldPath<T>][] }))
-                        return
-                      }
-                      field.onChange(value)
-                      setStructure((prev) => ({ ...prev, currentValue: value, isExpanded: false }))
-                    }}
-                    aria-selected={
-                      multiple && Array.isArray(structure.currentValue)
-                        ? [...structure.currentValue].includes(value)
-                        : value === structure.currentValue
-                    }
-                  >
-                    {text}
-                  </SelectItem>
-                ))}
+            {!currentGroups?.flatMap(({ options }) => options)?.length ? (
+              <SelectGroup role="group" key={`${name}-placeholder-label`} aria-labelledby={`${name}-placeholder-label`}>
+                <SelectLabel id={`${name}-placeholder-label`}>{placeholder}</SelectLabel>
               </SelectGroup>
-            ))}
+            ) : (
+              currentGroups.map(({ label, options }, index) => (
+                <SelectGroup role="group" key={`${name}-${index}-label`} aria-labelledby={`${name}-${index}-label`}>
+                  <SelectLabel
+                    id={`${name}-${index}-label`}
+                    className={`${currentGroups.length <= 1 ? "sr-only" : ""}`}
+                  >
+                    {label}
+                  </SelectLabel>
+                  {options.map(({ value, text }) => (
+                    <SelectItem
+                      key={value}
+                      role="option"
+                      tabIndex={structure.isExpanded ? undefined : -1}
+                      onClick={() => {
+                        if (multiple && Array.isArray(structure.currentValue)) {
+                          const newValue = [...structure.currentValue].includes(value)
+                            ? [...structure.currentValue].filter((v: string) => v !== value)
+                            : [...structure.currentValue, value]
+                          field.onChange(newValue)
+                          setStructure((prev) => ({ ...prev, currentValue: newValue as T[FieldPath<T>][] }))
+                          return
+                        }
+                        field.onChange(value)
+                        setStructure((prev) => ({ ...prev, currentValue: value, isExpanded: false }))
+                      }}
+                      aria-selected={
+                        multiple && Array.isArray(structure.currentValue)
+                          ? [...structure.currentValue].includes(value)
+                          : value === structure.currentValue
+                      }
+                    >
+                      {text}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              ))
+            )}
           </div>
         </div>
       </SelectMainLayer>
@@ -202,8 +211,8 @@ const SelectMain = <T extends FieldValues = object>(props: SelectMainProps<T>) =
         <option value="" disabled>
           {placeholder}
         </option>
-        {optionGroups.map(({ label, options }) => {
-          if (optionGroups.length === 1) {
+        {currentGroups.map(({ label, options }) => {
+          if (currentGroups.length === 1) {
             return options.map(({ text, value }) => (
               <option key={value} value={value}>
                 {text}

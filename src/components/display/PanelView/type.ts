@@ -1,7 +1,7 @@
 export const PanelViewSubjectStatusCode = {
-  Loading: "Loading",
-  Warning: "Warning",
-  Success: "Success",
+  Loading: "loading",
+  Warning: "warning",
+  Success: "success",
 } as const
 
 export type PanelViewSubjectStatusCode = (typeof PanelViewSubjectStatusCode)[keyof typeof PanelViewSubjectStatusCode]

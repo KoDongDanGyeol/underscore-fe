@@ -1,12 +1,13 @@
 import { useRef } from "react"
 import { useRecoilState } from "recoil"
 import { TypeMap, atomMap } from "@/stores/map"
+import { TypeCategoryCode } from "@/queries/api/map"
 
 const KAKAO_SDK_URL = `${process.env.NEXT_PUBLIC_API_KAKAO_URL}/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KAKAO_JS_KEY}&autoload=false&libraries=services&clusterer`
 
 type Level = number
 type Coordinates = { latitude: number; longitude: number }
-type Location = { id: string; name: string; coordinates: Coordinates }
+type Location = { id: string; content: string; coordinates: Coordinates }
 
 const useMap = () => {
   const [map, setMap] = useRecoilState(atomMap)
@@ -66,6 +67,10 @@ const useMap = () => {
     scriptRef.current.addEventListener("load", handleLoad)
   }
 
+  const onSearchOptionChanged = (option: { businessCode?: string; categoryCode?: TypeCategoryCode }) => {
+    setMap((prev) => ({ ...prev, ...option }))
+  }
+
   const onOverlayChanged = ({ shape, locations }: { shape: "pin" | "box"; locations: Location[] }) => {
     document
       .querySelectorAll(".overlay-pin")
@@ -81,10 +86,13 @@ const useMap = () => {
       const overlay = new window.kakao.maps.CustomOverlay({
         clickable: true,
         position: center,
-        xAnchor: 0.5,
-        yAnchor: 0.9,
+        ...(shape === "pin"
+          ? { xAnchor: 0.5, yAnchor: 0.9 }
+          : shape === "box"
+            ? { xAnchor: 0, yAnchor: 1.1 }
+            : { xAnchor: 0.5, yAnchor: 0.5 }),
         content: `<button type="button" class="overlay overlay-${shape}" data-overlay-id="${location.id}">
-          <span>${location.name}</span>
+          ${location.content}
         </button>`,
       })
       overlay.setMap(window.kakaoMap)
@@ -132,6 +140,7 @@ const useMap = () => {
     onOverlayChanged,
     onOverlayFocus,
     onOverlayBlur,
+    onSearchOptionChanged,
     onRemove,
   }
 }

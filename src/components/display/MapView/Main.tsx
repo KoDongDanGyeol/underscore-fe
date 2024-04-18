@@ -90,7 +90,7 @@ const MapViewMain = (props: MapViewMainProps) => {
   }
 
   return (
-    <MapViewMainContainer className={`${className}`} $isPending={isInitialized} {...restProps}>
+    <MapViewMainContainer className={`${className}`} $isPending={!isInitialized} {...restProps}>
       <div ref={containerRef} id="map" />
     </MapViewMainContainer>
   )
@@ -173,6 +173,37 @@ const MapViewMainContainer = styled.div<MapViewMainStyled>`
     }
   }
   .overlay-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 16px;
+    color: rgb(var(--color-neutral100));
+    background: rgb(var(--color-red500));
+    strong {
+    }
+    span {
+      font-weight: 700;
+    }
+    &:before {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: block;
+      border-left: 12px solid rgb(var(--color-red500));
+      border-bottom: 12px solid transparent;
+      transform: translateY(-2px);
+    }
+    &:hover,
+    &:focus,
+    &.active {
+      transform: scale(1.2) translateY(-2px);
+      transform-origin: left bottom;
+      background: rgb(var(--color-red600));
+      &:before {
+        border-left-color: rgb(var(--color-red600));
+      }
+    }
   }
 `
 
