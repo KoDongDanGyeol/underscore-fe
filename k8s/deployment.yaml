@@ -16,11 +16,6 @@ spec:
           # 여러분의 image 주소를 입력해주세요.
           image: krmp-d2hub-idock.9rum.cc/dev-test/repo_13d4efd6d916
           env:
-            - name: NEXT_CONFIG_OUTPUT
-              valueFrom:
-                secretKeyRef:
-                  name: secret-env
-                  key: NEXT_CONFIG_OUTPUT
             - name: NEXT_PUBLIC_API_URL
               valueFrom:
                 secretKeyRef:
