@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone",
+  output: process.env.NEXT_CONFIG_OUTPUT,
   experimental: {
     instrumentationHook: true,
   },
@@ -28,10 +28,6 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      {
-        source: "/api/:path*",
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
-      },
       {
         source: "/map/search-location",
         has: [

@@ -29,8 +29,7 @@ jobs:
           echo "AWS_IAM=$AWS_IAM" >> .env
           echo "AWS_REGION=$AWS_REGION" >> .env
           echo "AWS_PUBLIC_DOMAIN=$AWS_PUBLIC_DOMAIN" >> .env
-          echo "PROJECT_ENV=$PROJECT_ENV" >> .env
-          echo "NEXT_PUBLIC_PROJECT_ENV=$NEXT_PUBLIC_PROJECT_ENV" >> .env
+          echo "NEXT_CONFIG_OUTPUT=$NEXT_CONFIG_OUTPUT" >> .env
           echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
           echo "NEXT_PUBLIC_API_KAKAO_URL=$NEXT_PUBLIC_API_KAKAO_URL" >> .env
           echo "NEXT_PUBLIC_API_KAKAO_JS_KEY=$NEXT_PUBLIC_API_KAKAO_JS_KEY" >> .env
@@ -44,8 +43,7 @@ jobs:
           AWS_IAM: ${{ secrets.AWS_IAM }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_PUBLIC_DOMAIN: ${{ secrets.AWS_PUBLIC_DOMAIN }}
-          PROJECT_ENV: ${{ secrets.PROJECT_ENV }}
-          NEXT_PUBLIC_PROJECT_ENV: ${{ secrets.NEXT_PUBLIC_PROJECT_ENV }}
+          NEXT_CONFIG_OUTPUT: ${{ secrets.NEXT_CONFIG_OUTPUT }}
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           NEXT_PUBLIC_API_KAKAO_URL: ${{ secrets.NEXT_PUBLIC_API_KAKAO_URL }}
           NEXT_PUBLIC_API_KAKAO_JS_KEY: ${{ secrets.NEXT_PUBLIC_API_KAKAO_JS_KEY }}
