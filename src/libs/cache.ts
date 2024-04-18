@@ -1,6 +1,6 @@
 import { TypeCacheKey, TypeCacheKeyHelper } from "@/types/cache"
 
-export function getCacheKey<T extends TypeCacheKey>(keyConfig: T, prefix: string[] = []): TypeCacheKeyHelper<T> {
+export const getCacheKey = <T extends TypeCacheKey>(keyConfig: T, prefix: string[] = []): TypeCacheKeyHelper<T> => {
   const keyFn = (name: string) => prefix.concat([name])
   const toolObj = {} as TypeCacheKey
   for (const k of Object.keys(keyConfig)) {
@@ -19,4 +19,14 @@ export function getCacheKey<T extends TypeCacheKey>(keyConfig: T, prefix: string
     }
   }
   return toolObj as TypeCacheKeyHelper<T>
+}
+
+export const getToken = async () => {
+  if (typeof window === "undefined") {
+    const { cookies: serverCookies } = await import("next/headers")
+    return serverCookies()?.get("authToken")?.value
+  } else {
+    const { default: clientCookies } = await import("js-cookie")
+    return clientCookies.get("authToken")
+  }
 }

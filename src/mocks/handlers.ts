@@ -1,5 +1,5 @@
-import userHandler from "@/mocks/api/userHandler"
+import { userHandlers, mapHandlers } from "@/mocks/api"
 
-const handlers = [...userHandler]
+const handlers = [...userHandlers, ...mapHandlers]
 
 export default handlers

@@ -68,6 +68,10 @@ interface ButtonMainStyled<C extends React.ElementType = "button"> {
 
 const ButtonSquare = css<ButtonMainStyled>`
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-weight: 400;
   text-align: center;
   color: rgb(var(--color-neutral1100));
@@ -242,6 +246,9 @@ const ButtonSquareSecondary = css<ButtonMainStyled>`
 
 const ButtonPlain = css<ButtonMainStyled>`
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-weight: 400;
   color: rgb(var(--color-neutral1100));
   /* size */
@@ -354,9 +361,6 @@ const ButtonPlainSecondary = css<ButtonMainStyled>`
 `
 
 const ButtonMainContainer = styled.button<ButtonMainStyled>`
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
   transition-property: border-color, background-color;
   transition-duration: 0.2s;
   transition-timing-function: var(--motion-ease-in-out);
@@ -401,10 +405,13 @@ const ButtonMainContainer = styled.button<ButtonMainStyled>`
             font-size: ${(props) => props.theme.typo.size.xs};
           `
         case ButtonSize.LG:
+          return css`
+            font-size: ${(props) => props.theme.typo.size.sm};
+          `
         case ButtonSize.BASE:
         default:
           return css`
-            font-size: ${(props) => props.theme.typo.size.sm};
+            font-size: ${(props) => props.theme.typo.size.xs};
           `
       }
     }}

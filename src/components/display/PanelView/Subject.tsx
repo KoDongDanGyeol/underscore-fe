@@ -1,25 +1,29 @@
 "use client"
 
 import styled, { css } from "styled-components"
-import Icon, { IconName } from "@/components/general/Icon"
 import { PanelViewSubjectStatusCode } from "@/components/display/PanelView/type"
+import Icon from "@/components/general/Icon"
 
 export interface PanelViewSubjectProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
-  status: { code: PanelViewSubjectStatusCode; message: string }
+  statusCode: PanelViewSubjectStatusCode
+  statusMessage: string
+  hasIcon: boolean
   count?: number
   suffixEl?: React.ReactNode
 }
 
 const PanelViewSubject = (props: PanelViewSubjectProps) => {
-  const { status, count, suffixEl = null, className = "", children, ...restProps } = props
+  const { statusCode, statusMessage, hasIcon, count, suffixEl = null, className = "", children, ...restProps } = props
 
   return (
-    <PanelViewSubjectContainer $statusCode={status.code} className={`${className}`} {...restProps}>
+    <PanelViewSubjectContainer $statusCode={statusCode} className={`${className}`} {...restProps}>
       <PanelViewSubjectContent>{children}</PanelViewSubjectContent>
-      {status.code in IconName && (
+      {hasIcon && (
         <PanelViewSubjectStatus>
-          <Icon name={status.code as IconName} aria-hidden={true} />
-          <span className="sr-only">{status.message}</span>
+          {statusCode === PanelViewSubjectStatusCode.Loading && <Icon name="Loading" aria-hidden={true} />}
+          {statusCode === PanelViewSubjectStatusCode.Success && <Icon name="CheckCircle" aria-hidden={true} />}
+          {statusCode === PanelViewSubjectStatusCode.Warning && <Icon name="ExclamationCircle" aria-hidden={true} />}
+          <span className="sr-only">{statusMessage}</span>
         </PanelViewSubjectStatus>
       )}
       {!Number.isNaN(count) && <PanelViewSubjectCount>{count}</PanelViewSubjectCount>}
@@ -29,15 +33,16 @@ const PanelViewSubject = (props: PanelViewSubjectProps) => {
 }
 
 interface PanelViewSubjectStyled {
-  $statusCode: PanelViewSubjectProps["status"]["code"]
+  $statusCode: PanelViewSubjectProps["statusCode"]
 }
 
 const PanelViewSubjectContent = styled.strong`
+  flex: none;
   font-weight: 500;
 `
 
 const PanelViewSubjectStatus = styled.div`
-  font-size: 12px;
+  flex: none;
 `
 
 const PanelViewSubjectCount = styled.div`
@@ -53,6 +58,8 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   gap: 4px;
   height: 38px;
   padding: 0 20px;
+  font-size: ${(props) => props.theme.typo.size.sm};
+  line-height: ${(props) => props.theme.typo.leading.sm};
   background: rgb(var(--color-neutral100));
   border-bottom: 1px solid rgb(var(--color-neutral400));
   &:not(:first-child) {
@@ -65,23 +72,18 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   }
   ${(props) => {
     switch (props.$statusCode) {
-      case PanelViewSubjectStatusCode.Loading:
-        return css`
-          ${PanelViewSubjectStatus} {
-            color: rgb(var(--color-primary600));
-          }
-        `
       case PanelViewSubjectStatusCode.Warning:
         return css`
           ${PanelViewSubjectStatus} {
-            color: rgb(var(--color-yellow700));
+            color: rgb(var(--color-gold500));
           }
         `
+      case PanelViewSubjectStatusCode.Loading:
       case PanelViewSubjectStatusCode.Success:
       default:
         return css`
           ${PanelViewSubjectStatus} {
-            /*  */
+            color: rgb(var(--color-primary600));
           }
         `
     }

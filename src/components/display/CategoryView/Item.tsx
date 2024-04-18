@@ -69,9 +69,9 @@ const CategoryViewItemAddress = styled.div`
 const CategoryViewItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  text-align: left;
   width: 100%;
   padding: 12px 20px;
+  text-align: left;
   background: rgb(var(--color-neutral100));
   &:focus {
     color: rgb(var(--color-primary600));

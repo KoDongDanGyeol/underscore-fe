@@ -29,16 +29,16 @@ const StyledGlobal = styled.createGlobalStyle`
     --color-red900: ${(props) => props.theme.color.light.red900};
     --color-red1000: ${(props) => props.theme.color.light.red1000};
 
-    --color-yellow100: ${(props) => props.theme.color.light.yellow100};
-    --color-yellow200: ${(props) => props.theme.color.light.yellow200};
-    --color-yellow300: ${(props) => props.theme.color.light.yellow300};
-    --color-yellow400: ${(props) => props.theme.color.light.yellow400};
-    --color-yellow500: ${(props) => props.theme.color.light.yellow500};
-    --color-yellow600: ${(props) => props.theme.color.light.yellow600};
-    --color-yellow700: ${(props) => props.theme.color.light.yellow700};
-    --color-yellow800: ${(props) => props.theme.color.light.yellow800};
-    --color-yellow900: ${(props) => props.theme.color.light.yellow900};
-    --color-yellow1000: ${(props) => props.theme.color.light.yellow1000};
+    --color-gold100: ${(props) => props.theme.color.light.gold100};
+    --color-gold200: ${(props) => props.theme.color.light.gold200};
+    --color-gold300: ${(props) => props.theme.color.light.gold300};
+    --color-gold400: ${(props) => props.theme.color.light.gold400};
+    --color-gold500: ${(props) => props.theme.color.light.gold500};
+    --color-gold600: ${(props) => props.theme.color.light.gold600};
+    --color-gold700: ${(props) => props.theme.color.light.gold700};
+    --color-gold800: ${(props) => props.theme.color.light.gold800};
+    --color-gold900: ${(props) => props.theme.color.light.gold900};
+    --color-gold1000: ${(props) => props.theme.color.light.gold1000};
 
     --color-green100: ${(props) => props.theme.color.light.green100};
     --color-green200: ${(props) => props.theme.color.light.green200};
