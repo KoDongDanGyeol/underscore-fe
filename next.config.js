@@ -31,10 +31,10 @@ const nextConfig = {
       {
         source: "/map/search-location",
         has: [
-          { type: "query", key: "searchKeyword", value: "(?<searchKeyword>.*)" },
+          { type: "query", key: "location", value: "(?<location>.*)" },
           { type: "query", key: "page", value: "(?<page>.*)" },
         ],
-        destination: `${process.env.NEXT_PUBLIC_API_KAKAO_URL}/v2/local/search/address.json?analyze_type=exact&query=:searchKeyword&page=:page`,
+        destination: `${process.env.NEXT_PUBLIC_API_KAKAO_URL}/v2/local/search/address.json?analyze_type=exact&query=:location&page=:page`,
       },
       {
         source: "/map/search-category",

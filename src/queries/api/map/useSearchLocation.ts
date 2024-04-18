@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 import axios from "axios"
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query"
+import { useInfiniteQuery } from "@tanstack/react-query"
 import { getCacheKey } from "@/libs/cache"
 import { mapKey, TypeLocationListAllId, TypeLocationListAllFilter } from "@/queries/api/map"
 import { TypeFetchList } from "@/types/cache"
@@ -53,7 +53,11 @@ const fetchSearchLocation: TypeFetchList<TypeSearchLocationResult, TypeLocationL
 ) => {
   const { data } = await axios<TypeSearchLocationResult>({
     method: "GET",
-    url: `/map/search-location?searchKeyword=${encodeURIComponent(searchKeyword)}&page=${page}`,
+    url: `/map/search-location`,
+    params: {
+      page: page,
+      location: encodeURIComponent(searchKeyword),
+    },
     headers: {
       Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_API_KAKAO_REST_KEY}`,
     },
@@ -73,7 +77,6 @@ const useSearchLocation = ({ searchKeyword }: TypeLocationListAllFilter) => {
     },
     initialPageParam: 1,
     enabled: !!searchKeyword,
-    placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 60 * 23,
     gcTime: 1000 * 60 * 60 * 24,
   })
