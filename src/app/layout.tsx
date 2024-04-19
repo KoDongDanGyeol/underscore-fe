@@ -31,7 +31,7 @@ const RootLayout = (props: RootLayoutProps) => {
     <html lang="ko" className={notoSansKr.variable} suppressHydrationWarning>
       <head>
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
         <PublicEnvScript />
         <Script src="https://developers.kakao.com/sdk/js/kakao.js" async />
       </head>

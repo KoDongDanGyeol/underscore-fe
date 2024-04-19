@@ -14,11 +14,11 @@ import Alert, { AlertStatusCode } from "@/components/feedback/Alert"
 import Button from "@/components/general/Button"
 import Icon from "@/components/general/Icon"
 
-export interface MapReportAnalysisMainProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MapAnalysisMainProps extends React.HTMLAttributes<HTMLDivElement> {
   //
 }
 
-const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
+const MapAnalysisMain = (props: MapAnalysisMainProps) => {
   const { className = "", ...restProps } = props
 
   const {
@@ -91,7 +91,7 @@ const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
   }, [])
 
   return (
-    <MapReportAnalysisMainContainer className={`${className}`} {...restProps}>
+    <MapAnalysisMainContainer className={`${className}`} {...restProps}>
       <SearchBusiness
         formData={searchBusiness}
         formAction={{
@@ -110,7 +110,7 @@ const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
         }}
         handleValid={onSubmit}
       >
-        <MapReportAnalysisMainAlert statusCode={AlertStatusCode.Info} statusMessage="asdf" hasIcon={true}>
+        <MapAnalysisMainAlert statusCode={AlertStatusCode.Info} statusMessage="asdf" hasIcon={true}>
           지금 멤버십에 가입하면 개업 매력도 전체 그래프와 분석 리포트를 확인 할 수 있어요
           <br />
           <Link href="/mypage/profile" target="_blank" passHref={true} legacyBehavior={true}>
@@ -118,7 +118,7 @@ const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
               회원정보 바로가기
             </Button>
           </Link>
-        </MapReportAnalysisMainAlert>
+        </MapAnalysisMainAlert>
       </SearchBusiness>
       <PanelView.Subject
         {...(!isInitialized || isLoading || isFetching
@@ -130,7 +130,7 @@ const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
       >
         개업 매력도
       </PanelView.Subject>
-      <MapReportAnalysisMainResult>
+      <MapAnalysisMainResult>
         {analysisData && Boolean(analysisData?.businessAttractions?.length) && (
           <AnalysisView.Group>
             {analysisData?.businessAttractions?.map((analysis) => {
@@ -173,17 +173,21 @@ const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
             })}
           </AnalysisView.Group>
         )}
-      </MapReportAnalysisMainResult>
-      {!searchBusiness.watch("businessCode") && (
+      </MapAnalysisMainResult>
+      {!businessCode && (
         <PanelView.Message>
-          <strong>업종을 선택해주세요</strong>
+          <strong>
+            <em>업종</em>을 선택해주세요
+          </strong>
           <span>업종별 상권분석 및 개업 매력도를 확인해보세요</span>
         </PanelView.Message>
       )}
       {/* TODO */}
       {true && (
         <PanelView.Message>
-          <strong>로그인 후 확인 가능해요</strong>
+          <strong>
+            <em>로그인</em> 후 확인 가능해요
+          </strong>
           <span>업종별 상권분석 및 개업 매력도를 확인해보세요</span>
           <Link href="/auth/join" target="_blank" passHref={true} legacyBehavior={true}>
             <Button asTag="a">로그인</Button>
@@ -198,10 +202,18 @@ const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
           <span>지도를 확대하여 확인해보세요</span>
         </PanelView.Message>
       )}
-      {analysisData?.count === 0 && (
+      {(analysisData?.count ?? 0) === 0 && !!businessCode && (
         <PanelView.Message>
           <strong>
             검색된 <em>행정동</em> 정보가 없어요
+          </strong>
+          <span>지도 위치를 변경하여 확인해보세요</span>
+        </PanelView.Message>
+      )}
+      {(analysisData?.count ?? 0) > 0 && (analysisData?.businessAttractions?.length ?? 0) === 0 && (
+        <PanelView.Message>
+          <strong>
+            상권분석은 최대 <em>20개</em>까지 조회 가능해요
           </strong>
           <span>지도 위치를 변경하여 확인해보세요</span>
         </PanelView.Message>
@@ -216,20 +228,20 @@ const MapReportAnalysisMain = (props: MapReportAnalysisMainProps) => {
           </span>
         </PanelView.Message>
       )}
-    </MapReportAnalysisMainContainer>
+    </MapAnalysisMainContainer>
   )
 }
 
-const MapReportAnalysisMainAlert = styled(Alert)`
+const MapAnalysisMainAlert = styled(Alert)`
   margin-top: 8px;
 `
 
-const MapReportAnalysisMainResult = styled(AnalysisView)`
+const MapAnalysisMainResult = styled(AnalysisView)`
   /*  */
 `
 
-const MapReportAnalysisMainContainer = styled.div`
+const MapAnalysisMainContainer = styled.div`
   /*  */
 `
 
-export default MapReportAnalysisMain
+export default MapAnalysisMain
