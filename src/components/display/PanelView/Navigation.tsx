@@ -13,46 +13,28 @@ const PanelViewNavigation = (props: PanelViewNavigationProps) => {
   const { className = "", ...restProps } = props
 
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   return (
     <PanelViewNavigationContainer className={`${className}`} {...restProps}>
       <ol>
         <li>
-          <Link href={`/map?${searchParams.toString()}`} prefetch={false} passHref={true} legacyBehavior={true}>
+          <Link href="/map" prefetch={false} passHref={true} legacyBehavior={true}>
             <Button asTag="a" isActive={/\/map(?!\/).*/.test(pathname)}>
               주변정보
             </Button>
           </Link>
         </li>
         <li>
-          <Link
-            href={`/map/report-analysis?${searchParams.toString()}`}
-            prefetch={false}
-            passHref={true}
-            legacyBehavior={true}
-          >
-            <Button asTag="a" isActive={/\/map\/report-analysis(?!\/).*/.test(pathname)}>
+          <Link href="/map/analysis" prefetch={false} passHref={true} legacyBehavior={true}>
+            <Button asTag="a" isActive={/\/map\/analysis(?!\/).*/.test(pathname)}>
               상권분석
             </Button>
           </Link>
         </li>
         <li>
-          <Link href={`/map/myplace?${searchParams.toString()}`} prefetch={false} passHref={true} legacyBehavior={true}>
+          <Link href="/map/myplace" prefetch={false} passHref={true} legacyBehavior={true}>
             <Button asTag="a" isActive={/\/map\/myplace(?!\/).*/.test(pathname)}>
               내장소
-            </Button>
-          </Link>
-        </li>
-        <li>
-          <Link
-            href={`/map/compare-analysis?${searchParams.toString()}`}
-            prefetch={false}
-            passHref={true}
-            legacyBehavior={true}
-          >
-            <Button asTag="a" isActive={/\/map\/compare-analysis(?!\/).*/.test(pathname)}>
-              비교하기
             </Button>
           </Link>
         </li>

@@ -2,7 +2,7 @@ import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query
 import { getCacheKey } from "@/libs/cache"
 import { mapKey } from "@/queries/api/map"
 import { fetchSearchBusiness } from "@/queries/api/map/useSearchBusiness"
-import MapReportAnalysis from "@/components/page/MapReportAnalysis"
+import MapAnalysis from "@/components/page/MapAnalysis"
 
 interface PageProps {
   //
@@ -25,7 +25,7 @@ const Page = async (props: PageProps) => {
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <MapReportAnalysis />
+      <MapAnalysis />
     </HydrationBoundary>
   )
 }
