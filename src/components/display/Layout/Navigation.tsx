@@ -18,6 +18,23 @@ const menuItems = [
     key: "map",
     label: "지도페이지",
     href: "/map",
+    items: [
+      {
+        key: "category",
+        label: "주변정보",
+        href: "/map",
+      },
+      {
+        key: "analysis",
+        label: "상권분석",
+        href: "/map/analysis",
+      },
+      {
+        key: "myplace",
+        label: "내장소",
+        href: "/map/myplace",
+      },
+    ],
   },
   {
     key: "mypage",
@@ -46,6 +63,7 @@ const menuItems = [
     label: "로그인",
     href: "/auth/join",
   },
+  // TODO
   {
     key: "logout",
     label: "로그아웃",
