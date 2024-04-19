@@ -48,7 +48,7 @@ const MenuItem = (props: MenuItemProps) => {
           {origin.label}
           <span className="sr-only">{isSelected ? "(선택됨)" : ""}</span>
           <span className="sr-only">{isOpened ? "닫기" : "열기"}</span>
-          <Icon name="CaretDown" aria-hidden="true" />
+          <Icon name="CaretDown" aria-hidden={true} />
         </button>
         {children}
       </MenuItemContainer>
