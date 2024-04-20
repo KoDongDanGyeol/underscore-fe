@@ -90,19 +90,21 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
 
   return (
     <MapCategoryMainContainer className={`${className}`} {...restProps}>
-      <SearchCategory
-        formData={searchCategory}
-        formAction={{
-          submit: "조회",
-        }}
-        formPlaceholder={{
-          categoryCode: "카테고리 선택",
-        }}
-        formOptionGroups={{
-          categoryCode: CategoryOptionGroups,
-        }}
-        handleValid={onSubmit}
-      />
+      <PanelView.Filter>
+        <SearchCategory
+          formData={searchCategory}
+          formAction={{
+            submit: "조회",
+          }}
+          formPlaceholder={{
+            categoryCode: "카테고리 선택",
+          }}
+          formOptionGroups={{
+            categoryCode: CategoryOptionGroups,
+          }}
+          handleValid={onSubmit}
+        />
+      </PanelView.Filter>
       <PanelView.Subject
         {...(!isInitialized || isLoading || isFetching
           ? { statusCode: PanelViewSubjectStatusCode.Loading, statusMessage: "로딩중", hasIcon: true }

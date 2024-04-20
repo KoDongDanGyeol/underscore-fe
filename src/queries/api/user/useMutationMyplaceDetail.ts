@@ -86,8 +86,7 @@ const useMutationMyplaceDetail = () => {
       const data = await postMyplaceDetail(null, { ...params })
       return data
     },
-    onSuccess: (data) => {
-      console.log("data", JSON.stringify(data))
+    onSuccess: () => {
       handleOnSuccess()
     },
     onError: (error) => {
