@@ -111,7 +111,7 @@ const PanelViewMainContainer = styled.div<PanelViewMainStyled>`
   display: flex;
   flex-direction: column;
   width: 385px;
-  z-index: 9;
+  z-index: 10;
   @media ${(props) => props.theme.screen.device.md} {
     position: fixed;
     top: calc(var(--var, 1vh) * 100);

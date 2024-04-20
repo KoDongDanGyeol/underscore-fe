@@ -140,6 +140,7 @@ const MapViewMainContainer = styled.div<MapViewMainStyled>`
       left: 50%;
       display: block;
       max-width: 100px;
+      padding-top: 5px;
       font-size: 12px;
       line-height: 1.2;
       font-weight: 800;
@@ -150,7 +151,7 @@ const MapViewMainContainer = styled.div<MapViewMainStyled>`
         1px -1px 0 rgb(var(--color-neutral100)),
         -1px 1px 0 rgb(var(--color-neutral100)),
         1px 1px 0 rgb(var(--color-neutral100));
-      transform: translateX(-50%) translateY(5px);
+      transform: translateX(-50%);
     }
     &:before {
       content: "";

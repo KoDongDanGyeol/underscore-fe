@@ -60,7 +60,7 @@ const LayoutHeaderContainer = styled.header`
   padding: 0 20px 0 12px;
   background: rgb(var(--color-neutral100));
   box-shadow: 0px 2px 8px 0px rgba(var(--color-neutral1300), 0.15);
-  z-index: 998;
+  z-index: 1000;
   ${LayoutHeaderLogo} {
     order: 1;
   }

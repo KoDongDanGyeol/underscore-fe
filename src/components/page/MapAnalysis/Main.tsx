@@ -5,8 +5,9 @@ import Link from "next/link"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import useMap from "@/libs/hook/useMap"
-import useSearchBusiness from "@/queries/api/map/useSearchBusiness"
-import useSearchAnalysis, { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysis"
+import useSearchBusinessList from "@/queries/api/map/useSearchBusinessList"
+import useSearchAnalysisList, { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysisList"
+import useMutationMyplaceDetail from "@/queries/api/user/useMutationMyplaceDetail"
 import SearchBusiness, { TypeSearchBusiness } from "@/components/form/SearchBusiness"
 import PanelView, { PanelViewSubjectStatusCode } from "@/components/display/PanelView"
 import AnalysisView from "@/components/display/AnalysisView"
@@ -26,7 +27,7 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
     onOverlayChanged,
     onOverlayFocus,
     onOverlayBlur,
-    onSearchOptionChanged,
+    onFilterChanged,
   } = useMap()
 
   const searchBusiness = useForm<TypeSearchBusiness>({
@@ -36,37 +37,48 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
     },
   })
 
-  const { data: businessData } = useSearchBusiness(1)
+  const { data: businessData } = useSearchBusinessList(1)
 
   const {
     data: analysisData,
     isLoading,
     isFetching,
     isPending,
-  } = useSearchAnalysis(1, {
+  } = useSearchAnalysisList(1, {
     level,
     searchBounds: bounds,
     businessCode,
   })
 
+  const { postMyplaceDetailAsync, postMyplaceDetailStatus } = useMutationMyplaceDetail()
+
   const makeOverlayOption = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
     return {
       id: analysis.legalDistrictCode,
       content: `<strong>${analysis.administrativeDistrictName.match(/\S+$/)?.[0] ?? ""}</strong><span>${analysis.totalScore}점</span>`,
-      coordinates: analysis.coordinates,
+      coordinates: {
+        latitude: parseFloat(`${analysis.coordinates.latitude}`),
+        longitude: parseFloat(`${analysis.coordinates.longitude}`),
+      },
     }
   }
 
   const onSubmit = (data: TypeSearchBusiness) => {
-    onSearchOptionChanged({ businessCode: data.businessCode })
+    onFilterChanged({ businessCode: data.businessCode })
   }
 
-  const onReport = () => {
-    console.log("onReport")
+  // TODO
+  const onReport = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
+    console.log("onReport", analysis)
   }
 
-  const onSave = () => {
-    console.log("onSave")
+  // TODO
+  const onSave = (analysis: TypeSearchAnalysisResult["businessAttractions"][number]) => {
+    postMyplaceDetailAsync({
+      id: analysis.legalDistrictCode,
+      addressName: analysis.administrativeDistrictName,
+      coordinates: analysis.coordinates,
+    })
   }
 
   useEffect(() => {
@@ -77,18 +89,12 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
   }, [businessData])
 
   useEffect(() => {
-    onOverlayChanged({
-      shape: "box" as const,
-      locations: (analysisData?.businessAttractions ?? []).map(makeOverlayOption),
-    })
-  }, [analysisData?.businessAttractions])
-
-  useEffect(() => {
+    if (!isInitialized) return
     onOverlayChanged({
       shape: "box",
       locations: (analysisData?.businessAttractions ?? []).map(makeOverlayOption),
     })
-  }, [])
+  }, [isInitialized, analysisData?.businessAttractions])
 
   return (
     <MapAnalysisMainContainer className={`${className}`} {...restProps}>
@@ -143,32 +149,13 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
                   key={analysis.legalDistrictCode}
                   labels={analysisData.labels}
                   data={analysis}
-                  data-target={analysis.legalDistrictCode}
+                  data-target-id={`overlay${analysis.legalDistrictCode}`}
                   tabIndex={0}
-                  onFocus={() => onOverlayFocus(options)}
                   onMouseOver={() => onOverlayFocus(options)}
-                  onBlur={() => onOverlayBlur(options)}
                   onMouseOut={() => onOverlayBlur(options)}
-                >
-                  {/* Todo */}
-                  <Button
-                    type="button"
-                    shape="plain"
-                    prefixEl={<Icon name="LineChart" aria-hidden={true} />}
-                    onClick={onReport}
-                  >
-                    분석리포트 열기
-                  </Button>
-                  {/* TODO */}
-                  <Button
-                    type="button"
-                    shape="plain"
-                    prefixEl={<Icon name="Environment" aria-hidden={true} />}
-                    onClick={onSave}
-                  >
-                    내장소 추가
-                  </Button>
-                </AnalysisView.Item>
+                  onReport={() => onReport(analysis)}
+                  onSave={() => onSave(analysis)}
+                />
               )
             })}
           </AnalysisView.Group>

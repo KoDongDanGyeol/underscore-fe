@@ -41,18 +41,18 @@ const useMap = () => {
       center: center.match(/(\d+(.)?\d+)/g).map(parseFloat) as TypeMap["center"],
       bounds: bounds.match(/(\d+(.)?\d+)/g).map(parseFloat) as TypeMap["bounds"],
     }))
+    document.querySelectorAll(".overlay").forEach((overlay) => overlay.removeEventListener("click", handleOverlayClick))
+    document.querySelectorAll(".overlay").forEach((overlay) => overlay.addEventListener("click", handleOverlayClick))
   }
 
-  const handlePinOverlayClick = (event: Event) => {
-    if (!(event.target instanceof HTMLButtonElement)) return
-    setMap((prev) => ({ ...prev, mode: "Advanced" }))
-    const target = document.querySelector(`[data-target="${event.target.dataset?.overlayId}"]`) as HTMLDivElement
-    target?.focus?.()
-  }
-
-  const handleBoxOverlayClick = (event: Event) => {
-    if (!(event.target instanceof HTMLButtonElement)) return
-    console.log("handleBoxOverlayClick")
+  const handleOverlayClick = (event: Event) => {
+    const target = event.target instanceof HTMLElement ? event.target.closest("button") : null
+    const overlayId = target?.dataset?.overlayId
+    document.querySelectorAll(`[data-target-id]`).forEach((element) => {
+      if (!(element instanceof HTMLElement) || element?.dataset?.targetId !== overlayId) return
+      setMap((prev) => ({ ...prev, mode: "Advanced" }))
+      element?.focus?.()
+    })
   }
 
   const onInit = ({ level, coordinates }: { level: Level; coordinates: Coordinates }) => {
@@ -67,20 +67,13 @@ const useMap = () => {
     scriptRef.current.addEventListener("load", handleLoad)
   }
 
-  const onSearchOptionChanged = (option: { businessCode?: string; categoryCode?: TypeCategoryCode }) => {
+  const onFilterChanged = (option: { businessCode?: string; categoryCode?: TypeCategoryCode }) => {
     setMap((prev) => ({ ...prev, ...option }))
   }
 
   const onOverlayChanged = ({ shape, locations }: { shape: "pin" | "box"; locations: Location[] }) => {
-    document
-      .querySelectorAll(".overlay-pin")
-      .forEach((overlay) => overlay.removeEventListener("click", handlePinOverlayClick))
-    document
-      .querySelectorAll(".overlay-box")
-      .forEach((overlay) => overlay.removeEventListener("click", handleBoxOverlayClick))
-    if (window.kakaoOverlays && window.kakaoOverlays.length)
-      window.kakaoOverlays.forEach((overlay) => overlay.setMap(null))
-
+    document.querySelectorAll(".overlay").forEach((overlay) => overlay.removeEventListener("click", handleOverlayClick))
+    if (window.kakaoOverlays) window.kakaoOverlays.forEach((overlay) => overlay.setMap(null))
     const overlays = locations.map((location) => {
       const center = new window.kakao.maps.LatLng(location.coordinates.latitude, location.coordinates.longitude)
       const overlay = new window.kakao.maps.CustomOverlay({
@@ -91,7 +84,7 @@ const useMap = () => {
           : shape === "box"
             ? { xAnchor: 0, yAnchor: 1.1 }
             : { xAnchor: 0.5, yAnchor: 0.5 }),
-        content: `<button type="button" class="overlay overlay-${shape}" data-overlay-id="${location.id}">
+        content: `<button type="button" class="overlay overlay-${shape}" data-overlay-id="overlay${location.id}">
           ${location.content}
         </button>`,
       })
@@ -101,19 +94,28 @@ const useMap = () => {
 
     window.kakaoOverlays = overlays
     document.querySelectorAll(`.overlay-${shape}`).forEach((overlay) => {
-      const event = shape === "pin" ? handlePinOverlayClick : shape === "box" ? handleBoxOverlayClick : () => {}
-      overlay.addEventListener("click", event)
+      overlay.addEventListener("click", handleOverlayClick)
     })
   }
 
   const onOverlayFocus = ({ shape, location }: { shape: "pin" | "box"; location: Location }) => {
-    const target = document.querySelector(`.overlay-${shape}[data-overlay-id="${location.id}"]`) as HTMLButtonElement
-    if (target) target.classList.add("active")
+    const overlayId = `overlay${location.id}`
+    document.querySelectorAll(`.overlay-${shape}[data-overlay-id]`).forEach((element) => {
+      if (!(element instanceof HTMLElement) || element?.dataset?.overlayId !== overlayId) return
+      setMap((prev) => ({ ...prev, mode: "Advanced" }))
+      element.classList.add("active")
+      element?.focus?.()
+    })
   }
 
   const onOverlayBlur = ({ shape, location }: { shape: "pin" | "box"; location: Location }) => {
-    const target = document.querySelector(`.overlay-${shape}[data-overlay-id="${location.id}"]`) as HTMLButtonElement
-    if (target) target.classList.remove("active")
+    const overlayId = `overlay${location.id}`
+    document.querySelectorAll(`.overlay-${shape}[data-overlay-id]`).forEach((element) => {
+      if (!(element instanceof HTMLElement) || element?.dataset?.overlayId !== overlayId) return
+      setMap((prev) => ({ ...prev, mode: "Advanced" }))
+      element.classList.remove("active")
+      element?.focus?.()
+    })
   }
 
   const onMove = ({ coordinates }: { coordinates: Coordinates }) => {
@@ -140,7 +142,7 @@ const useMap = () => {
     onOverlayChanged,
     onOverlayFocus,
     onOverlayBlur,
-    onSearchOptionChanged,
+    onFilterChanged,
     onRemove,
   }
 }
