@@ -68,6 +68,11 @@ const MapViewMain = (props: MapViewMainProps) => {
     router.replace(`${pathname}?level=${level}&latitude=${center[0]}&longitude=${center[1]}`)
   }, [level, center])
 
+  useEffect(() => {
+    if (!isInitialized) return
+    router.replace(`${pathname}?level=${level}&latitude=${center[0]}&longitude=${center[1]}`)
+  }, [pathname])
+
   if (!isMounted) {
     return (
       <MapViewMainContainer $isPending={true}>
