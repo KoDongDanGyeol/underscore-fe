@@ -32,17 +32,16 @@ export type TypeSearchCategoryResult = {
   }[]
 }
 
-const fetchSearchCategory: TypeFetchList<TypeSearchCategoryResult, TypeCategoryListAllFilter> = async (
-  page,
-  { level, categoryCode, searchBounds, size },
-) => {
-  const { data } = await axios<TypeSearchCategoryResult>({
-    method: "GET",
-    url: `/map/search-category`,
+export const fetchSearchCategoryList: TypeFetchList<
+  TypeSearchCategoryResult,
+  TypeCategoryListAllId,
+  TypeCategoryListAllFilter
+> = async (page, { level, categoryCode, searchBounds, size }) => {
+  const { data } = await axios.get(`/map/search-category`, {
     params: {
       page,
       size,
-      categoryCode,
+      category_group_code: categoryCode,
       rect: `${searchBounds[1]},${searchBounds[0]},${searchBounds[3]},${searchBounds[2]}`,
     },
     headers: {
@@ -52,14 +51,14 @@ const fetchSearchCategory: TypeFetchList<TypeSearchCategoryResult, TypeCategoryL
   return data
 }
 
-const useSearchCategory = (
+const useSearchCategoryList = (
   page: TypeCategoryListAllId,
   { level, categoryCode, searchBounds, size }: TypeCategoryListAllFilter,
 ) => {
   const context = useQuery({
     queryKey: getCacheKey(mapKey).category.list.all.toKeyWithArgs(page, { level, categoryCode, searchBounds, size }),
     queryFn: async () => {
-      const data = await fetchSearchCategory(page, { level, categoryCode, searchBounds, size })
+      const data = await fetchSearchCategoryList(page, { level, categoryCode, searchBounds, size })
       return data
     },
     enabled: !!page && !!categoryCode && !isEquals([0, 0, 0, 0], searchBounds) && [1, 2, 3].includes(level),
@@ -72,4 +71,4 @@ const useSearchCategory = (
   }
 }
 
-export default useSearchCategory
+export default useSearchCategoryList

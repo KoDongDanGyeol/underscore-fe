@@ -1,14 +1,32 @@
+import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query"
+import { getCacheKey } from "@/libs/cache"
+import { userKey } from "@/queries/api/user"
+import { fetchSearchMyplaceList } from "@/queries/api/user/useSearchMyplaceList"
+import MapMyplace from "@/components/page/MapMyplace"
+
 interface PageProps {
   //
 }
 
-const Page = (props: PageProps) => {
+const Page = async (props: PageProps) => {
   // const { } = props
 
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery({
+    queryKey: getCacheKey(userKey).myplace.list.all.toKeyWithArgs(1, { size: 10 }),
+    queryFn: async () => {
+      const data = await fetchSearchMyplaceList(1, { size: 10 })
+      return data
+    },
+  })
+
+  const dehydratedState = dehydrate(queryClient)
+
   return (
-    <div>
-      <h2>내장소(/map/@tab/myplace)</h2>
-    </div>
+    <HydrationBoundary state={dehydratedState}>
+      <MapMyplace />
+    </HydrationBoundary>
   )
 }
 

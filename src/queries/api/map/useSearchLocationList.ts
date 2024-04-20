@@ -47,16 +47,15 @@ export type TypeSearchLocationResult = {
   }[]
 }
 
-const fetchSearchLocation: TypeFetchList<TypeSearchLocationResult, TypeLocationListAllFilter> = async (
-  page,
-  { searchKeyword },
-) => {
-  const { data } = await axios<TypeSearchLocationResult>({
-    method: "GET",
-    url: `/map/search-location`,
+export const fetchSearchLocationList: TypeFetchList<
+  TypeSearchLocationResult,
+  TypeLocationListAllId,
+  TypeLocationListAllFilter
+> = async (page, { searchKeyword }) => {
+  const { data } = await axios.get(`/map/search-location`, {
     params: {
       page: page,
-      location: encodeURIComponent(searchKeyword),
+      query: encodeURIComponent(searchKeyword),
     },
     headers: {
       Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_API_KAKAO_REST_KEY}`,
@@ -65,11 +64,11 @@ const fetchSearchLocation: TypeFetchList<TypeSearchLocationResult, TypeLocationL
   return data
 }
 
-const useSearchLocation = ({ searchKeyword }: TypeLocationListAllFilter) => {
+const useSearchLocationList = ({ searchKeyword }: TypeLocationListAllFilter) => {
   const context = useInfiniteQuery({
     queryKey: getCacheKey(mapKey).location.list.all.toKeyWithArgs(Infinity, { searchKeyword }),
     queryFn: async ({ pageParam = 1 }: { pageParam: TypeLocationListAllId }) => {
-      const data = await fetchSearchLocation(pageParam, { searchKeyword })
+      const data = await fetchSearchLocationList(pageParam, { searchKeyword })
       return data
     },
     getNextPageParam: (lastPage, allPages) => {
@@ -93,4 +92,4 @@ const useSearchLocation = ({ searchKeyword }: TypeLocationListAllFilter) => {
   }
 }
 
-export default useSearchLocation
+export default useSearchLocationList

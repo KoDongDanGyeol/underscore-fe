@@ -1,6 +1,6 @@
 import { http, HttpResponse } from "msw"
 import { faker } from "@faker-js/faker"
-import { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysis"
+import { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysisList"
 import { TypeAnalysisListAllFilter } from "@/queries/api/map"
 
 export const mapHandlers = [
@@ -27,13 +27,13 @@ export const mapHandlers = [
             faker.number.int({ min: 0, max: 20 }),
           ) as TypeSearchAnalysisResult["businessAttractions"][number]["businessAttractionScores"]
         return {
-          legalDistrictCode: `${index + 1}`,
-          administrativeDistrictName: `서울특별시 어쩌구 저쩌${index}동`,
+          legalDistrictCode: `${index}`,
+          administrativeDistrictName: `서울특별시 어쩌구 저쩌${index + 1}동`,
           businessAttractionScores: score,
           totalScore: score.reduce((a, b) => a + b),
           coordinates: {
-            latitude: faker.number.float({ min: rect[1], max: rect[3], multipleOf: 0.000001 }),
-            longitude: faker.number.float({ min: rect[0], max: rect[2], multipleOf: 0.000001 }),
+            latitude: faker.number.float({ min: rect[0], max: rect[2], multipleOf: 0.000001 }),
+            longitude: faker.number.float({ min: rect[1], max: rect[3], multipleOf: 0.000001 }),
           },
         }
       }),

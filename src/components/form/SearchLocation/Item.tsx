@@ -1,7 +1,7 @@
 "use client"
 
 import styled from "styled-components"
-import { TypeSearchLocationResult } from "@/queries/api/map/useSearchLocation"
+import { TypeSearchLocationResult } from "@/queries/api/map/useSearchLocationList"
 
 export interface SearchLocationItemProps extends React.HTMLAttributes<HTMLButtonElement> {
   data: TypeSearchLocationResult["documents"][number]

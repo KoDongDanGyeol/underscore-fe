@@ -5,7 +5,7 @@ import styled from "styled-components"
 import { useForm } from "react-hook-form"
 import useMap from "@/libs/hook/useMap"
 import { isEquals } from "@/libs/utils"
-import useSearchCategory, { TypeSearchCategoryResult } from "@/queries/api/map/useSearchCategory"
+import useSearchCategoryList, { TypeSearchCategoryResult } from "@/queries/api/map/useSearchCategoryList"
 import { CategoryOptionGroups } from "@/components/form/SearchCategory/type"
 import SearchCategory, { TypeSearchCategory } from "@/components/form/SearchCategory"
 import PanelView, { PanelViewSubjectStatusCode } from "@/components/display/PanelView"
@@ -26,7 +26,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
     onOverlayChanged,
     onOverlayFocus,
     onOverlayBlur,
-    onSearchOptionChanged,
+    onFilterChanged,
   } = useMap()
 
   const searchCategory = useForm<TypeSearchCategory>({
@@ -46,7 +46,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
     isLoading,
     isFetching,
     isPending,
-  } = useSearchCategory(searchCategory.watch("page"), {
+  } = useSearchCategoryList(searchCategory.watch("page"), {
     level,
     categoryCode: searchCategory.watch("categoryCode"),
     searchBounds: searchCategory.watch("searchBounds"),
@@ -57,7 +57,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
     return {
       id: location.id,
       content: `<span>${location.place_name}</span>`,
-      coordinates: { latitude: parseFloat(location.y), longitude: parseFloat(location.x) },
+      coordinates: { latitude: parseFloat(`${location.y}`), longitude: parseFloat(`${location.x}`) },
     }
   }
 
@@ -72,27 +72,21 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
 
   const onSubmit = (data: TypeSearchCategory) => {
     searchCategory.setValue("page", 1)
-    onSearchOptionChanged({ categoryCode: data.categoryCode })
+    onFilterChanged({ categoryCode: data.categoryCode })
   }
 
   useEffect(() => {
-    if (isInitialized) searchCategory.setValue("searchBounds", bounds)
-  }, [isInitialized])
-
-  useEffect(() => {
-    onOverlayChanged({
-      shape: "pin" as const,
-      locations: (locationData?.documents ?? []).map(makeOverlayOption),
-    })
-  }, [locationData?.documents])
-
-  useEffect(() => {
-    searchCategory.setValue("page", 1)
+    if (!isInitialized) return
     onOverlayChanged({
       shape: "pin",
       locations: (locationData?.documents ?? []).map(makeOverlayOption),
     })
-  }, [])
+  }, [isInitialized, locationData?.documents])
+
+  useEffect(() => {
+    if (!isInitialized) return
+    searchCategory.setValue("searchBounds", bounds)
+  }, [isInitialized])
 
   return (
     <MapCategoryMainContainer className={`${className}`} {...restProps}>
@@ -119,7 +113,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
         suffixEl={
           !(isPending && !isLoading) &&
           !isEquals([0, 0, 0, 0], searchCategory.watch("searchBounds")) &&
-          !isEquals(bounds, searchCategory.watch("searchBounds")) ? (
+          !isEquals(bounds, searchCategory.watch("searchBounds")) && (
             <Button
               type="button"
               size="sm"
@@ -129,7 +123,7 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
             >
               현재 지도에서 재검색
             </Button>
-          ) : null
+          )
         }
       >
         장소
@@ -146,11 +140,9 @@ const MapCategoryMain = (props: MapCategoryMainProps) => {
                 <CategoryView.Item
                   key={location.id}
                   data={location}
-                  data-target={location.id}
+                  data-target-id={`overlay${location.id}`}
                   tabIndex={0}
-                  onFocus={() => onOverlayFocus(options)}
                   onMouseOver={() => onOverlayFocus(options)}
-                  onBlur={() => onOverlayBlur(options)}
                   onMouseOut={() => onOverlayBlur(options)}
                 />
               )

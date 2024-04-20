@@ -3,7 +3,7 @@
 import { forwardRef } from "react"
 import styled from "styled-components"
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from "@/types/polymorphic"
-import { TypeSearchCategoryResult } from "@/queries/api/map/useSearchCategory"
+import { TypeSearchCategoryResult } from "@/queries/api/map/useSearchCategoryList"
 
 export type CategoryViewItemProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
   C,

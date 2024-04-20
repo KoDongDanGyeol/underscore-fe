@@ -13,14 +13,18 @@ import {
 } from "chart.js"
 import { Radar } from "react-chartjs-2"
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from "@/types/polymorphic"
-import { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysis"
+import { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysisList"
+import Button from "@/components/general/Button"
+import Icon from "@/components/general/Icon"
 
 export type AnalysisViewItemProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
   C,
-  React.PropsWithChildren<{
+  {
     labels: TypeSearchAnalysisResult["labels"]
     data: TypeSearchAnalysisResult["businessAttractions"][number]
-  }>
+    onReport?: () => void
+    onSave?: () => void
+  }
 >
 
 export type AnalysisViewItemComponent = <C extends React.ElementType = "div">(
@@ -29,19 +33,19 @@ export type AnalysisViewItemComponent = <C extends React.ElementType = "div">(
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler)
 
-const Labels: { [key in string]: string[] } = {
-  ["Floating Population"]: ["유동인구"],
-  ["Stores"]: ["점포"],
-  ["IncomeConsumption"]: ["지출"],
-  ["ResidentPopulation"]: ["상주인구"],
-  ["IndexQuarterlyQuotients"]: ["상권"],
-  ["Selling"]: ["매출"],
+const Labels: { [key in string]: string } = {
+  ["Floating Population"]: "유동인구",
+  ["Stores"]: "점포",
+  ["IncomeConsumption"]: "지출",
+  ["ResidentPopulation"]: "상주인구",
+  ["IndexQuarterlyQuotients"]: "상권",
+  ["Selling"]: "매출",
 }
 
 const AnalysisViewItem: AnalysisViewItemComponent = forwardRef(function AnalysisViewItem<
   C extends React.ElementType = "div",
 >(props: AnalysisViewItemProps<C>, ref?: PolymorphicRef<C>): React.ReactNode {
-  const { asTag, labels, data, className = "", children, ...restProps } = props
+  const { asTag, labels, data, className = "", onReport, onSave, ...restProps } = props
 
   const radarData: ChartData<"radar"> = {
     labels: labels.map((label) => Labels?.[label] ?? label),
@@ -92,7 +96,28 @@ const AnalysisViewItem: AnalysisViewItemComponent = forwardRef(function Analysis
         <span className="score">
           개업 매력도 <em>{data?.totalScore}</em>점
         </span>
-        {children && <div className="action">{children}</div>}
+        <div className="helper">
+          {onReport && (
+            <Button
+              type="button"
+              shape="plain"
+              prefixEl={<Icon name="LineChart" aria-hidden={true} />}
+              onClick={onReport}
+            >
+              분석리포트 열기
+            </Button>
+          )}
+          {onSave && (
+            <Button
+              type="button"
+              shape="plain"
+              prefixEl={<Icon name="Environment" aria-hidden={true} />}
+              onClick={onSave}
+            >
+              내장소 추가
+            </Button>
+          )}
+        </div>
       </AnalysisViewItemContent>
       <AnalysisViewItemRadar data={radarData} options={radarOptions} width="120" height="112" />
     </AnalysisViewItemContainer>
@@ -126,10 +151,13 @@ const AnalysisViewItemContent = styled.div`
       color: rgb(var(--color-primary600));
     }
   }
-  .action {
+  .helper {
     margin-top: 4px;
-    button {
-      display: flex;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    &:empty {
+      display: none;
     }
   }
 `
