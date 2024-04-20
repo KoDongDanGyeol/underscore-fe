@@ -112,7 +112,7 @@ const StyledGlobal = styled.createGlobalStyle`
   h4,
   h5,
   h6 {
-    font-weight: 600;
+    font-weight: 500;
   }
 
   img,
@@ -163,6 +163,7 @@ const StyledGlobal = styled.createGlobalStyle`
   select,
   textarea {
     width: 100%;
+    margin: 0;
     padding: 0;
     font-size: ${(props) => props.theme.typo.size.sm};
     line-height: ${(props) => props.theme.typo.leading.sm};

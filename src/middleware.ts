@@ -9,16 +9,6 @@ export function middleware(request: NextRequest) {
   // const allCookies = request.cookies.getAll()
   // const allHeaders = request.headers.entries()
 
-  const isDev = process.env.NODE_ENV === "development"
-
-  if (!isDev && /^\/$/.test(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/map", request.url))
-  }
-
-  if (!isDev && /^\/guide$/.test(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/map", request.url))
-  }
-
   if (/^\/mypage(?!\/).*/.test(request.nextUrl.pathname)) {
     return NextResponse.redirect(new URL("/mypage/profile", request.url))
   }

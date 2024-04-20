@@ -10,13 +10,13 @@ const Page = (props: PageProps) => {
 
   return (
     <>
-      <Breadcrumb className="breadcrumb">
+      <Breadcrumb>
         <Link href="/mypage">마이페이지</Link>
         <Link href="/mypage/support">지원사업</Link>
       </Breadcrumb>
-      <div className="container">
+      <section>
         <h2>지원사업(/mypage/support)</h2>
-      </div>
+      </section>
     </>
   )
 }

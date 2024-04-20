@@ -7,10 +7,10 @@ export interface SelectItemProps extends React.PropsWithChildren<React.HTMLAttri
 }
 
 const SelectItem = (props: SelectItemProps) => {
-  const { className = "", children, onClick, ...restProps } = props
+  const { className = "", children, ...restProps } = props
 
   return (
-    <SelectItemContainer type="button" className={`${className}`} onClick={onClick} {...restProps}>
+    <SelectItemContainer type="button" className={`${className}`} {...restProps}>
       {children}
     </SelectItemContainer>
   )
@@ -29,14 +29,9 @@ const SelectItemContainer = styled.button`
   &:focus {
     background: rgb(var(--color-neutral300));
   }
-  svg {
-  }
   &[aria-selected="true"] {
     font-weight: 500;
     background: rgb(var(--color-primary100));
-    svg {
-      /*  */
-    }
   }
 `
 

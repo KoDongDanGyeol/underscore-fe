@@ -24,7 +24,7 @@ export interface SelectMainProps<T extends FieldValues = object> extends React.H
   multiple?: boolean
   shape?: SelectShape
   optionGroups: OptionGroups<T>[]
-  onSelected: (options: OptionGroups<T>["options"]) => void
+  onSelected?: (options: OptionGroups<T>["options"]) => void
 }
 
 interface TypeStructure<T extends FieldValues = object> {

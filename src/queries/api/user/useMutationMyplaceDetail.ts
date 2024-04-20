@@ -82,8 +82,8 @@ const useMutationMyplaceDetail = () => {
     AxiosError,
     TypePostMyplaceDetailParams
   >({
-    mutationFn: async ({ ...params }) => {
-      const data = await postMyplaceDetail(null, { ...params })
+    mutationFn: async ({ id, addressName, coordinates }) => {
+      const data = await postMyplaceDetail(null, { id, addressName, coordinates })
       return data
     },
     onSuccess: () => {
