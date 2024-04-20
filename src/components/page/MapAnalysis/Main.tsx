@@ -98,34 +98,36 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
 
   return (
     <MapAnalysisMainContainer className={`${className}`} {...restProps}>
-      <SearchBusiness
-        formData={searchBusiness}
-        formAction={{
-          submit: "조회",
-        }}
-        formPlaceholder={{
-          businessCode: "업종 선택",
-        }}
-        formOptionGroups={{
-          businessCode: [
-            {
-              label: "업종 선택",
-              options: Object.entries(businessData ?? {}).map(([value, text]) => ({ value, text })),
-            },
-          ],
-        }}
-        handleValid={onSubmit}
-      >
-        <MapAnalysisMainAlert statusCode={AlertStatusCode.Info} statusMessage="asdf" hasIcon={true}>
-          지금 멤버십에 가입하면 개업 매력도 전체 그래프와 분석 리포트를 확인 할 수 있어요
-          <br />
-          <Link href="/mypage/profile" target="_blank" passHref={true} legacyBehavior={true}>
-            <Button asTag="a" shape="plain" suffixEl={<Icon name="ArrowRight" aria-hidden={true} />}>
-              회원정보 바로가기
-            </Button>
-          </Link>
-        </MapAnalysisMainAlert>
-      </SearchBusiness>
+      <PanelView.Filter>
+        <SearchBusiness
+          formData={searchBusiness}
+          formAction={{
+            submit: "조회",
+          }}
+          formPlaceholder={{
+            businessCode: "업종 선택",
+          }}
+          formOptionGroups={{
+            businessCode: [
+              {
+                label: "업종 선택",
+                options: Object.entries(businessData ?? {}).map(([value, text]) => ({ value, text })),
+              },
+            ],
+          }}
+          handleValid={onSubmit}
+        >
+          <MapAnalysisMainAlert statusCode={AlertStatusCode.Info} statusMessage="asdf" hasIcon={true}>
+            지금 멤버십에 가입하면 개업 매력도 전체 그래프와 분석 리포트를 확인 할 수 있어요
+            <br />
+            <Link href="/mypage/profile" target="_blank" passHref={true} legacyBehavior={true}>
+              <Button asTag="a" shape="plain" suffixEl={<Icon name="ArrowRight" aria-hidden={true} />}>
+                회원정보 바로가기
+              </Button>
+            </Link>
+          </MapAnalysisMainAlert>
+        </SearchBusiness>
+      </PanelView.Filter>
       <PanelView.Subject
         {...(!isInitialized || isLoading || isFetching
           ? { statusCode: PanelViewSubjectStatusCode.Loading, statusMessage: "로딩중", hasIcon: true }
