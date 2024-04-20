@@ -10,14 +10,14 @@ const Page = (props: PageProps) => {
 
   return (
     <>
-      <Breadcrumb className="breadcrumb">
+      <Breadcrumb>
         <Link href="/mypage">마이페이지</Link>
         <Link href="/mypage/profile">회원정보</Link>
         <Link href="/mypage/payment/history">결제내역</Link>
       </Breadcrumb>
-      <div className="container">
+      <section>
         <h2>결제내역(/mypage/payment/history)</h2>
-      </div>
+      </section>
     </>
   )
 }

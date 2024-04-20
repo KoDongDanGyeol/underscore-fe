@@ -1,10 +1,8 @@
 import { HydrationBoundary, QueryClient, dehydrate } from "@tanstack/react-query"
 import { getCacheKey } from "@/libs/cache"
 import { userKey } from "@/queries/api/user"
-import { mapKey } from "@/queries/api/map"
 import { fetchSearchProfile } from "@/queries/api/user/useSearchProfile"
-import { fetchSearchBusinessList } from "@/queries/api/map/useSearchBusinessList"
-import MapAnalysis from "@/components/page/MapAnalysis"
+import AuthEditProfile from "@/components/page/AuthEditProfile"
 
 interface PageProps {
   //
@@ -23,19 +21,11 @@ const Page = async (props: PageProps) => {
     },
   })
 
-  await queryClient.prefetchQuery({
-    queryKey: getCacheKey(mapKey).business.list.all.toKeyWithArgs(1),
-    queryFn: async () => {
-      const data = await fetchSearchBusinessList(1, {})
-      return data
-    },
-  })
-
   const dehydratedState = dehydrate(queryClient)
 
   return (
     <HydrationBoundary state={dehydratedState}>
-      <MapAnalysis />
+      <AuthEditProfile />
     </HydrationBoundary>
   )
 }

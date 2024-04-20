@@ -12,14 +12,14 @@ const Page = (props: PageProps) => {
 
   return (
     <>
-      <Breadcrumb className="breadcrumb">
+      <Breadcrumb>
         <Link href="/mypage">마이페이지</Link>
         <Link href="/mypage/checklist">체크리스트</Link>
         <Link href={`/mypage/checklist/${params.checklistId}`}>{params.checklistId}</Link>
       </Breadcrumb>
-      <div className="container">
+      <section>
         <h2>체크리스트 상세(/mypage/checklist/{params.checklistId})</h2>
-      </div>
+      </section>
     </>
   )
 }

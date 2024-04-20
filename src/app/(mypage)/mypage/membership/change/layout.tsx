@@ -1,5 +1,8 @@
 "use client"
 
+import useSearchMembership from "@/queries/api/user/useSearchMembership"
+import { TypeSubscriptionCode } from "@/components/form/ChangeMembership/type"
+
 interface PageLayoutProps extends React.PropsWithChildren {
   join: React.ReactNode
   leave: React.ReactNode
@@ -8,11 +11,13 @@ interface PageLayoutProps extends React.PropsWithChildren {
 const PageLayout = (props: PageLayoutProps) => {
   const { join, leave, children } = props
 
-  const isMember = false
+  const { data: membershipData } = useSearchMembership()
 
   return (
     <>
-      {isMember ? leave : join}
+      {membershipData?.subscriptionCode === TypeSubscriptionCode.Free && join}
+      {membershipData?.subscriptionCode === TypeSubscriptionCode.Month && leave}
+      {membershipData?.subscriptionCode === TypeSubscriptionCode.Year && leave}
       {children}
     </>
   )

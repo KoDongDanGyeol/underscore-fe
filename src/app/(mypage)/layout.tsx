@@ -26,10 +26,10 @@ const PageLayout = (props: PageLayoutProps) => {
 const PageLayoutContent = styled(Layout.Content)`
   padding: 48px 50px 0;
   background: rgb(var(--color-neutral300));
-  .breadcrumb {
+  > nav {
     padding: 16px 0;
   }
-  .container {
+  > section {
     padding: 24px;
     background: rgb(var(--color-neutral100));
     border-radius: 12px;
