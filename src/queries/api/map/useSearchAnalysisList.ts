@@ -18,44 +18,44 @@ export type TypeSearchAnalysisResult = {
   }[]
 }
 
-const fetchSearchAnalysis: TypeFetchList<TypeSearchAnalysisResult, TypeAnalysisListAllFilter> = async (
-  page,
-  { level, searchBounds, businessCode },
-) => {
+export const fetchSearchAnalysisList: TypeFetchList<
+  TypeSearchAnalysisResult,
+  TypeAnalysisListAllId,
+  TypeAnalysisListAllFilter
+> = async (page, { level, searchBounds, businessCode }) => {
   // TODO
   // const token = await getToken()
-  // const { data } = await axios<TypeSearchAnalysisResult>({
-  //   method: "GET",
-  //   url: `${process.env.NEXT_PUBLIC_API_URL}/api/map/business-attraction`,
+  // const { data } = await axios.get( `${process.env.NEXT_PUBLIC_API_URL}/api/map/business-attraction`, {
   //   params: {
   //     page,
-  //     rect: `${searchBounds[1]},${searchBounds[0]},${searchBounds[3]},${searchBounds[2]}`,
+  //     rect: searchBounds.join(","),
   //     serviceIndustryCode: businessCode,
   //   },
   //   headers: {
   //     Authorization: `Bearer ${token}`,
   //   },
   // })
-  const { data } = await axios<TypeSearchAnalysisResult>({
-    method: "GET",
-    url: `${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/map/business-attraction`,
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_MOCKING_URL}/mocks/map/business-attraction`, {
     params: {
       page,
-      rect: `${searchBounds[1]},${searchBounds[0]},${searchBounds[3]},${searchBounds[2]}`,
+      rect: searchBounds.join(","),
       serviceIndustryCode: businessCode,
+    },
+    headers: {
+      //
     },
   })
   return data
 }
 
-const useSearchAnalysis = (
+const useSearchAnalysisList = (
   page: TypeAnalysisListAllId,
   { level, searchBounds, businessCode }: TypeAnalysisListAllFilter,
 ) => {
   const context = useQuery({
     queryKey: getCacheKey(mapKey).analysis.list.all.toKeyWithArgs(page, { level, searchBounds, businessCode }),
     queryFn: async () => {
-      const data = await fetchSearchAnalysis(page, { level, searchBounds, businessCode })
+      const data = await fetchSearchAnalysisList(page, { level, searchBounds, businessCode })
       return data
     },
     enabled: !!page && !!businessCode && !isEquals([0, 0, 0, 0], searchBounds) && [1, 2, 3].includes(level),
@@ -68,4 +68,4 @@ const useSearchAnalysis = (
   }
 }
 
-export default useSearchAnalysis
+export default useSearchAnalysisList

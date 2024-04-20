@@ -8,19 +8,16 @@ export type TypeSearchBusinessResult = {
   [key in string]: string
 }
 
-export const fetchSearchBusiness: TypeFetchList<TypeSearchBusinessResult> = async (page) => {
-  const { data } = await axios<TypeSearchBusinessResult>({
-    method: "GET",
-    url: `${process.env.NEXT_PUBLIC_API_URL}/api/map/serviceIndustryData`,
-  })
+export const fetchSearchBusinessList: TypeFetchList<TypeSearchBusinessResult, TypeBusinessListAllId> = async (page) => {
+  const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/map/serviceIndustryData`)
   return data
 }
 
-const useSearchBusiness = (page: TypeBusinessListAllId) => {
+const useSearchBusinessListList = (page: TypeBusinessListAllId) => {
   const context = useQuery({
     queryKey: getCacheKey(mapKey).business.list.all.toKeyWithArgs(page),
     queryFn: async () => {
-      const data = await fetchSearchBusiness(page, {})
+      const data = await fetchSearchBusinessList(page, {})
       return data
     },
     enabled: !!page,
@@ -33,4 +30,4 @@ const useSearchBusiness = (page: TypeBusinessListAllId) => {
   }
 }
 
-export default useSearchBusiness
+export default useSearchBusinessListList

@@ -26,14 +26,14 @@ const PanelViewNavigation = (props: PanelViewNavigationProps) => {
         </li>
         <li>
           <Link href="/map/analysis" prefetch={false} passHref={true} legacyBehavior={true}>
-            <Button asTag="a" isActive={/\/map\/analysis(?!\/).*/.test(pathname)}>
+            <Button asTag="a" isActive={/\/map\/analysis.*/.test(pathname)}>
               상권분석
             </Button>
           </Link>
         </li>
         <li>
           <Link href="/map/myplace" prefetch={false} passHref={true} legacyBehavior={true}>
-            <Button asTag="a" isActive={/\/map\/myplace(?!\/).*/.test(pathname)}>
+            <Button asTag="a" isActive={/\/map\/myplace.*/.test(pathname)}>
               내장소
             </Button>
           </Link>
