@@ -63,7 +63,7 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   line-height: ${(props) => props.theme.typo.leading.sm};
   background: rgb(var(--color-neutral100));
   border-bottom: 1px solid rgb(var(--color-neutral400));
-  z-index: 10;
+  z-index: 1;
   .extra-suffix {
     flex: 1 1 0px;
     display: inline-flex;

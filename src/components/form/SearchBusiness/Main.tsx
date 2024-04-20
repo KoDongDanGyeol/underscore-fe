@@ -53,9 +53,7 @@ interface SearchBusinessMainStyled {
 }
 
 const SearchBusinessMainContainer = styled.form<SearchBusinessMainStyled>`
-  position: relative;
-  padding: 12px 20px;
-  background: rgb(var(--color-neutral100));
+  /*  */
 `
 
 export default SearchBusinessMain
