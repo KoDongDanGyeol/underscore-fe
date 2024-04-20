@@ -53,6 +53,7 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   position: sticky;
   top: 0;
   left: 0;
+  margin-top: 10px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -62,9 +63,7 @@ const PanelViewSubjectContainer = styled.div<PanelViewSubjectStyled>`
   line-height: ${(props) => props.theme.typo.leading.sm};
   background: rgb(var(--color-neutral100));
   border-bottom: 1px solid rgb(var(--color-neutral400));
-  &:not(:first-child) {
-    margin-top: 10px;
-  }
+  z-index: 10;
   .extra-suffix {
     flex: 1 1 0px;
     display: inline-flex;

@@ -174,7 +174,7 @@ const LayoutNavigationContainer = styled.div<LayoutNavigationStyled>`
   height: calc(var(--var, 1vh) * 100);
   background-color: rgba(var(--color-neutral1300), 0);
   transition: background-color 200ms;
-  z-index: 999;
+  z-index: 1000;
   ${(props) => {
     if (props.$isOpened && !props.$isPending) {
       return css`

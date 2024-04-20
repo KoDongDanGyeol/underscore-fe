@@ -6,7 +6,7 @@ import styled from "styled-components"
 import useMap from "@/libs/hook/useMap"
 import useOnScreen from "@/libs/hook/useOnScreen"
 import { Timer, clearTimer, setTimer } from "@/libs/timer"
-import useSearchLocation, { TypeSearchLocationResult } from "@/queries/api/map/useSearchLocation"
+import useSearchLocationList, { TypeSearchLocationResult } from "@/queries/api/map/useSearchLocationList"
 import SearchLocation, { TypeSearchLocation } from "@/components/form/SearchLocation"
 
 export interface PanelViewHeaderProps extends React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>> {
@@ -45,7 +45,7 @@ const PanelViewHeader = (props: PanelViewHeaderProps) => {
     },
   })
 
-  const { flatData, isSelected, hasNextPage, fetchNextPage } = useSearchLocation({
+  const { flatData, isSelected, hasNextPage, fetchNextPage } = useSearchLocationList({
     searchKeyword: searchLocation.watch("searchKeyword") ?? "",
   })
 
