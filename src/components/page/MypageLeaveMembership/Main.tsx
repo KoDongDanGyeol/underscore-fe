@@ -80,7 +80,9 @@ const MypageLeaveMembershipMain = (props: MypageLeaveMembershipMainProps) => {
       <MypageView.Row>
         <MypageView.Group>
           <MypageView.Label>결제수단</MypageView.Label>
-          <MypageView.Text>{membershipData?.paymentMethod}</MypageView.Text>
+          <MypageView.Text>
+            {membershipData?.paymentMethod} {membershipData?.paymentInfo}
+          </MypageView.Text>
         </MypageView.Group>
         <MypageView.Group>
           <MypageView.Label>사용일수</MypageView.Label>
@@ -92,11 +94,11 @@ const MypageLeaveMembershipMain = (props: MypageLeaveMembershipMainProps) => {
       <MypageView.Row>
         <MypageView.Group>
           <MypageView.Label>결제금액</MypageView.Label>
-          <MypageView.Text>{membershipData?.paymentAmount?.toLocaleString("ko-KR")}원</MypageView.Text>
+          <MypageView.Text>{`${parseInt(`${membershipData?.paymentAmount}`)?.toLocaleString("ko-KR")}원`}</MypageView.Text>
         </MypageView.Group>
         <MypageView.Group>
           <MypageView.Label>환불금액</MypageView.Label>
-          <MypageView.Text>{membershipData?.refundAmount?.toLocaleString("ko-KR")}원</MypageView.Text>
+          <MypageView.Text>{`${parseInt(`${membershipData?.refundAmount}`)?.toLocaleString("ko-KR")}원`}</MypageView.Text>
         </MypageView.Group>
       </MypageView.Row>
       <MypageView.Action>

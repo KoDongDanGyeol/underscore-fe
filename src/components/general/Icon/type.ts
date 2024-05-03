@@ -1,5 +1,6 @@
-export const IconName = {
+export const TypeIconName = {
   ["ArrowRight"]: "ArrowRight",
+  ["Calendar"]: "Calendar",
   ["CaretDown"]: "CaretDown",
   ["CaretUp"]: "CaretUp",
   ["CheckCircle"]: "CheckCircle",
@@ -26,4 +27,4 @@ export const IconName = {
   ["Warning"]: "Warning",
 } as const
 
-export type IconName = (typeof IconName)[keyof typeof IconName]
+export type TypeIconName = (typeof TypeIconName)[keyof typeof TypeIconName]
