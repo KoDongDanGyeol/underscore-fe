@@ -1,4 +1,5 @@
 export * from "@/components/general/Icon/data/ArrowRight"
+export * from "@/components/general/Icon/data/Calendar"
 export * from "@/components/general/Icon/data/CaretDown"
 export * from "@/components/general/Icon/data/CaretUp"
 export * from "@/components/general/Icon/data/CheckCircle"

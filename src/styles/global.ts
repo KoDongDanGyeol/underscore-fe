@@ -198,6 +198,14 @@ const StyledGlobal = styled.createGlobalStyle`
     &::-webkit-input-placeholder {
       color: rgb(var(--color-neutral800));
     }
+    &[type="date"]::-webkit-clear-button,
+    &[type="date"]::-webkit-inner-spin-button {
+      display: none;
+    }
+    &[type="date"]::-webkit-calendar-picker-indicator {
+      background: transparent;
+      z-index: 1;
+    }
   }
   select {
   }

@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import useMap from "@/libs/hook/useMap"
+import useSearchProfile from "@/queries/api/user/useSearchProfile"
 import useSearchMyplaceList, { TypeSearchMyplaceResult } from "@/queries/api/user/useSearchMyplaceList"
 import useMutationMyplaceDetail from "@/queries/api/user/useMutationMyplaceDetail"
 import PanelView, { PanelViewSubjectStatusCode } from "@/components/display/PanelView"
@@ -38,6 +39,8 @@ const MapMyplaceMain = (props: MapMyplaceMainProps) => {
       size: 10,
     },
   })
+
+  const { data: profileData } = useSearchProfile()
 
   const {
     data: myplaceData,
@@ -127,8 +130,7 @@ const MapMyplaceMain = (props: MapMyplaceMainProps) => {
           </MyplaceView.Group>
         )}
       </MapMyplaceMainResult>
-      {/* TODO */}
-      {true && (
+      {!profileData && (
         <PanelView.Message>
           <strong>
             <em>로그인</em> 후 확인 가능해요
@@ -139,7 +141,7 @@ const MapMyplaceMain = (props: MapMyplaceMainProps) => {
           </Link>
         </PanelView.Message>
       )}
-      {myplaceData && myplaceData?.count === 0 && (
+      {myplaceData && (myplaceData?.totalCount ?? 0) === 0 && (
         <PanelView.Message>
           <strong>
             등록된 <em>내장소</em>가 없어요

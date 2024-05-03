@@ -6,6 +6,7 @@ import { TypeFetchList } from "@/types/cache"
 
 export type TypeSearchMyplaceResult = {
   count: number
+  totalCount: number
   items: {
     id: number
     addressName: string

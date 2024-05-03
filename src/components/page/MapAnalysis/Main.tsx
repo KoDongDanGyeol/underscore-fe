@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useForm } from "react-hook-form"
 import styled from "styled-components"
 import useMap from "@/libs/hook/useMap"
+import useSearchProfile from "@/queries/api/user/useSearchProfile"
 import useSearchBusinessList from "@/queries/api/map/useSearchBusinessList"
 import useSearchAnalysisList, { TypeSearchAnalysisResult } from "@/queries/api/map/useSearchAnalysisList"
 import useMutationMyplaceDetail from "@/queries/api/user/useMutationMyplaceDetail"
@@ -32,12 +33,15 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
 
   const searchBusiness = useForm<TypeSearchBusiness>({
     defaultValues: {
+      page: 1,
       business: "",
       businessCode: "",
     },
   })
 
-  const { data: businessData } = useSearchBusinessList(1)
+  const { data: profileData } = useSearchProfile()
+
+  const { data: businessData } = useSearchBusinessList(searchBusiness.watch("page"))
 
   const {
     data: analysisData,
@@ -171,8 +175,7 @@ const MapAnalysisMain = (props: MapAnalysisMainProps) => {
           <span>업종별 상권분석 및 개업 매력도를 확인해보세요</span>
         </PanelView.Message>
       )}
-      {/* TODO */}
-      {true && (
+      {!profileData && (
         <PanelView.Message>
           <strong>
             <em>로그인</em> 후 확인 가능해요

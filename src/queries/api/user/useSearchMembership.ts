@@ -10,6 +10,7 @@ export type TypeSearchMembershipResult = {
   effectiveDate?: Date
   expirationDate?: Date
   paymentMethod?: string
+  paymentInfo?: string
   paymentAmount?: number
   refundAmount?: number
 }

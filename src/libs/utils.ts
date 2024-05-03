@@ -31,11 +31,16 @@ export const getDiffDate = (startDate: Date, endDate: Date) => {
   return Math.ceil(time / (1000 * 60 * 60 * 24))
 }
 
-export const convertDateToString = (date: Date, format: string = "yyyy-mm-dd") => {
-  const match = date.toISOString().match(/(?<yyyy>\d{4})-(?<mm>\d{2})-(?<dd>\d{2})/)
+export const convertDateToString = (date: Date, format: string = "YYYY-MM-DD") => {
+  const match = date
+    .toISOString()
+    .match(/(?<YYYY>\d{4})-(?<MM>\d{2})-(?<DD>\d{2})T(?<hh>\d{2}):(?<mm>\d{2}):(?<ss>\d{2})/)
   const formatted = format
-    .replace(/yyyy/g, match?.groups?.yyyy ?? "")
+    .replace(/YYYY/g, match?.groups?.YYYY ?? "")
+    .replace(/MM/g, match?.groups?.MM ?? "")
+    .replace(/DD/g, match?.groups?.DD ?? "")
+    .replace(/hh/g, match?.groups?.hh ?? "")
     .replace(/mm/g, match?.groups?.mm ?? "")
-    .replace(/dd/g, match?.groups?.dd ?? "")
+    .replace(/ss/g, match?.groups?.ss ?? "")
   return formatted
 }

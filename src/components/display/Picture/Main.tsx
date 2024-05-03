@@ -1,10 +1,10 @@
-"use clinet"
+"use client"
 
 import { useEffect, useState } from "react"
 import Image, { ImageProps } from "next/image"
 import styled, { css } from "styled-components"
 import { NonUndefined, isEquals } from "@/libs/utils"
-import Icon, { IconName } from "@/components/general/Icon"
+import Icon, { TypeIconName } from "@/components/general/Icon"
 import { PictureRounded } from "@/components/display/Picture/type"
 
 export interface PictureMainProps extends ImageProps {
@@ -13,7 +13,7 @@ export interface PictureMainProps extends ImageProps {
   rounded?: PictureRounded
   src: string
   fallbackText?: string
-  fallbackIcon?: IconName
+  fallbackIcon?: TypeIconName
   className?: string
   onLoad?: React.ReactEventHandler<HTMLImageElement>
   onError?: React.ReactEventHandler<HTMLImageElement>

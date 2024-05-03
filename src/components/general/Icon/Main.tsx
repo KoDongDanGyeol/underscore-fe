@@ -1,10 +1,10 @@
 "use client"
 
 import styled from "styled-components"
-import { IconName, Icon } from "@/components/general/Icon"
+import { TypeIconName, Icon } from "@/components/general/Icon"
 
 export interface IconProps extends React.SVGAttributes<SVGElement> {
-  name: keyof typeof IconName
+  name: keyof typeof TypeIconName
 }
 
 const IconMain = (props: IconProps) => {
